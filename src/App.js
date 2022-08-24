@@ -12,7 +12,10 @@ import ControlPanel from './ControlPanel/ControlPanel';
 function App() {
 
   const [globalLexEnv, changeGlobalLexEnv] = React.useState(
-    {"a": 6, "b": "Eimantas", "c": true}
+    {
+      "a": [6, "number"],
+      "b": ["Eimantas", "string"],
+      "c": [true, "boolean"]}
   )
   const [editorContent, changeEditorContent] =
     React.useState("Hello first line \nSecond liner")

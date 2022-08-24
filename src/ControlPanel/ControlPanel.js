@@ -7,6 +7,7 @@ function ControlPanel() {
             <button>Eval</button>
             <button>Eval to Break Point</button>
             <button>Eval Eval One Line</button>
+            <button>Start at the Beginning</button>
         </div>
     )
 }

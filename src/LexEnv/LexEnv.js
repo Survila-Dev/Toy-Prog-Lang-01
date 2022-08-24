@@ -2,11 +2,17 @@ import React from "react"
 
 function LexEnv({lexEnv, changeLexEnv}) {
 
-    const [addNewEl, changeAddNewEl] = React.useState(["var0", "literal"]);
+    const [addNewEl, changeAddNewEl] = React.useState(["var0", "literal", "string"]);
 
     let lexEnvComponents = []
     const lexEnvKeys = Object.keys(lexEnv);
     const lexEnvValues = [];
+
+    React.useEffect(()=>{
+
+
+
+    }, [lexEnv])
 
     function handleAddNewElNameChange(event) {
         const {value} = event.target;
@@ -25,11 +31,23 @@ function LexEnv({lexEnv, changeLexEnv}) {
     function inputChanged(event) {
         const {name, value} = event.target;
 
+        // Determine the type
+        let varType = "none"
+        if (value === "") {
+            varType = "none"
+        } else if (value === "true" || value === "false") {
+            varType = "boolean"
+        } else if (!isNaN(value)) {
+            varType = "number"
+        } else {
+            varType = "string"
+        }
+
         changeLexEnv((prevState) => {
 
             return {
                 ...prevState,
-                [name]: value
+                [name]: [value, varType] // prevState[name][1]]
             }
         })
     }
@@ -73,15 +91,15 @@ function LexEnv({lexEnv, changeLexEnv}) {
     
     for (let i = 0; i < lexEnvKeys.length; i++) {
 
-        if (typeof lexEnv[lexEnvKeys[i]] === "boolean") {
-            if (lexEnv[lexEnvKeys[i]]) {
-                lexEnvValues.push("true");
-            } else {
-                lexEnvValues.push("false");
-            }
-        } else {
-            lexEnvValues.push(lexEnv[lexEnvKeys[i]]);
-        }
+        // if (typeof lexEnv[lexEnvKeys[i]] === "boolean") {
+        //     if (lexEnv[lexEnvKeys[i]]) {
+        //         lexEnvValues.push("true");
+        //     } else {
+        //         lexEnvValues.push("false");
+        //     }
+        // } else {
+        //     lexEnvValues.push(lexEnv[lexEnvKeys[i]]);
+        // }
 
         lexEnvComponents.push(
             <div className = "LexEnvElement" id = {i} key = {i}>
@@ -89,13 +107,13 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     {lexEnvKeys[i]}
                 </span>
                 <span className = "LexEnvElType">
-                    {typeof lexEnv[lexEnvKeys[i]]}
+                    {lexEnv[lexEnvKeys[i]][1]}
                 </span>
                 <input
                     type = "text"
                     className = "LexEnvElLiteral"
                     name = {lexEnvKeys[i]}
-                    value={lexEnvValues[i]}
+                    value={lexEnv[lexEnvKeys[i]][0]}
                     onChange = {inputChanged}/>
                 <button
                     name = {lexEnvKeys[i]}
