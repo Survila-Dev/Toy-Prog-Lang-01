@@ -1,40 +1,105 @@
 :root {
     --main-bg-color: brown;
+
+    --light-blue: #ADD8E6;
+    --middle-blue: #4682B4;
+    --dark-blue: #000080;
+
+    --light-red: #FFA07A;
+    --middle-red: #CD5C5C;
+    --dark-red: #DC143C;
+
+    --grey-01: 	#F1F1F1;
+    --grey-02: 	#D3D3D3;
+    --grey-03: 	#C0C0C0;
+    --grey-04: 	#A9A9A9;
+    --grey-05: #808080;
+    --grey-06: #696969;
+
+    --yellow: #F0E68C;
+    --orange: #FFA500;
+
+    --font-size-title: 28px;
+    --font-size-large: 22px;
+    --font-size-normal: 18px;
+
+    --gap-between-global-grid: 15px;
+    --leftside-padding: 10px;
+    --rightside-gap: 5px;
+    --h2-lower-padding: 10px;
+    --element-border: 0.5px solid var(--grey-05);
+    --lexenv-grid-template: 70px 70px auto 25px;
+
+    --title-text-transform: uppercase;
+    font-family: Arial;
+
 }
 
 body {
+    font-size: var(--font-size-normal);
     margin: 0px;
+}
+
+input {
+    font-size: var(--font-size-normal);
+}
+
+button {
+    font-size: var(--font-size-normal);
 }
 
 h1 {
+    font-size: var(--font-size-title);
     padding: 0px;
     margin: 0px;
+    text-transform: var(--title-text-transform);
+    color: var(--dark-blue);
 }
 
 h2 {
-    padding: 0px;
+    font-size: var(--font-size-large);
+    padding: 0px 0px var(--h2-lower-padding) 0px;
     margin: 0px;
+    text-transform: var(--title-text-transform);
+    color: var(--dark-blue);
+
 }
 
-
 .App {
-    box-sizing: border-box;
-    
-    margin: 0px;
-    padding: 10px 40px;
-
     height: 100vh;
-    background-color:bisque;
-
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
-        "navbar navbar"
-        "leftside rightside";
+        "navbar"
+        "rest";
+    
 }
 
 .App > * {
+    min-height: 0px;
+}
+
+.AppGrid {
+    box-sizing: border-box;
+    height: auto;
+    grid-area: rest;
+    
+    
+    margin: 0px;
+    padding: 10px 20px;
+
+    display: grid;
+    grid-template-columns: 300px auto;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "leftside rightside";
+
+    gap: var(--gap-between-global-grid);
+    
+}
+
+.AppGrid > * {
     min-height: 0px;
 }
 
@@ -44,7 +109,9 @@ h2 {
 
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: auto 1fr auto 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    
 }
 
 .leftside > * {
@@ -58,6 +125,9 @@ h2 {
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: auto 3fr auto 1fr;
+
+    gap: var(--rightside-gap);
+    
 }
 
 .rightside > * {

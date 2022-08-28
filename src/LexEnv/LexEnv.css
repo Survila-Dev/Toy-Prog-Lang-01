@@ -1,14 +1,27 @@
+.lexenvwithtitle {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 1fr;
+    background-color: var(--grey-01);
+    padding: var(--leftside-padding);
+    border: var(--element-border);
+}
+
+.lexenvwithtitle > * {
+    min-height: 0px;
+}
+
 .lexenv {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color:aqua;
-    padding: 10px;
 }
 
 .lexenvelement {
     display: grid;
-    grid-template-columns: 80px 60px auto 25px;
+    grid-template-columns: var(--lexenv-grid-template);
+    gap: 5px;
+    align-items: center;
 }
 
 .lexenvvariables {
@@ -21,9 +34,22 @@
   
 .lexenvaddnew {
     display: grid;
-    grid-template-columns: 80px 60px auto 25px;
+    grid-template-columns: var(--lexenv-grid-template);
+    align-items: center;
+    gap: 5px;
+}
+
+.lexencolnames {
+    display: grid;
+    grid-template-columns: var(--lexenv-grid-template);
+    align-items: center;
+    gap: 5px;
 }
 
 .lexenvaddnew > * {
     min-width: 0px;
+}
+
+.lexenvcolname {
+    color: var(--grey-05);
 }

@@ -1,6 +1,10 @@
 .selector {
     width: 100%;
-    background-color:indianred
+    background-color: var(--grey-01);
+    text-transform: var(--title-text-transform);
+    font-size: var(--font-size-large);
+    color: var(--dark-blue);
+    border: var(--element-border);
 }
 
 .selector {

@@ -1,10 +1,12 @@
 .navbar {
     grid-area: navbar;
     height: auto;
-    background-color: chartreuse;
+    background-color: var(--light-blue);
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto;
+
+    padding: 10px 20px;
 }
 
 

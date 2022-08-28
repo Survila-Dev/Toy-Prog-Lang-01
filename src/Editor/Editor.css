@@ -2,20 +2,21 @@
     display: flex;
     overflow-y: auto;
     padding: 0px;
+    border: var(--element-border);
 }
 
 .linenumbers{
     width: 50px;
-    font-family: Arial;
-    font-size: 15px;
+    font-size: var(--font-size-normal);
     padding: 0px;
     margin: 0px;
+    background-color: var(--grey-02);
 }
 
 .singlelinenumber {
     padding: 0px;
     margin: 0px;
-    height: calc(15px * 1.1)
+    height: calc(var(--font-size-normal) * 1.1)
 
 }
 
@@ -23,7 +24,7 @@ textarea {
     width: 100%;
     resize: none;
     font-family: Arial;
-    font-size: 15px;
+    font-size: var(--font-size-normal);
     padding: 0px;
     margin: 0px;
     height: auto;

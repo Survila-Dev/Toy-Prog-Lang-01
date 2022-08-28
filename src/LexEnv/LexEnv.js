@@ -159,9 +159,21 @@ function LexEnv({lexEnv, changeLexEnv}) {
     }
 
     return (
-        <>
+        <div className ="lexenvwithtitle">
         <h2>Execution Context</h2>
         <div className = "lexenv">
+            
+            <div className = "lexencolnames">
+                <span className = "lexenvcolname">
+                    Var.
+                </span>
+                <span className = "lexenvcolname">
+                    Type
+                </span>
+                <span className = "lexenvcolname">
+                    Value
+                </span>
+            </div>
             <div className = "lexenvvariables">
                 {lexEnvComponents}
             </div>
@@ -186,7 +198,7 @@ function LexEnv({lexEnv, changeLexEnv}) {
                 <button onClick = {addNewLexEnvElement}>+</button>
             </div>
         </div>
-        </>
+        </div>
     )
 }
 

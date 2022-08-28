@@ -44,8 +44,8 @@ function CallStack({
     }
 
     return (
-        <>
-        <h2>Call Stack</h2>
+        <div className = "callstackwithtitle">
+            <h2>Call Stack</h2>
             <div
                 className = "callstack"
                 onDrop = {handleDropOfLine}
@@ -54,7 +54,7 @@ function CallStack({
             >
                 {callStackJSX}
             </div>
-        </>
+        </div>
     );
 }
 

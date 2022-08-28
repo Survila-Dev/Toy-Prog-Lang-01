@@ -1,8 +1,19 @@
 .output {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50px auto;
+    grid-template-rows: auto;
     overflow-y: auto;
+    background-color: var(--grey-01);
+    border: var(--element-border);
+    
+}
+
+.outputtext {
+    width: auto;
+
 }
 
 .outputlinenumber {
     width: 50px;   
+    background-color: var(--grey-02);
 }

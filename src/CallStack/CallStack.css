@@ -1,19 +1,28 @@
+.callstackwithtitle {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 1fr;
+    background-color: var(--grey-01);
+    padding: var(--leftside-padding);
+    border: var(--element-border);
+}
+
+.callstackwithtitle > * {
+    min-height: 0px;
+}
+
 .callstack {
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-start;
     gap: 10px;
-    padding: 10px 0px;
-
-    background-color:coral;
 
     overflow-y: auto;
 }
 
 .callstackelement {
     width: auto;
-    margin: 0px 10px;
     padding: 10px;
     text-align: center;
-    background-color: red;
+    background-color: var(--grey-02);
 }

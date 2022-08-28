@@ -7,7 +7,7 @@ function NavBar() {
         <div className = "navbar">
             <div className = "titleandsubtitle">
                 <h1>Toy programming language</h1>
-                <p>Subtitle</p>
+                <p>Eimantas Survila 2022 ©</p>
             </div>
             <div className = "navbuttons">
                 <p>Help</p>

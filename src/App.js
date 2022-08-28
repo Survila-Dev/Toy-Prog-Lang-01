@@ -42,30 +42,34 @@ function App() {
   const showPopUp = false;
 
   return (
-    <div className="App">
-        <NavBar/>
-        <div className = "leftside">
-          <LexEnv lexEnv = {globalLexEnv} changeLexEnv = {changeGlobalLexEnv}/>
-          <CallStack
-            callStack = {globalStack}
-            changeCallStack = {changeGlobalStack}
-            lineDragContent = {lineDragContent}
-            changeLineDragContent = {changeLineDragContent}  
-          />
-        </div>
-        <div className = "rightside">
-          <Selector/>
-          <Editor
-            editorContent = {editorContent}
-            changeEditorContent = {changeEditorContent}
-            lineMarking = {lineMarking}
-            changeLineDragContent = {changeLineDragContent} 
-          />
-          <ControlPanel/>
-          <Output/>
-        </div>
+    <div className = "App">
+      <NavBar/>
+      <div className="AppGrid">
+        
+          <div className = "leftside">
+            <LexEnv lexEnv = {globalLexEnv} changeLexEnv = {changeGlobalLexEnv}/>
+            <CallStack
+              callStack = {globalStack}
+              changeCallStack = {changeGlobalStack}
+              lineDragContent = {lineDragContent}
+              changeLineDragContent = {changeLineDragContent}  
+            />
+          </div>
+          <div className = "rightside">
+            <Selector/>
+            <Editor
+              editorContent = {editorContent}
+              changeEditorContent = {changeEditorContent}
+              lineMarking = {lineMarking}
+              changeLineDragContent = {changeLineDragContent} 
+            />
+            <ControlPanel/>
+            <Output/>
+          </div>
 
-        {showPopUp? <PopUpMessage/> : <></>}
+          
+      </div>
+      {showPopUp? <PopUpMessage/> : <></>}
     </div>
   );
 }
