@@ -1,3 +1,5 @@
+import "./ControlPanel.css"
+
 import React from "react";
 
 function ControlPanel() {

@@ -1,0 +1,36 @@
+.popuparticle {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr auto;
+
+    position: fixed;
+    z-index: 99;
+    background-color: white;
+    height: 60vh;
+    width: 70vw;
+    top: 15vh;
+    left: 15vw;
+}
+
+.popupcontrol {
+    display: flex;
+    justify-content: space-between;
+}
+
+.popupclosebutton {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.popupcover {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 95;
+    height: 100vh;
+    width: 100vw;
+    background-color: grey;
+    opacity: 0.7;
+}

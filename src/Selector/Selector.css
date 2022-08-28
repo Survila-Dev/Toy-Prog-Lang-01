@@ -1,0 +1,31 @@
+.selector {
+    width: 100%;
+    background-color:indianred
+}
+
+.selector {
+    z-index: 98;
+}
+
+.selectoroptions {
+    position: absolute;
+    width: 50%;
+}
+
+.optionarticle {
+    background-color: var(--main-bg-color);
+}
+
+.optionarticle:hover {
+    background-color: red;
+} 
+
+.selectorbutton {
+    display: flex;
+    justify-content: space-between;
+}
+
+.selectorbutton p {
+    padding: 0px;
+    margin: 0px;
+}

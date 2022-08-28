@@ -1,3 +1,5 @@
+import "./Output.css"
+
 import React from "react";
 
 function Output() {

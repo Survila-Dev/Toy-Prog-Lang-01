@@ -1,3 +1,5 @@
+import "./CallStack.css"
+
 import React from "react"
 
 function CallStack({

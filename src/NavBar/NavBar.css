@@ -1,0 +1,27 @@
+.navbar {
+    grid-area: navbar;
+    height: auto;
+    background-color: chartreuse;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+}
+
+
+.navbuttons {
+    height: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 50px;
+}
+
+.navbuttons p {
+    padding: 0px;
+    margin: 0px;
+}
+
+.titleandsubtitle p {
+    padding: 0px;
+    margin: 0px;
+}

@@ -1,0 +1,29 @@
+.lexenv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color:aqua;
+    padding: 10px;
+}
+
+.lexenvelement {
+    display: grid;
+    grid-template-columns: 80px 60px auto 25px;
+}
+
+.lexenvvariables {
+    overflow-y: auto;
+}
+
+.lexenvelement > * {
+    min-width: 0px;
+}
+  
+.lexenvaddnew {
+    display: grid;
+    grid-template-columns: 80px 60px auto 25px;
+}
+
+.lexenvaddnew > * {
+    min-width: 0px;
+}

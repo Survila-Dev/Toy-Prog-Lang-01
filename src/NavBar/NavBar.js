@@ -1,10 +1,19 @@
+import "./NavBar.css"
+
 import React from "react";
 
 function NavBar() {
     return (
         <div className = "navbar">
-            <h1>Toy programming language</h1>
-            <h1>Toy programming language</h1>
+            <div className = "titleandsubtitle">
+                <h1>Toy programming language</h1>
+                <p>Subtitle</p>
+            </div>
+            <div className = "navbuttons">
+                <p>Help</p>
+                <p>About</p>
+                <p>Contact</p>
+            </div>
         </div>
     )
 }

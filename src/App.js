@@ -8,6 +8,7 @@ import Editor from "./Editor/Editor"
 import Selector from "./Selector/Selector"
 import Output from "./Output/Output"
 import ControlPanel from './ControlPanel/ControlPanel';
+import PopUpMessage from "./PopUpMessage/PopUpMessage"
 
 function App() {
 
@@ -38,6 +39,8 @@ function App() {
     currentErrorLine: 3,
   }
 
+  const showPopUp = false;
+
   return (
     <div className="App">
         <NavBar/>
@@ -61,6 +64,8 @@ function App() {
           <ControlPanel/>
           <Output/>
         </div>
+
+        {showPopUp? <PopUpMessage/> : <></>}
     </div>
   );
 }

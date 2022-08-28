@@ -1,10 +1,16 @@
+:root {
+    --main-bg-color: brown;
+}
+
 body {
     margin: 0px;
 }
+
 h1 {
     padding: 0px;
     margin: 0px;
 }
+
 h2 {
     padding: 0px;
     margin: 0px;
@@ -12,10 +18,12 @@ h2 {
 
 
 .App {
+    box-sizing: border-box;
+    
     margin: 0px;
-    padding: 0px;
+    padding: 10px 40px;
 
-    height: 90vh;
+    height: 100vh;
     background-color:bisque;
 
     display: grid;
@@ -28,11 +36,6 @@ h2 {
 
 .App > * {
     min-height: 0px;
-}
-
-.navbar {
-    grid-area: navbar;
-    height: auto;
 }
 
 .leftside {
@@ -48,57 +51,6 @@ h2 {
     min-height: 0px;
 }
 
-
-.lexenv {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color:aqua;
-    padding: 10px;
-}
-
-.lexenvelement {
-    display: grid;
-    grid-template-columns: 80px 60px auto 25px;
-}
-
-.lexenvvariables {
-    overflow-y: auto;
-}
-
-.lexenvelement > * {
-    min-width: 0px;
-}
-  
-.lexenvaddnew {
-    display: grid;
-    grid-template-columns: 80px 60px auto 25px;
-}
-
-.lexenvaddnew > * {
-    min-width: 0px;
-}
-
-.callstack {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    gap: 10px;
-    padding: 10px 0px;
-
-    background-color:coral;
-
-    overflow-y: auto;
-}
-
-.callstackelement {
-    width: auto;
-    margin: 0px 10px;
-    padding: 10px;
-    text-align: center;
-    background-color: red;
-}
-
 .rightside {
     grid-area: rightside;
     height: auto;
@@ -110,47 +62,4 @@ h2 {
 
 .rightside > * {
     min-height: 0px;
-}
-
-select {
-    width: 100%;
-}
-
-.editor {
-    display: flex;
-    overflow-y: auto;
-    padding: 0px;
-}
-
-.linenumbers{
-    width: 50px;
-    font-family: Arial;
-    font-size: 15px;
-}
-
-textarea {
-    width: 100%;
-    resize: none;
-    font-family: Arial;
-    font-size: 15px;
-    padding: 0px;
-    margin: 0px;
-    height: auto;
-    line-height: 1.1em;
-   /* max-height: 1000000px; */
-}
-
-.controlpanel {
-    display: flex;
-    justify-content: space-between;
-    
-}
-
-.output {
-    display: flex;
-    overflow-y: auto;
-}
-
-.outputlinenumber {
-    width: 50px;   
 }

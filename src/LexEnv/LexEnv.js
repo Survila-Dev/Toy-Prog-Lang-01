@@ -1,10 +1,12 @@
-// import "./LexEnv.css";
+import "./LexEnv.css";
 
 import React from "react"
 
 function LexEnv({lexEnv, changeLexEnv}) {
 
     const [addNewEl, changeAddNewEl] = React.useState(["var0", "literal", "string"]);
+
+    const IDPREPEND = "lexenvinput"
 
     let lexEnvComponents = []
     const lexEnvKeys = Object.keys(lexEnv);
@@ -88,6 +90,45 @@ function LexEnv({lexEnv, changeLexEnv}) {
         })
 
     }
+
+
+
+    function handleArrowKeyDown(event) {
+
+        
+        function calcNewId(currentId, delta) {
+            let no = parseInt(currentId.substring(IDPREPEND.length, currentId.length))
+            no += delta;
+            if (no === -1) no = 0;
+            if (no === Object.keys(lexEnv).length) return "next";
+            
+            return (IDPREPEND + no)
+        }
+
+        if (event.key === "ArrowDown") {
+            const nextId = calcNewId(event.target.id, 1);
+            console.log(nextId);
+            if (nextId === "next") {
+                document.getElementsByClassName("addNewLexEnvEl")[0].select();
+            } else {
+                document.getElementById(nextId).select();
+            }
+
+        } else if (event.key === "ArrowUp") {
+            const nextId = calcNewId(event.target.id, -1);
+            document.getElementById(nextId).select();
+
+        }
+    }
+
+    function handleKeyPressDownAdd(event) {
+        if (event.key === "Enter") {
+            addNewLexEnvElement();
+        } else if (event.key === "ArrowUp") {
+            const idToUse = IDPREPEND + (Object.keys(lexEnv).length - 1)
+            document.getElementById(idToUse).select();
+        }
+    }
     
     for (let i = 0; i < lexEnvKeys.length; i++) {
 
@@ -101,10 +142,12 @@ function LexEnv({lexEnv, changeLexEnv}) {
                 </span>
                 <input
                     type = "text"
+                    id = {`lexenvinput${i}`}
                     className = "LexEnvElLiteral"
                     name = {lexEnvKeys[i]}
                     value={lexEnv[lexEnvKeys[i]][0]}
-                    onChange = {inputChanged}/>
+                    onChange = {inputChanged}
+                    onKeyDown = {handleArrowKeyDown}/>
                 <button
                     name = {lexEnvKeys[i]}
                     onClick = {deleteButton}
@@ -128,13 +171,17 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     className = "addNewLexEnvEl"
                     value = {addNewEl[0]}
                     onChange = {handleAddNewElNameChange}
+                    onKeyDown = {handleKeyPressDownAdd}
                 />
-                <div></div>
+                <div>
+                    {determineTheVarType(addNewEl[1])}
+                </div>
                 <input
                     type = "text"
                     className = "addNewLexEnvEl"
                     value = {addNewEl[1]}
                     onChange = {handleAddNewElLiteralChange}
+                    onKeyDown = {handleKeyPressDownAdd}
                 />
                 <button onClick = {addNewLexEnvElement}>+</button>
             </div>

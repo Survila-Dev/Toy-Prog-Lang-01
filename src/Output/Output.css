@@ -1,0 +1,8 @@
+.output {
+    display: flex;
+    overflow-y: auto;
+}
+
+.outputlinenumber {
+    width: 50px;   
+}

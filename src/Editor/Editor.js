@@ -1,3 +1,5 @@
+import "./Editor.css"
+
 import React from "react";
 
 const Editor = ({

@@ -1,0 +1,5 @@
+.controlpanel {
+    display: flex;
+    justify-content: space-between;
+    
+}
