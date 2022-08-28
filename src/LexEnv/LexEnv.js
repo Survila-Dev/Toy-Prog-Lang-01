@@ -1,3 +1,5 @@
+// import "./LexEnv.css";
+
 import React from "react"
 
 function LexEnv({lexEnv, changeLexEnv}) {
@@ -7,12 +9,6 @@ function LexEnv({lexEnv, changeLexEnv}) {
     let lexEnvComponents = []
     const lexEnvKeys = Object.keys(lexEnv);
     const lexEnvValues = [];
-
-    React.useEffect(()=>{
-
-
-
-    }, [lexEnv])
 
     function handleAddNewElNameChange(event) {
         const {value} = event.target;
@@ -28,26 +24,30 @@ function LexEnv({lexEnv, changeLexEnv}) {
         });
     }
 
-    function inputChanged(event) {
-        const {name, value} = event.target;
+    function determineTheVarType(varValue) {
 
-        // Determine the type
         let varType = "none"
-        if (value === "") {
+        if (varValue === "") {
             varType = "none"
-        } else if (value === "true" || value === "false") {
+        } else if (varValue === "true" || varValue === "false") {
             varType = "boolean"
-        } else if (!isNaN(value)) {
+        } else if (!isNaN(varValue)) {
             varType = "number"
         } else {
             varType = "string"
         }
+        return varType;
+    }
 
+    function inputChanged(event) {
+        const {name, value} = event.target;
+
+        const varType = determineTheVarType(value);
         changeLexEnv((prevState) => {
 
             return {
                 ...prevState,
-                [name]: [value, varType] // prevState[name][1]]
+                [name]: [value, varType]
             }
         })
     }
@@ -58,7 +58,7 @@ function LexEnv({lexEnv, changeLexEnv}) {
         changeLexEnv((prevState) => {
             return ({
                 ...prevState,
-                [varName]: addNewEl[1]
+                [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]
             })
         })
 
@@ -91,18 +91,8 @@ function LexEnv({lexEnv, changeLexEnv}) {
     
     for (let i = 0; i < lexEnvKeys.length; i++) {
 
-        // if (typeof lexEnv[lexEnvKeys[i]] === "boolean") {
-        //     if (lexEnv[lexEnvKeys[i]]) {
-        //         lexEnvValues.push("true");
-        //     } else {
-        //         lexEnvValues.push("false");
-        //     }
-        // } else {
-        //     lexEnvValues.push(lexEnv[lexEnvKeys[i]]);
-        // }
-
         lexEnvComponents.push(
-            <div className = "LexEnvElement" id = {i} key = {i}>
+            <div className = "lexenvelement" id = {i} key = {i}>
                 <span className = "LexEnvElName">
                     {lexEnvKeys[i]}
                 </span>
@@ -119,30 +109,37 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     name = {lexEnvKeys[i]}
                     onClick = {deleteButton}
                 >
-                    Delete
+                    x
                 </button>
             </div>
         )
     }
 
     return (
-        <div className = "LexEnv">
-            {lexEnvComponents}
-            <input
-                type = "text"
-                className = "addNewLexEnvEl"
-                value = {addNewEl[0]}
-                onChange = {handleAddNewElNameChange}
-            />
-            <input
-                type = "text"
-                className = "addNewLexEnvEl"
-                value = {addNewEl[1]}
-                onChange = {handleAddNewElLiteralChange}
-            />
-            <button onClick = {addNewLexEnvElement}>Add new element</button>
-            {JSON.stringify(addNewEl)}
+        <>
+        <h2>Execution Context</h2>
+        <div className = "lexenv">
+            <div className = "lexenvvariables">
+                {lexEnvComponents}
+            </div>
+            <div className = "lexenvaddnew">
+                <input
+                    type = "text"
+                    className = "addNewLexEnvEl"
+                    value = {addNewEl[0]}
+                    onChange = {handleAddNewElNameChange}
+                />
+                <div></div>
+                <input
+                    type = "text"
+                    className = "addNewLexEnvEl"
+                    value = {addNewEl[1]}
+                    onChange = {handleAddNewElLiteralChange}
+                />
+                <button onClick = {addNewLexEnvElement}>+</button>
+            </div>
         </div>
+        </>
     )
 }
 

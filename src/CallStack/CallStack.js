@@ -14,16 +14,14 @@ function CallStack({
 
     const callStackJSX = []
     for (let i = 0; i < callStack.length; i++) {
-        callStackJSX.unshift(
+        callStackJSX.push(
             <div
-                className = "CallStackElement"
+                className = "callstackelement"
                 key = {i}
                 id = {i}
                 onClick = {popStackElement}
             >
-                {callStack[i][0]}
-                {" "}
-                {callStack[i][1 ]}
+                {callStack[i][1]}
             </div>
         )
     }
@@ -44,14 +42,17 @@ function CallStack({
     }
 
     return (
-        <div
-            className = "CallStack"
-            onDrop = {handleDropOfLine}
-            onDragOver = {preventDefaultFunc}
-            onDragEnter = {preventDefaultFunc}
-        >
-            {callStackJSX}
-        </div>
+        <>
+        <h2>Call Stack</h2>
+            <div
+                className = "callstack"
+                onDrop = {handleDropOfLine}
+                onDragOver = {preventDefaultFunc}
+                onDragEnter = {preventDefaultFunc}
+            >
+                {callStackJSX}
+            </div>
+        </>
     );
 }
 

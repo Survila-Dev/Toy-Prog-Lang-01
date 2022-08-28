@@ -7,11 +7,33 @@ const Editor = ({
     changeLineDragContent
     }) => {
 
+    function resizeEditor() {
+        
+        const targetTextarea = document.querySelector("textarea");
+        const noOfLines = targetTextarea.value.split("\n").length;
+        const lineHeightText = window.getComputedStyle(targetTextarea, null)
+            .getPropertyValue('line-height');
+        const lineHeight = parseFloat(
+            lineHeightText.substring(0, lineHeightText.length - 2));
+
+        const EDITORPADDING = 5;
+
+        const editorElement = document.querySelector(".editor");
+        const editorElementHeight = editorElement.clientHeight - EDITORPADDING;
+
+        targetTextarea.style.height = `${Math.max(noOfLines * lineHeight, editorElementHeight)}px`;
+    }
+
+    React.useEffect(() => {
+        window.addEventListener("resize", resizeEditor)
+    }, [])
+
     const lineNumber = editorContent.split("\n").length;
     // const [lineNumber, changeLineNumber] = React.useState(1)
 
     function handleTextAreaChange(event) {
         changeEditorContent(event.target.value)
+        resizeEditor();
     }
 
     function handleDragStart(event) {
@@ -57,7 +79,7 @@ const Editor = ({
         } else {
             lineNumbersJSX.push(
                 <div
-                    className = "SingleLineNumber"
+                    className = "singlelinenumber"
                     key = {i}
                     id = {i}
                     draggable = "true"
@@ -71,16 +93,15 @@ const Editor = ({
 
 
     return (
-        <>
-            <div className ="LineNumbers">
+        <div className = "editor">
+            <div className ="linenumbers">
                 {lineNumbersJSX}
             </div>
             <textarea
                 defaultValue = {editorContent}
                 onChange = {handleTextAreaChange}>
             </textarea>
-            {lineNumber}
-        </>
+        </div>
     )
 }
 

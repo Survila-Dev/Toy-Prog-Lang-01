@@ -2,7 +2,10 @@ import React from "react";
 
 function NavBar() {
     return (
-        <h1>Toy programming language</h1>
+        <div className = "navbar">
+            <h1>Toy programming language</h1>
+            <h1>Toy programming language</h1>
+        </div>
     )
 }
 
