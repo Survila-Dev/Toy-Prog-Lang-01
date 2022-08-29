@@ -4,6 +4,7 @@
     --light-blue: #ADD8E6;
     --middle-blue: #4682B4;
     --dark-blue: #000080;
+    --darker-blue: hsl(240, 100%, 12%);
 
     --light-red: #FFA07A;
     --middle-red: #CD5C5C;
@@ -22,6 +23,7 @@
     --font-size-title: 28px;
     --font-size-large: 22px;
     --font-size-normal: 18px;
+    --font-size-small: 14px;
 
     --gap-between-global-grid: 15px;
     --leftside-padding: 10px;
@@ -29,6 +31,9 @@
     --h2-lower-padding: 10px;
     --element-border: 0.5px solid var(--grey-05);
     --lexenv-grid-template: 70px 70px auto 25px;
+
+    --line-number-padding: 0px 10px 0px 0px;
+    --line-number-width: 70px;
 
     --title-text-transform: uppercase;
     font-family: Arial;
@@ -58,11 +63,17 @@ h1 {
 
 h2 {
     font-size: var(--font-size-large);
-    padding: 0px 0px var(--h2-lower-padding) 0px;
+    padding: 0px 0px 0px 0px;
     margin: 0px;
     text-transform: var(--title-text-transform);
     color: var(--dark-blue);
 
+}
+
+.h2_sub {
+    margin: 0px;
+    padding: 0px 0px var(--h2-lower-padding) 0px;
+    font-size: var(--font-size-small);
 }
 
 .App {
@@ -90,7 +101,7 @@ h2 {
     padding: 10px 20px;
 
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 400px auto;
     grid-template-rows: 1fr;
     grid-template-areas:
         "leftside rightside";
@@ -132,4 +143,16 @@ h2 {
 
 .rightside > * {
     min-height: 0px;
+}
+
+.calltoaction {
+    background-color: var(--dark-blue);
+    color: white;
+    border-radius: 3px;
+    text-decoration: none;
+    border: 1px solid black;
+}
+
+.calltoaction:active {
+    background-color: var(--darker-blue);
 }

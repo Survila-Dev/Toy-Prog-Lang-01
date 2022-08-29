@@ -6,18 +6,24 @@
 }
 
 .linenumbers{
-    width: 50px;
-    font-size: var(--font-size-normal);
+    width: var(--line-number-width);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--grey-02);
+
     padding: 0px;
     margin: 0px;
-    background-color: var(--grey-02);
+    height: auto;
 }
 
 .singlelinenumber {
     padding: 0px;
     margin: 0px;
-    height: calc(var(--font-size-normal) * 1.1)
-
+    height: calc(var(--font-size-normal) * 1.1);
+    font-size: var(--font-size-normal);
+    background-color: var(--grey-02);
+    text-align: right;
+    padding: var(--line-number-padding);
 }
 
 textarea {
@@ -29,5 +35,31 @@ textarea {
     margin: 0px;
     height: auto;
     line-height: 1.1em;
+    border: none;
    /* max-height: 1000000px; */
+}
+
+textarea:focus {
+    width: 100%;
+    resize: none;
+    font-family: Arial;
+    font-size: var(--font-size-normal);
+    padding: 0px;
+    margin: 0px;
+    height: auto;
+    line-height: 1.1em;
+
+    outline: none;
+    outline-width: 0px;
+   /* max-height: 1000000px; */
+}
+
+.eval-line {
+    color: green;
+    background-color: lightgreen;
+}
+
+.error-line {
+    color: red;
+    background-color: var(--light-red);
 }

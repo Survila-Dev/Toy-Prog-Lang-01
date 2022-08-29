@@ -1,9 +1,8 @@
 .selector {
+    
     width: 100%;
     background-color: var(--grey-01);
-    text-transform: var(--title-text-transform);
     font-size: var(--font-size-large);
-    color: var(--dark-blue);
     border: var(--element-border);
 }
 
@@ -27,7 +26,14 @@
 .selectorbutton {
     display: flex;
     justify-content: space-between;
+    box-sizing: border-box;
+    padding: var(--leftside-padding);
 }
+
+.selectorbutton:hover {
+    background-color: var(--grey-03);
+}
+
 
 .selectorbutton p {
     padding: 0px;

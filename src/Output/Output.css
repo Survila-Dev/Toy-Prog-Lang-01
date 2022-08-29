@@ -1,11 +1,15 @@
 .output {
     display: grid;
-    grid-template-columns: 50px auto;
+    grid-template-columns: var(--line-number-width) auto;
     grid-template-rows: auto;
     overflow-y: auto;
     background-color: var(--grey-01);
     border: var(--element-border);
     
+}
+
+.output > * {
+    min-width: 0px;
 }
 
 .outputtext {
@@ -14,6 +18,9 @@
 }
 
 .outputlinenumber {
-    width: 50px;   
+    box-sizing: border-box;
+    width: var(--line-number-width);   
     background-color: var(--grey-02);
+    text-align: right;
+    padding: var(--line-number-padding);
 }

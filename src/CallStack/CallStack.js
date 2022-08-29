@@ -45,7 +45,10 @@ function CallStack({
 
     return (
         <div className = "callstackwithtitle">
-            <h2>Call Stack</h2>
+            <div>
+                <h2>Call Stack</h2>
+                <p class="h2_sub">Remove elements or add by dragging line number from editor</p>
+            </div>
             <div
                 className = "callstack"
                 onDrop = {handleDropOfLine}

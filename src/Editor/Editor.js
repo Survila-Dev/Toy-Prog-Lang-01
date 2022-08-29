@@ -18,7 +18,7 @@ const Editor = ({
         const lineHeight = parseFloat(
             lineHeightText.substring(0, lineHeightText.length - 2));
 
-        const EDITORPADDING = 5;
+        const EDITORPADDING = 0;
 
         const editorElement = document.querySelector(".editor");
         const editorElementHeight = editorElement.clientHeight - EDITORPADDING;
@@ -55,7 +55,7 @@ const Editor = ({
         if (i === lineMarking.currentEvalLine) {
             lineNumbersJSX.push(
                 <div
-                    className = {"EvalLine"}
+                    className = "eval-line singlelinenumber"
                     key = {i}
                     id = {i}
                     draggable = "true"
@@ -68,7 +68,7 @@ const Editor = ({
         } else if (i === lineMarking.currentErrorLine) {
             lineNumbersJSX.push(
                 <div
-                    className = {"ErrorLine"}
+                    className = "error-line singlelinenumber"
                     key = {i}
                     id = {i}
                     draggable = "true"

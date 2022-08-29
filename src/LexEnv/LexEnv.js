@@ -160,9 +160,11 @@ function LexEnv({lexEnv, changeLexEnv}) {
 
     return (
         <div className ="lexenvwithtitle">
-        <h2>Execution Context</h2>
+            <div>
+                <h2>Execution Context</h2>
+                <p class="h2_sub">Add, change and delete variables</p>
+            </div>
         <div className = "lexenv">
-            
             <div className = "lexencolnames">
                 <span className = "lexenvcolname">
                     Var.
@@ -195,8 +197,9 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     onChange = {handleAddNewElLiteralChange}
                     onKeyDown = {handleKeyPressDownAdd}
                 />
-                <button onClick = {addNewLexEnvElement}>+</button>
+                <button  className = "calltoaction" onClick = {addNewLexEnvElement}>+</button>
             </div>
+
         </div>
         </div>
     )

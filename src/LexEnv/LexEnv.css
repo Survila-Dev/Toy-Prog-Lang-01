@@ -12,9 +12,13 @@
 }
 
 .lexenv {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 4px;
+}
+
+.lexenv > * {
+    min-height: 0px;
 }
 
 .lexenvelement {
@@ -26,6 +30,9 @@
 
 .lexenvvariables {
     overflow-y: auto;
+    border: var(--element-border);
+    background-color: white;
+    padding: 0px 0px 0px 4px;
 }
 
 .lexenvelement > * {

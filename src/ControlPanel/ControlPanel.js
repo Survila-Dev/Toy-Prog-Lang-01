@@ -6,7 +6,7 @@ function ControlPanel() {
     return (
         <div className = "controlpanel">
             <div>
-                <button>RUN</button>
+                <button className = "calltoaction">RUN</button>
                 <button>RUN to Break Point</button>
                 <button>RUN One Line</button>
                 <button>Start at the Beginning</button>

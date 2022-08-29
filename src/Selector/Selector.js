@@ -21,7 +21,10 @@ function Selector() {
     function closeAllSelect(event) {
         const className = event.target.className;
 
-        if (showOptions && className !== "selectorbutton" && className !== "optionarticle") {
+        if (showOptions &&
+            className !== "selectorbutton" &&
+            className !== "optionarticle" &&
+            className !== "clickignore") {
             changeShowOptions(false)
         }
     }
@@ -56,8 +59,11 @@ function Selector() {
         <>
             <div className = "selector">
                 <div className = "selectorbutton" onClick = {handleSelectorClick}>
-                    <p>Selector</p>
-                    <p>V</p>
+                    <div className = "clickignore">
+                        <h2 className = "clickignore">Selector</h2>
+                        <p className = "h2_sub clickignore">Select pre-written code snippets</p>
+                    </div>
+                    <p className = "clickignore">V</p>
                 </div>
                 <div className = "selectoroptions">
                     {showOptions? options : <></>}
