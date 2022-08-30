@@ -1,11 +1,10 @@
 .output {
-    display: grid;
-    grid-template-columns: var(--line-number-width) auto;
-    grid-template-rows: auto;
+    display: flex;
     overflow-y: auto;
+    padding: 0px;
+    margin: 0px;
     background-color: var(--grey-01);
-    border: var(--element-border);
-    
+    border: var(--element-border);    
 }
 
 .output > * {
@@ -14,12 +13,14 @@
 
 .outputtext {
     width: auto;
-
+    padding: 0px 0px 0px 15px;
 }
 
 .outputlinenumber {
     box-sizing: border-box;
-    width: var(--line-number-width);   
+    padding: 0px;
+    margin: 0px;
+    width: calc(var(--line-number-width) - 5px);   
     background-color: var(--grey-02);
     text-align: right;
     padding: var(--line-number-padding);

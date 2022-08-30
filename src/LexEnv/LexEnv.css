@@ -7,6 +7,7 @@
     border: var(--element-border);
 }
 
+
 .lexenvwithtitle > * {
     min-height: 0px;
 }
@@ -16,6 +17,8 @@
     grid-template-rows: auto 1fr auto;
     gap: 4px;
 }
+
+
 
 .lexenv > * {
     min-height: 0px;
@@ -59,4 +62,24 @@
 
 .lexenvcolname {
     color: var(--grey-05);
+}
+
+.leftside__icon__plus {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    filter: invert(100%);
+}
+
+.leftside__icon__x {
+    
+    width: 1.1em;
+    height: 1.1em;
+    
+    vertical-align: middle;
+}
+
+.button_icon {
+    padding: 0px 0px 3px 0px;
+    margin: 0px;
 }

@@ -3,7 +3,7 @@
 
     --light-blue: #ADD8E6;
     --middle-blue: #4682B4;
-    --dark-blue: #000080;
+    --dark-blue: #696969; /* #000080 */
     --darker-blue: hsl(240, 100%, 12%);
 
     --light-red: #FFA07A;
@@ -16,6 +16,7 @@
     --grey-04: 	#A9A9A9;
     --grey-05: #808080;
     --grey-06: #696969;
+    --grey-07: #3c3c3c;
 
     --yellow: #F0E68C;
     --orange: #FFA500;
@@ -29,10 +30,11 @@
     --leftside-padding: 10px;
     --rightside-gap: 5px;
     --h2-lower-padding: 10px;
-    --element-border: 0.5px solid var(--grey-05);
+    --element-border: 0.1px solid var(--grey-03);
     --lexenv-grid-template: 70px 70px auto 25px;
 
     --line-number-padding: 0px 10px 0px 0px;
+    --line-number-padding-with-border: 0px 6px 0px 0px;
     --line-number-width: 70px;
 
     --title-text-transform: uppercase;
@@ -58,7 +60,7 @@ h1 {
     padding: 0px;
     margin: 0px;
     text-transform: var(--title-text-transform);
-    color: var(--dark-blue);
+    color: var(--grey-07);
 }
 
 h2 {
@@ -153,6 +155,28 @@ h2 {
     border: 1px solid black;
 }
 
-.calltoaction:active {
+button {
+    border-radius: 3px;
+    border: 1px solid grey;
+    background-color: var(--grey-01);
+}
+
+button:hover {
+    background-color: var(--grey-02);
+}
+
+button:active {
+    background-color: var(--grey-03);
+}
+
+img {
+    pointer-events: none;
+}
+
+.calltoaction:hover {
     background-color: var(--darker-blue);
+}
+
+.calltoaction:active {
+    background-color: black;
 }

@@ -17,7 +17,6 @@
 }
 
 .singlelinenumber {
-    padding: 0px;
     margin: 0px;
     height: calc(var(--font-size-normal) * 1.1);
     font-size: var(--font-size-normal);
@@ -57,9 +56,13 @@ textarea:focus {
 .eval-line {
     color: green;
     background-color: lightgreen;
+    border-right: 4px solid green;
+    padding: var(--line-number-padding-with-border);
 }
 
 .error-line {
     color: red;
     background-color: var(--light-red);
+    border-right: 4px solid red;
+    padding: var(--line-number-padding-with-border);
 }

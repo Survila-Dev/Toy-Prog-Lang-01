@@ -1,4 +1,5 @@
 import "./Selector.css"
+import dropdownIcon from "./1063883_arrow_arrow down_down_drop_stroke arrow_icon.svg"
 
 import React from "react";
 
@@ -51,7 +52,7 @@ function Selector() {
                 key = {i}
                 onClick = {handleOptionClick}
             >
-                {"Here some text "+i}
+                {"Here some text \n \n Text "+i}
             </article>
         )
     }
@@ -63,7 +64,9 @@ function Selector() {
                         <h2 className = "clickignore">Selector</h2>
                         <p className = "h2_sub clickignore">Select pre-written code snippets</p>
                     </div>
-                    <p className = "clickignore">V</p>
+                    <div className = "clickignore select__dropdown-symbol__div">
+                        <img className = "clickignore select__dropdown-symbol" src = {dropdownIcon} alt = "v"/>
+                    </div>
                 </div>
                 <div className = "selectoroptions">
                     {showOptions? options : <></>}

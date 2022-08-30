@@ -15,14 +15,6 @@
     width: 50%;
 }
 
-.optionarticle {
-    background-color: var(--main-bg-color);
-}
-
-.optionarticle:hover {
-    background-color: red;
-} 
-
 .selectorbutton {
     display: flex;
     justify-content: space-between;
@@ -34,8 +26,32 @@
     background-color: var(--grey-03);
 }
 
+.optionarticle {
+    background-color: var(--grey-01);
+    border: var(--element-border);
+}
+
+.optionarticle:hover {
+    background-color: var(--grey-03);
+}
 
 .selectorbutton p {
     padding: 0px;
     margin: 0px;
+}
+
+.select__dropdown-symbol__div {
+    display: flex;
+
+    width: 5ch;
+    height: auto;
+    border-radius: 1ch;
+
+    justify-content: center;
+    align-items: center;
+
+}
+
+.select__dropdown-symbol {
+    filter: invert(0%);
 }

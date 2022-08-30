@@ -51,6 +51,7 @@ const Editor = ({
     // currentErrorLine
 
     const lineNumbersJSX = []
+    const backgroundLinesJSX = []
     for (let i = 1; i <= lineNumber; i++) {
         if (i === lineMarking.currentEvalLine) {
             lineNumbersJSX.push(
@@ -65,6 +66,13 @@ const Editor = ({
                     {i}
                 </div>)
 
+            backgroundLinesJSX.push(
+                <div
+                    className = "editor__background-line_eval editor__background-line"
+                    id = {i} key = {i}
+                >{i}</div>
+                )
+
         } else if (i === lineMarking.currentErrorLine) {
             lineNumbersJSX.push(
                 <div
@@ -76,7 +84,14 @@ const Editor = ({
                     onDragEnd = {handleDragEnd}
                 >
                     {i}
+                    <span className = "editor__line_background"></span>
                 </div>)
+
+            backgroundLinesJSX.push(
+                <div
+                    className = "editor__background-line_error editor__background-line"
+                    id = {i} key = {i}
+                >{i}</div>)
 
         } else {
             lineNumbersJSX.push(
@@ -90,8 +105,15 @@ const Editor = ({
                 >
                     {i}
                 </div>)
+
+            backgroundLinesJSX.push(
+                <div
+                    className = "editor__background-line"
+                    id = {i} key = {i}
+                >{i}</div>)
         }
     }
+    console.log(backgroundLinesJSX.length)
 
 
     return (

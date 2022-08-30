@@ -1,4 +1,6 @@
 import "./LexEnv.css";
+import iconPlus from "./134224_add_plus_new_icon.svg";
+import iconX from "./8666595_x_icon.svg";
 
 import React from "react"
 
@@ -149,10 +151,12 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     onChange = {inputChanged}
                     onKeyDown = {handleArrowKeyDown}/>
                 <button
+                    className = "button_icon"
                     name = {lexEnvKeys[i]}
                     onClick = {deleteButton}
                 >
-                    x
+                    
+                    <img className = "leftside__icon__x" src={iconX} alt="x"/>
                 </button>
             </div>
         )
@@ -197,7 +201,15 @@ function LexEnv({lexEnv, changeLexEnv}) {
                     onChange = {handleAddNewElLiteralChange}
                     onKeyDown = {handleKeyPressDownAdd}
                 />
-                <button  className = "calltoaction" onClick = {addNewLexEnvElement}>+</button>
+                <button
+                    className = "calltoaction button_icon"
+                    onClick = {addNewLexEnvElement}
+                >
+                    <img
+                        className = "leftside__icon__plus"
+                        src={iconPlus}
+                        alt="+"/>
+                </button>
             </div>
 
         </div>
