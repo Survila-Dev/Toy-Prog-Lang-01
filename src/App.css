@@ -3,6 +3,7 @@
 
     --light-blue: #ADD8E6;
     --middle-blue: #4682B4;
+    --dark-blue-og: #3c3c96;
     --dark-blue: #696969; /* #000080 */
     --darker-blue: hsl(240, 100%, 12%);
 
@@ -148,7 +149,7 @@ h2 {
 }
 
 .calltoaction {
-    background-color: var(--dark-blue);
+    background-color: var(--dark-blue-og);
     color: white;
     border-radius: 3px;
     text-decoration: none;

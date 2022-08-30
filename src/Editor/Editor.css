@@ -54,9 +54,9 @@ textarea:focus {
 }
 
 .eval-line {
-    color: green;
-    background-color: lightgreen;
-    border-right: 4px solid green;
+    color: var(--dark-blue-og);
+    background-color: var(--light-blue);
+    border-right: 4px solid var(--dark-blue-og);
     padding: var(--line-number-padding-with-border);
 }
 
