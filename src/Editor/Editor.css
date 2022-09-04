@@ -35,6 +35,8 @@ textarea {
     height: auto;
     line-height: 1.1em;
     border: none;
+
+    overflow: hidden;
    /* max-height: 1000000px; */
 }
 
