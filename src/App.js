@@ -39,7 +39,9 @@ function App() {
     currentErrorLine: 3,
   })
 
-  function iterateAutomaticaly(event) {
+  const [inRun, changeInRun] = React.useState(false);
+
+  function handleRunAuto(event) {
 
     function returnPromise() {
       return new Promise((resolve, reject) => {
@@ -53,20 +55,35 @@ function App() {
       })
     }
 
+    changeInRun(true);
+
     const asyncRun = async() => {
-      await returnPromise();
-      await returnPromise();
-      await returnPromise();
-      await returnPromise();
+      for (let i = 0; i < 10; i++) {
+        if (inRun) {
+          await returnPromise();
+        }
+      }
     }
     asyncRun()
   }
 
-  function iterateCurrentEvalLineByOne(event) {
+  function handleRunStop(event) {
+    changeInRun(false);
+  }
+
+  function handleRunOneStep(event) {
     // Place holder for runing one step in FL
     changeLineMarking((prevValue) => {
       return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
     })
+  }
+
+  function handleRunToBreak(event) {
+
+  }
+
+  function handleJumpToCodeStart(event) {
+
   }
 
   const showPopUp = false;
@@ -94,8 +111,11 @@ function App() {
               changeLineDragContent = {changeLineDragContent} 
             />
             <ControlPanel
-              runOneLine = {iterateCurrentEvalLineByOne}
-              runAuto = {iterateAutomaticaly}
+              runOneStep = {handleRunOneStep}
+              runAuto = {handleRunAuto}
+              runToBreakPoint = {handleRunToBreak}
+              startAtCodeStart = {handleJumpToCodeStart}
+              stopRun = {handleRunStop}
             />
             <Output/>
           </div>
