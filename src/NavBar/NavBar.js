@@ -2,12 +2,12 @@ import "./NavBar.css"
 
 import React from "react";
 
-function NavBar() {
+function NavBar({runIn}) {
     return (
         <div className = "navbar">
             <div className = "titleandsubtitle">
                 <h1>Toy programming language</h1>
-                <p>Eimantas Survila 2022 ©</p>
+                <p>{runIn}</p>
             </div>
             <div className = "navbuttons">
                 <p>Help</p>

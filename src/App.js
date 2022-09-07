@@ -40,35 +40,21 @@ function App() {
   })
 
   const [inRun, changeInRun] = React.useState(false);
+  const [setInterObj, changeSetInterObj] = React.useState();
 
   function handleRunAuto(event) {
 
-    function returnPromise() {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Place holder for running the FL automatically
-          changeLineMarking((prevValue) => {
-            return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
-          })
-          resolve();
-        }, 1000)
-      })
-    }
+    changeSetInterObj(setInterval(() => {
+      
+      changeLineMarking((prevValue) => {
+          return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+        })
+    }, 1000))
 
-    changeInRun(true);
-
-    const asyncRun = async() => {
-      for (let i = 0; i < 10; i++) {
-        if (inRun) {
-          await returnPromise();
-        }
-      }
-    }
-    asyncRun()
   }
 
   function handleRunStop(event) {
-    changeInRun(false);
+    clearInterval(setInterObj);
   }
 
   function handleRunOneStep(event) {
@@ -90,7 +76,10 @@ function App() {
 
   return (
     <div className = "App">
-      <NavBar/>
+      <NavBar
+        runIn = {inRun ? "inRun: true" : "inRun: false"}
+      />
+      
       <div className="AppGrid">
         
           <div className = "leftside">
