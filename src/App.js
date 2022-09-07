@@ -42,13 +42,16 @@ function App() {
   const [inRun, changeInRun] = React.useState(false);
   const [setInterObj, changeSetInterObj] = React.useState();
 
+  // One React.useState for the whole FL data structure
+
   function handleRunAuto(event) {
+
+    changeInRun(true);
 
     let i = 0;
     const interObj = (setInterval(() => {
       
       const noOfLines = editorContent.split("\n").length;
-      // const noOfLines = 5;
       i++;
       console.log(lineMarking.currentEvalLine + i)
       console.log(noOfLines)
