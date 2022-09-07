@@ -44,13 +44,25 @@ function App() {
 
   function handleRunAuto(event) {
 
-    changeSetInterObj(setInterval(() => {
+    let i = 0;
+    const interObj = (setInterval(() => {
       
-      changeLineMarking((prevValue) => {
-          return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
-        })
-    }, 1000))
+      const noOfLines = editorContent.split("\n").length;
+      // const noOfLines = 5;
+      i++;
+      console.log(lineMarking.currentEvalLine + i)
+      console.log(noOfLines)
 
+      if (lineMarking.currentEvalLine + i === noOfLines) {
+        clearInterval(interObj);
+      }
+
+      changeLineMarking((prevValue) => {
+        return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+      })
+        
+    }, 500))
+    changeSetInterObj(interObj)
   }
 
   function handleRunStop(event) {
