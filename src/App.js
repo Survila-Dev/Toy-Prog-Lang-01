@@ -34,16 +34,67 @@ function App() {
     ["wrong line", "wrong code"]
   )
 
-  const lineMarking = {
+  const [lineMarking, changeLineMarking] = React.useState({
     currentEvalLine: 2,
     currentErrorLine: 3,
+  })
+
+  const [inRun, changeInRun] = React.useState(false);
+  const [setInterObj, changeSetInterObj] = React.useState();
+
+  // One React.useState for the whole FL data structure
+
+  function handleRunAuto(event) {
+
+    changeInRun(true);
+
+    let i = 0;
+    const interObj = (setInterval(() => {
+      
+      const noOfLines = editorContent.split("\n").length;
+      i++;
+      console.log(lineMarking.currentEvalLine + i)
+      console.log(noOfLines)
+
+      if (lineMarking.currentEvalLine + i === noOfLines) {
+        clearInterval(interObj);
+      }
+
+      changeLineMarking((prevValue) => {
+        return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+      })
+        
+    }, 500))
+    changeSetInterObj(interObj)
+  }
+
+  function handleRunStop(event) {
+    clearInterval(setInterObj);
+  }
+
+  function handleRunOneStep(event) {
+    // Place holder for runing one step in FL
+    changeLineMarking((prevValue) => {
+      return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+    })
+  }
+
+  function handleRunToBreak(event) {
+
+  }
+
+  function handleJumpToCodeStart(event) {
+
   }
 
   const showPopUp = false;
 
   return (
     <div className = "App">
-      <NavBar/>
+      <NavBar
+        runIn = {inRun ? "inRun: true" : "inRun: false"}
+      />
+      
       <div className="AppGrid">
         
           <div className = "leftside">
@@ -63,7 +114,13 @@ function App() {
               lineMarking = {lineMarking}
               changeLineDragContent = {changeLineDragContent} 
             />
-            <ControlPanel/>
+            <ControlPanel
+              runOneStep = {handleRunOneStep}
+              runAuto = {handleRunAuto}
+              runToBreakPoint = {handleRunToBreak}
+              startAtCodeStart = {handleJumpToCodeStart}
+              stopRun = {handleRunStop}
+            />
             <Output/>
           </div>
 

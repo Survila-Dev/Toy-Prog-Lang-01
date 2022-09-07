@@ -2,14 +2,15 @@ import "./ControlPanel.css"
 
 import React from "react";
 
-function ControlPanel() {
+function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, stopRun}) {
     return (
         <div className = "controlpanel">
             <div>
-                <button className = "calltoaction">RUN</button>
-                <button>RUN to Break Point</button>
-                <button>RUN One Line</button>
-                <button>Start at the Beginning</button>
+                <button className = "calltoaction" onClick = {runAuto}>RUN</button>
+                <button onClick = {runToBreakPoint}>RUN to Break Point</button>
+                <button onClick = {runOneStep}>RUN One Line</button>
+                <button onClick = {startAtCodeStart}>Start at the Beginning</button>
+                <button onClick = {stopRun}>STOP</button>
             </div>
             <div>
                 <button>Clear</button>
