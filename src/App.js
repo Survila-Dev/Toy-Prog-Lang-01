@@ -34,9 +34,39 @@ function App() {
     ["wrong line", "wrong code"]
   )
 
-  const lineMarking = {
+  const [lineMarking, changeLineMarking] = React.useState({
     currentEvalLine: 2,
     currentErrorLine: 3,
+  })
+
+  function iterateAutomaticaly(event) {
+
+    function returnPromise() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Place holder for running the FL automatically
+          changeLineMarking((prevValue) => {
+            return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+          })
+          resolve();
+        }, 1000)
+      })
+    }
+
+    const asyncRun = async() => {
+      await returnPromise();
+      await returnPromise();
+      await returnPromise();
+      await returnPromise();
+    }
+    asyncRun()
+  }
+
+  function iterateCurrentEvalLineByOne(event) {
+    // Place holder for runing one step in FL
+    changeLineMarking((prevValue) => {
+      return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+    })
   }
 
   const showPopUp = false;
@@ -63,7 +93,10 @@ function App() {
               lineMarking = {lineMarking}
               changeLineDragContent = {changeLineDragContent} 
             />
-            <ControlPanel/>
+            <ControlPanel
+              runOneLine = {iterateCurrentEvalLineByOne}
+              runAuto = {iterateAutomaticaly}
+            />
             <Output/>
           </div>
 

@@ -2,13 +2,13 @@ import "./ControlPanel.css"
 
 import React from "react";
 
-function ControlPanel() {
+function ControlPanel({runOneLine, runAuto}) {
     return (
         <div className = "controlpanel">
             <div>
-                <button className = "calltoaction">RUN</button>
+                <button className = "calltoaction" onClick = {runAuto}>RUN</button>
                 <button>RUN to Break Point</button>
-                <button>RUN One Line</button>
+                <button onClick = {runOneLine}>RUN One Line</button>
                 <button>Start at the Beginning</button>
             </div>
             <div>
