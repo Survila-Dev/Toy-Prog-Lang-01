@@ -84,7 +84,15 @@ var FLNodeExpression = /** @class */ (function (_super) {
                 }
                 break;
             case "+":
-                return [childrenRunResult.reduce(function (partialRes, a) { return partialRes + a; }), ""];
+                // make numbers add before string
+                return [childrenRunResult.reduce(function (partialRes, a) {
+                        if (!isNaN(partialRes) && !isNaN(a)) {
+                            return (parseFloat(partialRes) + parseFloat(a));
+                        }
+                        else {
+                            return partialRes + a;
+                        }
+                    }), ""];
                 break;
             case "-":
                 return [childrenRunResult.reduce(function (partialRes, a) { return partialRes - a; }), ""];
