@@ -18,6 +18,7 @@ function App() {
       "b": ["Eimantas", "string"],
       "c": [true, "boolean"]}
   )
+  
   const [editorContent, changeEditorContent] =
     React.useState("Hello first line \nSecond liner")
 
@@ -51,6 +52,7 @@ function App() {
     let i = 0;
     const interObj = (setInterval(() => {
       
+      let curLine = 0;
       const noOfLines = editorContent.split("\n").length;
       i++;
       console.log(lineMarking.currentEvalLine + i)
@@ -61,8 +63,12 @@ function App() {
       }
 
       changeLineMarking((prevValue) => {
+        curLine = prevValue.currentEvalLine;
+        console.log(`current line from status func: ` + curLine)
         return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
       })
+
+      
         
     }, 500))
     changeSetInterObj(interObj)
