@@ -4,7 +4,7 @@ import iconX from "./8666595_x_icon.svg";
 
 import React from "react"
 
-function LexEnv({lexEnv, changeLexEnv}) {
+function LexEnv({lexEnv, changeInterpretorState}) {
 
     const [addNewEl, changeAddNewEl] = React.useState(["var0", "literal", "string"]);
 
@@ -47,23 +47,41 @@ function LexEnv({lexEnv, changeLexEnv}) {
         const {name, value} = event.target;
 
         const varType = determineTheVarType(value);
-        changeLexEnv((prevState) => {
 
+        // changeLexEnv((prevState) => {
+
+        //     return {
+        //         ...prevState,
+        //         [name]: [value, varType]
+        //     }
+        // })
+        changeInterpretorState((prevState) => {
+            const newLexEnv = {...prevState.globalLexEnv};
             return {
                 ...prevState,
-                [name]: [value, varType]
-            }
+                globalLexEnv: {
+                    ...newLexEnv,
+                    [name]: [value, varType]}}
         })
     }
 
     function addNewLexEnvElement(event) {
 
         const varName = addNewEl[0];
-        changeLexEnv((prevState) => {
-            return ({
+
+        // changeLexEnv((prevState) => {
+        //     return ({
+        //         ...prevState,
+        //         [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]
+        //     })
+        // })
+        changeInterpretorState((prevState) => {
+            const newLexEnv = {...prevState.globalLexEnv};
+            return {
                 ...prevState,
-                [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]
-            })
+                globalLexEnv: {
+                    ...newLexEnv,
+                    [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]}}
         })
 
         // Check what variable name the input for new element should have
@@ -85,11 +103,18 @@ function LexEnv({lexEnv, changeLexEnv}) {
     function deleteButton(event) {
         const {name} = event.target;
 
-        changeLexEnv((prevState) => {
-            const newState = prevState;
-            delete newState[name];
-            return ({...newState});
-        })
+        // changeLexEnv((prevState) => {
+        //     const newState = prevState;
+        //     delete newState[name];
+        //     return ({...newState});
+        // })
+        changeInterpretorState((prevState) => {
+            const newLexEnv = {...prevState.globalLexEnv};
+            delete newLexEnv[name];
+            return {
+                ...prevState,
+                globalLexEnv: {...newLexEnv}
+        }})
 
     }
 

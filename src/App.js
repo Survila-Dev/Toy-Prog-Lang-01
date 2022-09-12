@@ -12,33 +12,52 @@ import PopUpMessage from "./PopUpMessage/PopUpMessage"
 
 function App() {
 
-  const [globalLexEnv, changeGlobalLexEnv] = React.useState(
-    {
-      "a": [6, "number"],
-      "b": ["Eimantas", "string"],
-      "c": [true, "boolean"]}
+  // Refactor the state variable to one: globalLexEnv, globalStack, lineMarking
+
+  const [interpretorState, changeInterpretorState] = React.useState({
+    globalLexEnv: {
+        "a": [6, "number"],
+        "b": ["Eimantas", "string"],
+        "c": [true, "boolean"]},
+    globalStack: [
+        ["name1", "code1"],
+        ["name2", "code2"],
+        ["name3", "code3"],
+        ["name4", "code4"],
+    ],
+    lineMarking: {
+        currentEvalLine: 2,
+        currentErrorLine: 3,
+    }}
   )
+
+  // const [globalLexEnv, changeGlobalLexEnv] = React.useState(
+  //   {
+  //     "a": [6, "number"],
+  //     "b": ["Eimantas", "string"],
+  //     "c": [true, "boolean"]}
+  // )
   
   const [editorContent, changeEditorContent] =
     React.useState("Hello first line \nSecond liner")
 
-  const [globalStack, changeGlobalStack] = React.useState(
-    [
-      ["name1", "code1"],
-      ["name2", "code2"],
-      ["name3", "code3"],
-      ["name4", "code4"],
-    ]
-  )
+  // const [globalStack, changeGlobalStack] = React.useState(
+  //   [
+  //     ["name1", "code1"],
+  //     ["name2", "code2"],
+  //     ["name3", "code3"],
+  //     ["name4", "code4"],
+  //   ]
+  // )
 
   const [lineDragContent, changeLineDragContent] = React.useState(
     ["wrong line", "wrong code"]
   )
 
-  const [lineMarking, changeLineMarking] = React.useState({
-    currentEvalLine: 2,
-    currentErrorLine: 3,
-  })
+  // const [lineMarking, changeLineMarking] = React.useState({
+  //   currentEvalLine: 2,
+  //   currentErrorLine: 3,
+  // })
 
   const [inRun, changeInRun] = React.useState(false);
   const [setInterObj, changeSetInterObj] = React.useState();
@@ -55,18 +74,26 @@ function App() {
       let curLine = 0;
       const noOfLines = editorContent.split("\n").length;
       i++;
-      console.log(lineMarking.currentEvalLine + i)
+      console.log(interpretorState.lineMarking.currentEvalLine + i)
       console.log(noOfLines)
 
-      if (lineMarking.currentEvalLine + i === noOfLines) {
+      if (interpretorState.lineMarking.currentEvalLine + i === noOfLines) {
         clearInterval(interObj);
       }
 
-      changeLineMarking((prevValue) => {
-        curLine = prevValue.currentEvalLine;
+      // changeLineMarking((prevValue) => {
+      //   curLine = prevValue.currentEvalLine;
+      //   console.log(`current line from status func: ` + curLine)
+      //   return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+      // })
+      changeInterpretorState((prevState) => {
+        curLine = prevState.lineMarking.currentEvalLine;
         console.log(`current line from status func: ` + curLine)
-        return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
-      })
+
+        return {
+          ...prevState,
+          lineMarking: {...prevState.lineMarking, currentEvalLine: prevState.lineMarking.currentEvalLine + 1}
+      }})
 
       
         
@@ -80,9 +107,15 @@ function App() {
 
   function handleRunOneStep(event) {
     // Place holder for runing one step in FL
-    changeLineMarking((prevValue) => {
-      return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
-    })
+
+    // changeLineMarking((prevValue) => {
+    //   return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
+    // })
+    changeInterpretorState((prevState) => {
+      return {
+        ...prevState,
+        lineMarking: {...prevState.lineMarking, currentEvalLine: prevState.lineMarking.currentEvalLine + 1}
+    }})
   }
 
   function handleRunToBreak(event) {
@@ -104,10 +137,10 @@ function App() {
       <div className="AppGrid">
         
           <div className = "leftside">
-            <LexEnv lexEnv = {globalLexEnv} changeLexEnv = {changeGlobalLexEnv}/>
+            <LexEnv lexEnv = {interpretorState.globalLexEnv} changeInterpretorState = {changeInterpretorState}/>
             <CallStack
-              callStack = {globalStack}
-              changeCallStack = {changeGlobalStack}
+              callStack = {interpretorState.globalStack}
+              changeInterpretorState = {changeInterpretorState}
               lineDragContent = {lineDragContent}
               changeLineDragContent = {changeLineDragContent}  
             />
@@ -117,7 +150,7 @@ function App() {
             <Editor
               editorContent = {editorContent}
               changeEditorContent = {changeEditorContent}
-              lineMarking = {lineMarking}
+              lineMarking = {interpretorState.lineMarking}
               changeLineDragContent = {changeLineDragContent} 
             />
             <ControlPanel
