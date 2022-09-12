@@ -2,7 +2,7 @@ import "./ControlPanel.css"
 
 import React from "react";
 
-function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, stopRun}) {
+function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, stopRun, handleClear}) {
     return (
         <div className = "controlpanel">
             <div>
@@ -13,7 +13,7 @@ function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, s
                 <button onClick = {stopRun}>STOP</button>
             </div>
             <div>
-                <button>Clear</button>
+                <button onClick = {handleClear}>Clear</button>
             </div>
         </div>
     )

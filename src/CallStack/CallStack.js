@@ -3,14 +3,20 @@ import "./CallStack.css"
 import React from "react"
 
 function CallStack({
-    callStack, changeCallStack, lineDragContent, changeLineDragContent}) {
+    callStack, changeCallStack, lineDragContent, changeInterpretorState}) {
 
     function popStackElement(event) {
         const {id} = event.target;
-        changeCallStack((prevStack) => {
-            const newStack = [...prevStack]
+
+        // changeCallStack((prevStack) => {
+        //     const newStack = [...prevStack]
+        //     newStack.splice(id, 1);
+        //     return newStack;
+        // })
+        changeInterpretorState((prevState) => {
+            const newStack = [...prevState.globalStack];
             newStack.splice(id, 1);
-            return newStack;
+            return {...prevState, globalStack: newStack}
         })
     }
 
@@ -31,11 +37,16 @@ function CallStack({
     function handleDropOfLine(event) {
 
         console.log("Just fired on drop")
-
-        changeCallStack((prevStack) => {
-            const newStack = [...prevStack];
+        // Here
+        // changeCallStack((prevStack) => {
+        //     const newStack = [...prevStack];
+        //     newStack.push(lineDragContent);
+        //     return newStack;
+        // })
+        changeInterpretorState((prevState) => {
+            const newStack = [...prevState.globalStack];
             newStack.push(lineDragContent);
-            return newStack;
+            return {...prevState, globalStack: newStack}
         })
     }
 

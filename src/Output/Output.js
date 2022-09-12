@@ -2,24 +2,28 @@ import "./Output.css"
 
 import React from "react";
 
-function Output() {
+function Output({outputList}) {
+
+    console.log(outputList[0])
+
+    // Generate the list of divs for numbers
+    const lineNoJSX = [];
+
+    // Generate the list of divs for output text
+    const outputTextJSX = [];
+
+    for (let i = 0; i < outputList.length; i++) {
+        lineNoJSX.push(<div>{i + 1}</div>)
+        outputTextJSX.push(<div>{outputList[i]}</div>)
+    }
+
     return (
         <div className = "output">
             <div className = "outputlinenumber">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
-                <div>6</div>
+                {lineNoJSX}
             </div>
             <div className = "outputtext">
-                <div>Output text here 1</div>
-                <div>Output text here 2</div>
-                <div>Output text here 3</div>
-                <div>Output text here 4</div>
-                <div>Output text here 5</div>
-                <div>Output text here 6</div>
+                {outputTextJSX}
             </div>
         </div>
     )
