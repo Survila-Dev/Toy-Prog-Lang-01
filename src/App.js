@@ -36,13 +36,16 @@ function App() {
     let outStack;
     let curConsOut;
 
+    try {
     // Input the data to the "code"
     if (interpretorState.nominalStackSize === interpretorState.globalStack.length) {
       const curCode = interpretorState.currentCode;
+      
       curCode.runOneStep(
         interpretorState.lineMarking.currentEvalLine,
         altTempLexEnv,
         altTempStack)
+      
       curConsOut = curCode.currentOutput;
       outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
       outStack = JSON.parse(JSON.stringify(curCode.callStack));
@@ -74,7 +77,19 @@ function App() {
         })
       }
 
-      console.log("Here pop of stack")
+
+    }} catch (error) {
+
+      // Error handling here
+
+      if (error === "no_variable_error") {
+        // Stop automatic running, if it is on
+
+        // Mark the line as error
+
+        // Log to the console
+
+      }
     }
 
     

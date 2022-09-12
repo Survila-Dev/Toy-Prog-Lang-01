@@ -108,7 +108,12 @@ export class FLNodeExpression extends flSuperModule.FLNode {
                 if (parseFloat(this.text)) {
                     return [parseFloat(this.text), ""];
                 } else {
-                    return [scopeEnvironment[this.text], ""]
+                    // Check if it there is a value and if not throw error
+                    if (this.text in scopeEnvironment) {
+                        return [scopeEnvironment[this.text], ""]
+                    } else {
+                        throw "no_variable_error"
+                    }
                 }
                 break;
             case "+":
