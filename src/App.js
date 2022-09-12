@@ -10,25 +10,91 @@ import Output from "./Output/Output"
 import ControlPanel from './ControlPanel/ControlPanel';
 import PopUpMessage from "./PopUpMessage/PopUpMessage"
 
+import { FLCode } from "./FuncLang/dist/FLCode"
 function App() {
 
   // Refactor the state variable to one: globalLexEnv, globalStack, lineMarking
+  const [testState, updateTestState] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log("useEffect fired!")
+
+    // Prepare the input data which is deep copy of the state
+    const prevStateCopy = JSON.parse(JSON.stringify(interpretorState));
+    const altTempLexEnv = {}
+    Object.keys(prevStateCopy.globalLexEnv).forEach((key) => {
+      altTempLexEnv[key] = prevStateCopy.globalLexEnv[key][0]
+    })
+    const altTempStack = []
+    prevStateCopy.globalStack.forEach((el) => {
+      altTempStack.push(el[1])
+    })
+
+    
+    // Input the data to the "code"
+    const curCode = interpretorState.currentCode;
+    curCode.runOneStep(
+      interpretorState.lineMarking.currentEvalLine,
+      altTempLexEnv,
+      altTempStack)
+
+    // Prepare the data to be output as state (also deep copy)
+    const outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
+    const outStack = JSON.parse(JSON.stringify(curCode.callStack));
+
+    // Adapt global lexenv and callstack for front end
+    let lexEnvForView = {};
+    Object.keys(outLexEnv).forEach((key) => {
+      lexEnvForView[key] = [outLexEnv[key], determineTheVarType(outLexEnv[key])]
+    })
+
+    let callStackForView = [];
+    outStack.forEach((element) => {
+      callStackForView.push(["", element])
+    })
+
+    console.log("=================================")
+    console.log("PrevState Deep Copy")
+    console.log(prevStateCopy)
+    console.log("LEXENV:")
+    console.log(interpretorState.globalLexEnv)
+    console.log(altTempLexEnv)
+    console.log(outLexEnv)
+    console.log(lexEnvForView)
+    console.log("STACK:")
+    console.log(interpretorState.globalStack)
+    console.log(altTempStack)
+    console.log(outStack)
+    console.log(callStackForView)
+
+    changeInterpretorState(
+      {
+        globalLexEnv: lexEnvForView,
+        globalStack: callStackForView,
+        lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: null},
+        currentCode: interpretorState.currentCode})
+    
+  }, [testState])
 
   const [interpretorState, changeInterpretorState] = React.useState({
-    globalLexEnv: {
-        "a": [6, "number"],
-        "b": ["Eimantas", "string"],
-        "c": [true, "boolean"]},
-    globalStack: [
-        ["name1", "code1"],
-        ["name2", "code2"],
-        ["name3", "code3"],
-        ["name4", "code4"],
-    ],
+    globalLexEnv: {},
+        // "a": [6, "number"],
+        // "b": ["Eimantas", "string"],
+        // "c": [true, "boolean"]},
+    globalStack: [],
+    //     ["name1", "code1"],
+    //     ["name2", "code2"],
+    //     ["name3", "code3"],
+    //     ["name4", "code4"],
+    // ],
     lineMarking: {
-        currentEvalLine: 2,
-        currentErrorLine: 3,
-    }}
+        currentEvalLine: null,
+        currentErrorLine: null,
+    },
+    currentCode: new FLCode(
+      "Ei = 6;\nTu = 12;\nc = Ei-Ka;",
+      1000
+    )}
   )
 
   // const [globalLexEnv, changeGlobalLexEnv] = React.useState(
@@ -37,9 +103,18 @@ function App() {
   //     "b": ["Eimantas", "string"],
   //     "c": [true, "boolean"]}
   // )
+  // const curCode = new FLCode(
+  //   "a = 6;\nb = 12;\nPRINT(b);\nc = a+b;\nPRINT(c*c+b);",
+  //   1000
+  // );
+  // const [currentCode, changeCurrentCode] = React.useState(new FLCode(
+  //   "Ei = 6;\nTu = 12;\nc = Ei+Tu;",
+  //   1000
+  // ))
+  
   
   const [editorContent, changeEditorContent] =
-    React.useState("Hello first line \nSecond liner")
+    React.useState(interpretorState.currentCode.internalText);
 
   // const [globalStack, changeGlobalStack] = React.useState(
   //   [
@@ -105,17 +180,80 @@ function App() {
     clearInterval(setInterObj);
   }
 
-  function handleRunOneStep(event) {
-    // Place holder for runing one step in FL
+  function determineTheVarType(varValue) {
 
-    // changeLineMarking((prevValue) => {
-    //   return ({...prevValue, currentEvalLine: prevValue.currentEvalLine + 1})
-    // })
+    let varType = "none"
+    if (varValue === "") {
+        varType = "none"
+    } else if (varValue === "true" || varValue === "false") {
+        varType = "boolean"
+    } else if (!isNaN(varValue)) {
+        varType = "number"
+    } else {
+        varType = "string"
+    }
+    return varType;
+  }
+
+  function handleRunOneStep(event) {
+    
+    console.log("CLICKED!")
     changeInterpretorState((prevState) => {
-      return {
+
+      // Prepare the input data which is deep copy of the state
+      const prevStateCopy = JSON.parse(JSON.stringify(prevState));
+      const altTempLexEnv = {}
+      Object.keys(prevStateCopy.globalLexEnv).forEach((key) => {
+        altTempLexEnv[key] = prevStateCopy.globalLexEnv[key][0]
+      })
+      const altTempStack = []
+      prevStateCopy.globalStack.forEach((el) => {
+        altTempStack.push(el[1])
+      })
+
+      
+      // Input the data to the "code"
+      prevState.currentCode.runOneStep(
+        prevState.lineMarking.currentEvalLine,
+        altTempLexEnv,
+        altTempStack)
+
+      // Prepare the data to be output as state (also deep copy)
+      const outLexEnv = JSON.parse(JSON.stringify(prevState.currentCode.executionContext));
+      const outStack = JSON.parse(JSON.stringify(prevState.currentCode.callStack));
+
+      // Adapt global lexenv and callstack for front end
+      let lexEnvForView = {};
+      Object.keys(outLexEnv).forEach((key) => {
+        lexEnvForView[key] = [outLexEnv[key], determineTheVarType(outLexEnv[key])]
+      })
+
+      let callStackForView = [];
+      outStack.forEach((element) => {
+        callStackForView.push(["", element])
+      })
+
+      console.log("=================================")
+      console.log("PrevState Deep Copy")
+      console.log(prevStateCopy)
+      console.log("LEXENV:")
+      console.log(prevState.globalLexEnv)
+      console.log(altTempLexEnv)
+      console.log(outLexEnv)
+      console.log(lexEnvForView)
+      console.log("STACK:")
+      console.log(prevState.globalStack)
+      console.log(altTempStack)
+      console.log(outStack)
+      console.log(callStackForView)
+
+      return ({
         ...prevState,
-        lineMarking: {...prevState.lineMarking, currentEvalLine: prevState.lineMarking.currentEvalLine + 1}
-    }})
+        globalLexEnv: lexEnvForView,
+        globalStack: callStackForView,
+        lineMarking: {currentEvalLine: prevState.currentCode.currentLine, currentErrorLine: null},
+        currentCode: prevState.currentCode
+    })})
   }
 
   function handleRunToBreak(event) {
@@ -124,6 +262,10 @@ function App() {
 
   function handleJumpToCodeStart(event) {
 
+  }
+
+  function handleClear(event) {
+    updateTestState((prev) => !prev);
   }
 
   const showPopUp = false;
@@ -159,6 +301,7 @@ function App() {
               runToBreakPoint = {handleRunToBreak}
               startAtCodeStart = {handleJumpToCodeStart}
               stopRun = {handleRunStop}
+              handleClear = {handleClear}
             />
             <Output/>
           </div>
