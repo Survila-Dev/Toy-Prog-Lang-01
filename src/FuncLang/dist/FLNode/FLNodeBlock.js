@@ -73,10 +73,21 @@ var FLNodeBlock = /** @class */ (function (_super) {
         };
     };
     FLNodeBlock.prototype.run = function (scopeEnvironment) {
+        var _a;
+        var consOut;
+        var singleConsOut;
+        consOut = [];
         for (var i = 0; i < this.children.length; i++) {
-            this.children[i].run(scopeEnvironment);
+            _a = this.children[i].run(scopeEnvironment), singleConsOut = _a[1];
+            if (singleConsOut) {
+                consOut.push(singleConsOut);
+            }
         }
-        return [, ""];
+        if (consOut.length > 0) {
+            console.log(consOut);
+            return ([null, consOut]);
+        }
+        return ([null, null]);
     };
     FLNodeBlock.syntaxSymbols = {
         lineBreak: ";"

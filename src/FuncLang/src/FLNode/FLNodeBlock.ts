@@ -93,11 +93,22 @@ export class FLNodeBlock extends flSuperModule.FLNode {
                 output: null}
         }  
 
-    run(scopeEnvironment: object): [unknown, string] {
+    run(scopeEnvironment: object): [unknown, string[] | null] {
 
+        let consOut: string[];
+        let singleConsOut: string | null;
+        consOut = [];
         for (let i = 0; i < this.children.length; i++) {
-            this.children[i].run(scopeEnvironment);
+            [, singleConsOut] = this.children[i].run(scopeEnvironment);
+            if (singleConsOut) {
+                consOut.push(singleConsOut)
+            }
         }
-        return [,""];
+
+        if (consOut.length > 0) {
+            console.log(consOut);
+            return ([null, consOut]);
+        }
+        return ([null, null]);
     }
 }

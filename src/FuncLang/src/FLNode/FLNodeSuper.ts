@@ -74,7 +74,7 @@ export class FLNode implements FLNodeInterface {
         return []
     };
 
-    run(scopeEnvironment: unknown[]): [unknown, string] {
+    run(scopeEnvironment: unknown[]): [unknown, string | string[]] {
         // Run the FLNode depending on type
         return ["",""];
     };

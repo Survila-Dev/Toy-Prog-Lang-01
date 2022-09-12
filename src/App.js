@@ -11,9 +11,12 @@ import ControlPanel from './ControlPanel/ControlPanel';
 import PopUpMessage from "./PopUpMessage/PopUpMessage"
 
 import { FLCode } from "./FuncLang/dist/FLCode"
+import { FLNodeBlock } from "./FuncLang/dist/FLNode/FLNodeBlock"
+
 function App() {
 
   const [triggerForEval, flipTriggerForEval] = React.useState(false);
+  const [outConsList, updateOutConsList] = React.useState(["First line", "Second line"])
 
   React.useEffect(() => {
 
@@ -29,16 +32,57 @@ function App() {
       altTempStack.push(el[1])
     })
 
+    let outLexEnv;
+    let outStack;
+    let curConsOut;
+
     // Input the data to the "code"
-    const curCode = interpretorState.currentCode;
-    curCode.runOneStep(
-      interpretorState.lineMarking.currentEvalLine,
-      altTempLexEnv,
-      altTempStack)
+    if (interpretorState.nominalStackSize === interpretorState.globalStack.length) {
+      const curCode = interpretorState.currentCode;
+      curCode.runOneStep(
+        interpretorState.lineMarking.currentEvalLine,
+        altTempLexEnv,
+        altTempStack)
+      curConsOut = curCode.currentOutput;
+      outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
+      outStack = JSON.parse(JSON.stringify(curCode.callStack));
+
+      if (curConsOut) {
+        updateOutConsList((prevValue) => {
+          return [...prevValue, curConsOut]
+        })
+      }
+
+    } else {
+      // Create block element and execute
+      const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
+      curConsOut = tempNode.run(altTempLexEnv);
+      
+      altTempStack.pop()
+      outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
+      outStack = JSON.parse(JSON.stringify(altTempStack));
+
+      if (curConsOut.length !== 0) {
+        updateOutConsList((prevValue) => {
+          console.log("Console output length")
+          // console.log(prevValue)
+          // const outputArray = [];
+          // outputArray = outputArray.concat(prevValue);
+          // outputArray = outputArray.concat(curConsOut);
+          console.log([...prevValue, ...curConsOut[1]]);
+          return [...prevValue, ...curConsOut[1]];
+        })
+      }
+
+      console.log("Here pop of stack")
+    }
+
+    
 
     // Prepare the data to be output as state (also deep copy)
-    const outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
-    const outStack = JSON.parse(JSON.stringify(curCode.callStack));
+    
+    
+    console.log(interpretorState.nominalStackSize);
 
     let lexEnvForView = {};
     Object.keys(outLexEnv).forEach((key) => {
@@ -69,7 +113,8 @@ function App() {
         globalLexEnv: lexEnvForView,
         globalStack: callStackForView,
         lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: null},
-        currentCode: interpretorState.currentCode})
+        currentCode: interpretorState.currentCode,
+        nominalStackSize: interpretorState.nominalStackSize + (outStack.length - altTempStack.length)})
     
   }, [triggerForEval])
 
@@ -87,9 +132,10 @@ function App() {
         currentErrorLine: null,
     },
     currentCode: new FLCode(
-      "Ei = 6;\nTu = 12;\nc = Ei+Ka;",
+      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ka;",
       1000
-    )}
+    ),
+    nominalStackSize: 0}
   )
   
   const [editorContent, changeEditorContent] =
@@ -143,7 +189,7 @@ function App() {
   }
 
   function handleClear(event) {
-    
+    updateOutConsList([])
   }
 
   const showPopUp = false;
@@ -179,7 +225,8 @@ function App() {
               stopRun = {handleRunStop}
               handleClear = {handleClear}
             />
-            <Output/>
+            <Output
+              outputList = {outConsList}/>
           </div>
 
           
