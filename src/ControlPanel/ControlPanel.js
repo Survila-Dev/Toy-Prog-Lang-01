@@ -7,10 +7,10 @@ function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, s
         <div className = "controlpanel">
             <div>
                 <button className = "calltoaction" onClick = {runAuto}>RUN</button>
-                <button onClick = {runToBreakPoint}>RUN to Break Point</button>
+                <button onClick = {stopRun}>STOP</button>
                 <button onClick = {runOneStep}>RUN One Line</button>
                 <button onClick = {startAtCodeStart}>Start at the Beginning</button>
-                <button onClick = {stopRun}>STOP</button>
+                
             </div>
             <div>
                 <button onClick = {handleClear}>Clear</button>

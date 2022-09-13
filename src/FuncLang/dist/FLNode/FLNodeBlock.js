@@ -41,12 +41,16 @@ var FLNodeBlock = /** @class */ (function (_super) {
         ];
         var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, FLNodeBlock.syntaxSymbols.lineBreak, allTagsForBlock);
         this.childrenTextPublic = childrenText;
+        var noOfLineBreaks = 0;
         var children = childrenText.map(function (childText, i) {
+            if (childText.includes("\n")) {
+                noOfLineBreaks += childText.split("\n").length - 1;
+            }
             if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
-                return new flNodeAssignment.FLNodeAssignment(flSuperModule.FLNodeTypeEnum.VariableAssignment, childText, i + 1);
+                return new flNodeAssignment.FLNodeAssignment(flSuperModule.FLNodeTypeEnum.VariableAssignment, childText, noOfLineBreaks + 1);
             }
             else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
-                return new flNodePrint.FLNodePrint(flSuperModule.FLNodeTypeEnum.Print, childText, i + 1);
+                return new flNodePrint.FLNodePrint(flSuperModule.FLNodeTypeEnum.Print, childText, noOfLineBreaks + 1);
             }
         });
         children.pop();

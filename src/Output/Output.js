@@ -2,7 +2,7 @@ import "./Output.css"
 
 import React from "react";
 
-function Output({outputList}) {
+function Output({outputList, errorsInList}) {
 
     console.log(outputList[0])
 
@@ -13,8 +13,13 @@ function Output({outputList}) {
     const outputTextJSX = [];
 
     for (let i = 0; i < outputList.length; i++) {
-        lineNoJSX.push(<div>{i + 1}</div>)
-        outputTextJSX.push(<div>{outputList[i]}</div>)
+        if (errorsInList[i]) {
+            lineNoJSX.push(<div className = "output__line_error">{i + 1}</div>)
+            outputTextJSX.push(<div className = "output__line_error">{outputList[i]}</div>)
+        } else {
+            lineNoJSX.push(<div>{i + 1}</div>)
+            outputTextJSX.push(<div>{outputList[i]}</div>)
+        } 
     }
 
     return (

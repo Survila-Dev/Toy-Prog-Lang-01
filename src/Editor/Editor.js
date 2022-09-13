@@ -6,7 +6,9 @@ const Editor = ({
     editorContent,
     changeEditorContent,
     lineMarking,
-    changeLineDragContent
+    changeLineDragContent,
+    intervalObj,
+    updateInterpretatorState
     }) => {
 
     function resizeEditor() {
@@ -38,6 +40,14 @@ const Editor = ({
     function handleTextAreaChange(event) {
         changeEditorContent(event.target.value)
         resizeEditor();
+        
+        clearInterval(intervalObj);
+        updateInterpretatorState((prevState) => {
+        return {
+            ...prevState,
+            lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        }  
+        })
     }
 
     function handleDragStart(event) {
@@ -103,27 +113,7 @@ const Editor = ({
     const lineNumbersJSX = []
     const backgroundLinesJSX = []
     for (let i = 1; i <= lineNumber; i++) {
-        if (i === lineMarking.currentEvalLine) {
-            lineNumbersJSX.push(
-                <div
-                    className = "eval-line singlelinenumber"
-                    key = {i}
-                    id = {i}
-                    draggable = "true"
-                    onDragStart = {handleDragStart}
-                    onDragEnd = {handleDragEnd}
-                >
-                    {i}
-                </div>)
-
-            backgroundLinesJSX.push(
-                <div
-                    className = "editor__background-line_eval editor__background-line"
-                    id = {i} key = {i}
-                >{i}</div>
-                )
-
-        } else if (i === lineMarking.currentErrorLine) {
+        if (i === lineMarking.currentErrorLine) {
             lineNumbersJSX.push(
                 <div
                     className = "error-line singlelinenumber"
@@ -142,6 +132,26 @@ const Editor = ({
                     className = "editor__background-line_error editor__background-line"
                     id = {i} key = {i}
                 >{i}</div>)
+
+        } else if (i === lineMarking.currentEvalLine) {
+            lineNumbersJSX.push(
+                <div
+                    className = "eval-line singlelinenumber"
+                    key = {i}
+                    id = {i}
+                    draggable = "true"
+                    onDragStart = {handleDragStart}
+                    onDragEnd = {handleDragEnd}
+                >
+                    {i}
+                </div>)
+
+            backgroundLinesJSX.push(
+                <div
+                    className = "editor__background-line_eval editor__background-line"
+                    id = {i} key = {i}
+                >{i}</div>
+                )
 
         } else {
             lineNumbersJSX.push(

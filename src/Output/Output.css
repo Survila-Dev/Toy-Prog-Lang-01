@@ -25,3 +25,7 @@
     text-align: right;
     padding: var(--line-number-padding);
 }
+
+.output__line_error {
+    color: red;
+}

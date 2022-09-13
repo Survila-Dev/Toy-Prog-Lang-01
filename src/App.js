@@ -17,6 +17,7 @@ function App() {
 
   const [triggerForEval, flipTriggerForEval] = React.useState(false);
   const [outConsList, updateOutConsList] = React.useState(["First line", "Second line"])
+  const [consListErrors, updateConsListErrors] = React.useState([true, false])
 
   React.useEffect(() => {
 
@@ -36,13 +37,35 @@ function App() {
     let outStack;
     let curConsOut;
 
-    try {
+    let errorLine = null;
+    let curEvalLine = null;
+    let curCode;
+
+    // try {
     // Input the data to the "code"
     if (interpretorState.nominalStackSize === interpretorState.globalStack.length) {
-      const curCode = interpretorState.currentCode;
       
+      // Check if current pos is null if so creat the new currentCode
+      if (interpretorState.lineMarking.currentEvalLine === null) {
+
+        curCode = new FLCode(editorContent, 200);
+        curEvalLine = null;
+        changeInterpretorState((prevState) => {
+          return {
+            ...prevState,
+            lineMarking: {currentEvalLine: null, currentErrorLine: null},
+            currentCode: curCode
+          }
+        })
+      } else {
+        curCode = interpretorState.currentCode;
+        curCode.currentLine = 1;
+        curEvalLine = interpretorState.lineMarking.currentEvalLine;
+      }
+
       curCode.runOneStep(
-        interpretorState.lineMarking.currentEvalLine,
+        curEvalLine,
+        // interpretorState.lineMarking.currentEvalLine,
         altTempLexEnv,
         altTempStack)
       
@@ -54,50 +77,49 @@ function App() {
         updateOutConsList((prevValue) => {
           return [...prevValue, curConsOut]
         })
+        updateConsListErrors((prevList) => {
+          return [...prevList, false];
+        })
       }
 
     } else {
+
       // Create block element and execute
       const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
       curConsOut = tempNode.run(altTempLexEnv);
+      // curConsOut = curConsOutAll[1]
       
       altTempStack.pop()
       outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
       outStack = JSON.parse(JSON.stringify(altTempStack));
 
-      if (curConsOut.length !== 0) {
-        updateOutConsList((prevValue) => {
-          console.log("Console output length")
-          // console.log(prevValue)
-          // const outputArray = [];
-          // outputArray = outputArray.concat(prevValue);
-          // outputArray = outputArray.concat(curConsOut);
-          console.log([...prevValue, ...curConsOut[1]]);
-          return [...prevValue, ...curConsOut[1]];
-        })
+      curCode = interpretorState.currentCode;
+      curEvalLine = interpretorState.lineMarking.currentEvalLine;
+
+      if (curConsOut[1]) {
+
+        if (curConsOut[1].length !== 0) {
+          updateOutConsList((prevValue) => {
+
+            // const outputArray = [];
+            // outputArray = outputArray.concat(prevValue);
+            // outputArray = outputArray.concat(curConsOut);
+            return [...prevValue, ...curConsOut[1]];
+          })
+
+          updateConsListErrors((prevList) => {
+
+            const newList = [];
+            for (let i = 0; i < curConsOut.length; i++) {
+              newList.push(false)
+            }
+            return [...prevList, ...newList];
+          })
+        }
       }
 
-
-    }} catch (error) {
-
-      // Error handling here
-
-      if (error === "no_variable_error") {
-        // Stop automatic running, if it is on
-
-        // Mark the line as error
-
-        // Log to the console
-
-      }
+      
     }
-
-    
-
-    // Prepare the data to be output as state (also deep copy)
-    
-    
-    console.log(interpretorState.nominalStackSize);
 
     let lexEnvForView = {};
     Object.keys(outLexEnv).forEach((key) => {
@@ -109,29 +131,50 @@ function App() {
       callStackForView.push(["", element])
     })
 
-    // console.log("=================================")
-    // console.log("PrevState Deep Copy")
-    // console.log(prevStateCopy)
-    // console.log("LEXENV:")
-    // console.log(interpretorState.globalLexEnv)
-    // console.log(altTempLexEnv)
-    // console.log(outLexEnv)
-    // console.log(lexEnvForView)
-    // console.log("STACK:")
-    // console.log(interpretorState.globalStack)
-    // console.log(altTempStack)
-    // console.log(outStack)
-    // console.log(callStackForView)
-
     changeInterpretorState(
       {
         globalLexEnv: lexEnvForView,
         globalStack: callStackForView,
-        lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: null},
-        currentCode: interpretorState.currentCode,
-        nominalStackSize: interpretorState.nominalStackSize + (outStack.length - altTempStack.length)})
+        // lineMarking: {currentEvalLine: curEvalLine, currentErrorLine: errorLine},
+        lineMarking: {currentEvalLine: curCode.currentLine, currentErrorLine: errorLine},
+        currentCode: curCode,
+        //currentCode: interpretorState.currentCode,
+        nominalStackSize: interpretorState.nominalStackSize + (outStack.length - altTempStack.length)
+      })
+
+  } 
+  // catch (error) {
+
+  //     // Error handling here
+
+  //     if (error === "no_variable_error") {
+  //       // Stop automatic running, if it is on
+  //       clearInterval(setInterObj);
+
+  //       // Mark the line as error 
+  //       errorLine = interpretorState.lineMarking.currentEvalLine;
+
+  //       // Log to the console
+  //       updateOutConsList((prevValue) => {
+  //         return [...prevValue, `Error: ${error} in ${errorLine} line`]})
+  //       changeInterpretorState((prevState) => {
+  //         return {
+  //           ...prevState,
+  //           lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: errorLine},
+  //         }  
+  //       })
+  //       updateConsListErrors((prevList) => [...prevList, true])
+
+  //     }
+  //   }
+
     
-  }, [triggerForEval])
+
+    // Prepare the data to be output as state (also deep copy)
+    
+    
+    
+  , [triggerForEval])
 
   const [interpretorState, changeInterpretorState] = React.useState({
     globalLexEnv: {},
@@ -143,11 +186,11 @@ function App() {
     //     ["name4", "code4"],
     // ],
     lineMarking: {
-        currentEvalLine: null,
-        currentErrorLine: null,
+        currentEvalLine: 1,
+        currentErrorLine: 3,
     },
     currentCode: new FLCode(
-      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ka;",
+      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ei;Ei = 6;\n\n\nPRINT(2);\nTu = 12;\nc = Ei+Ei;",
       1000
     ),
     nominalStackSize: 0}
@@ -167,7 +210,7 @@ function App() {
     let i = 0;
     const interObj = (setInterval(() => {
       flipTriggerForEval((prev) => !prev);
-    }, 500))
+    }, 200))
 
     changeSetInterObj(interObj)
   }
@@ -200,11 +243,19 @@ function App() {
   }
 
   function handleJumpToCodeStart(event) {
-
+    // The same if textarea is changed
+    clearInterval(setInterObj);
+    changeInterpretorState((prevState) => {
+      return {
+        ...prevState,
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+      }  
+    })
   }
 
   function handleClear(event) {
     updateOutConsList([])
+    updateConsListErrors([])
   }
 
   const showPopUp = false;
@@ -231,6 +282,8 @@ function App() {
               changeEditorContent = {changeEditorContent}
               lineMarking = {interpretorState.lineMarking}
               changeLineDragContent = {changeLineDragContent} 
+              intervalObj = {setInterObj}
+              updateInterpretatorState = {changeInterpretorState}
             />
             <ControlPanel
               runOneStep = {handleRunOneStep}
@@ -241,7 +294,8 @@ function App() {
               handleClear = {handleClear}
             />
             <Output
-              outputList = {outConsList}/>
+              outputList = {outConsList}
+              errorsInList = {consListErrors}/>
           </div>
 
           

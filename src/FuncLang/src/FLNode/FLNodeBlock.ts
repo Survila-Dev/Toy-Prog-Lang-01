@@ -39,21 +39,27 @@ export class FLNodeBlock extends flSuperModule.FLNode {
 
         this.childrenTextPublic = childrenText;
 
+        let noOfLineBreaks = 0;
         const children: (flNodeAssignment.FLNodeAssignment | flNodePrint.FLNodePrint)[] = childrenText.map((childText, i) => {
+            
+            if (childText.includes("\n")) {
+                noOfLineBreaks += childText.split("\n").length - 1;
+            }
             
             if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
                 return new flNodeAssignment.FLNodeAssignment(
                     flSuperModule.FLNodeTypeEnum.VariableAssignment,
                     childText,
-                    i + 1
+                    noOfLineBreaks + 1
                 )
             } else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
                 return new flNodePrint.FLNodePrint(
                     flSuperModule.FLNodeTypeEnum.Print,
                     childText,
-                    i + 1
+                    noOfLineBreaks + 1
                 )
             }
+
         })
         
         children.pop()
