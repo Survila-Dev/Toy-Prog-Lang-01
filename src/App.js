@@ -16,8 +16,8 @@ import { FLNodeBlock } from "./FuncLang/dist/FLNode/FLNodeBlock"
 function App() {
 
   const [triggerForEval, flipTriggerForEval] = React.useState(false);
-  const [outConsList, updateOutConsList] = React.useState(["First line", "Second line"])
-  const [consListErrors, updateConsListErrors] = React.useState([true, false])
+  const [outConsList, updateOutConsList] = React.useState([])
+  const [consListErrors, updateConsListErrors] = React.useState([])
 
   React.useEffect(() => {
     // Set up the local storage
@@ -277,9 +277,11 @@ function App() {
   function handleJumpToCodeStart(event) {
     // The same if textarea is changed
     clearInterval(setInterObj);
+    
     changeInterpretorState((prevState) => {
       return {
         ...prevState,
+        globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
       }  
     })
@@ -311,7 +313,8 @@ function App() {
             <Selector
               updateEditorContent = {changeEditorContent}
               interpretorState = {interpretorState}
-              updateInterpretorState = {changeInterpretorState}/>
+              updateInterpretorState = {changeInterpretorState}
+              intervalObj = {setInterObj}/>
             <Editor
               editorContent = {editorContent}
               changeEditorContent = {changeEditorContent}

@@ -72,12 +72,12 @@ function genericStateChange(inputNode, inputCallStack) {
     var outputCallStack = inputCallStack;
     switch (inputNode.runCycleStatus) {
         case RunCycleStatusEnum.beforeRun:
-            inputNode.runCycleStatus = RunCycleStatusEnum.selectLine;
+            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
             inputNode.status = GlobalStatusEnum.inRun;
             break;
-        case RunCycleStatusEnum.selectLine:
-            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
-            break;
+        // case RunCycleStatusEnum.selectLine:
+        //     inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
+        //     break;
         case RunCycleStatusEnum.pushToStack:
             outputCallStack.push(inputNode.text);
             inputNode.runCycleStatus = RunCycleStatusEnum.evaluate;

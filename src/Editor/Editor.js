@@ -48,6 +48,7 @@ const Editor = ({
             newCode.internalText = event.target.value;
             return {
                 ...prevState,
+                globalStack: [],
                 currentCode: newCode,
                 lineMarking: {currentEvalLine: null, currentErrorLine: null},
             }  

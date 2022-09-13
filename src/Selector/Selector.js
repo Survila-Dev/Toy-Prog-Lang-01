@@ -4,7 +4,7 @@ import { FLCode } from "../FuncLang/dist/FLCode"
 
 import React from "react";
 
-function Selector({updateEditorContent, interpretorState, updateInterpretorState}) {
+function Selector({updateEditorContent, interpretorState, updateInterpretorState, intervalObj}) {
 
     const [showOptions, changeShowOptions] = React.useState(false);
     const [optionWidth, changeOptionWidth] = React.useState("70%");
@@ -39,6 +39,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     function handleOptionClick(event) {
         changeShowOptions(false)
+        clearInterval(intervalObj)
         console.log("Started the option click")
         // Save current interpretor state to the local storage
         localStorage.setItem(
