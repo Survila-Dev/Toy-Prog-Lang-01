@@ -36,6 +36,10 @@ var RunCycleStatusEnum;
 var FLNode = /** @class */ (function () {
     function FLNode(type, text, nodeLine) {
         this.type = type;
+        if (!(text)) {
+            console.log("Text undefined here is the type:");
+            console.log(type);
+        }
         this.text = text.trim();
         this.status = GlobalStatusEnum.noRun;
         this.runCycleStatus = RunCycleStatusEnum.beforeRun;

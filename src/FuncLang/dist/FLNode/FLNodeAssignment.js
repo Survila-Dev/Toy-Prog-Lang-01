@@ -58,7 +58,7 @@ var FLNodeAssignment = /** @class */ (function (_super) {
         var assignmentVar = this.text.split(FLNodeAssignment.syntaxSymbols.assignment, 2)[0].trim();
         var onlyChildValue = this.children[0].run(scopeEnvironment)[0];
         scopeEnvironment[assignmentVar] = onlyChildValue;
-        return [, ""];
+        return ([, ""]);
     };
     FLNodeAssignment.syntaxSymbols = {
         assignment: "="

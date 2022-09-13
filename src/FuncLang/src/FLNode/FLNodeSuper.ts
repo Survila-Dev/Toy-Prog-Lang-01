@@ -62,6 +62,10 @@ export class FLNode implements FLNodeInterface {
         nodeLine?: number) {
 
             this.type = type;
+            if (!(text)) {
+                console.log("Text undefined here is the type:")
+                console.log(type);
+            }
             this.text = text.trim();
             this.status = GlobalStatusEnum.noRun;
             this.runCycleStatus = RunCycleStatusEnum.beforeRun;

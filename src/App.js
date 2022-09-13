@@ -117,6 +117,10 @@ function App() {
     } else {
 
       // Create block element and execute
+      // here is something taking place
+
+      // !This one is executing on empty text
+
       const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
       curConsOut = tempNode.run(altTempLexEnv);
       // curConsOut = curConsOutAll[1]
@@ -222,7 +226,7 @@ function App() {
         currentErrorLine: 3,
     },
     currentCode: new FLCode(
-      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ei;Ei = 6;\n\n\nPRINT(2);\nTu = 12;\nc = Ei+Ei;",
+      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ei;\nEi = 6;\n\n\nPRINT(2);\nTu = 12;\nc = Ei+Ei;",
       1000
     ),
     nominalStackSize: 0}
@@ -283,6 +287,8 @@ function App() {
         ...prevState,
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        nominalStackSize: 0
+        //!
       }  
     })
   }

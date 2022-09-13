@@ -70,7 +70,7 @@ export class FLNodeAssignment extends flSuperModule.FLNode {
         const onlyChildValue: unknown = this.children[0].run(scopeEnvironment)[0];
         
         scopeEnvironment[assignmentVar] = onlyChildValue;
-        return [,""]
+        return ([,""]);
     }
 
 }

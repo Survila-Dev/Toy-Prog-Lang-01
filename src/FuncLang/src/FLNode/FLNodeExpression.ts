@@ -106,11 +106,11 @@ export class FLNodeExpression extends flSuperModule.FLNode {
         switch(this.expressionSymbol) {
             case "no":
                 if (parseFloat(this.text)) {
-                    return [parseFloat(this.text), ""];
+                    return ([parseFloat(this.text), ""]);
                 } else {
                     // Check if it there is a value and if not throw error
                     if (this.text in scopeEnvironment) {
-                        return [scopeEnvironment[this.text], ""]
+                        return ([scopeEnvironment[this.text], ""])
                     } else {
                         throw "no_variable_error"
                     }
@@ -119,23 +119,23 @@ export class FLNodeExpression extends flSuperModule.FLNode {
             case "+":
                 // make numbers add before string
                 
-                return [childrenRunResult.reduce((partialRes, a) => {
+                return ([childrenRunResult.reduce((partialRes, a) => {
                     if (!isNaN(partialRes) && !isNaN(a)) {
                         return (parseFloat(partialRes as unknown as string) + parseFloat(a as unknown as string))
                     } else {
                         return partialRes + a
                     }
                     }
-                    ), ""];
+                    ), ""]);
                 break;
             case "-":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes - a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes - a), ""]);
                 break;
             case "*":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes * a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes * a), ""]);
                 break;
             case "/":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes / a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes / a), ""]);
                 break;
         }
     };

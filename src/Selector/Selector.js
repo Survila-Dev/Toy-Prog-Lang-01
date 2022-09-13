@@ -59,14 +59,27 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                 `snippet${event.target.id}`)
         )
 
-        console.log(newValue);
+        console.log("Selected value");
+        console.log(newValue.currentCode.internalText);
+        // newValue.callStack = [];
 
         updateInterpretorState(
             {
                 ...newValue,
+                globalStack: [],
                 currentCode: new FLCode(newValue.currentCode.internalText, 200),
                 lineMarking: {currentEvalLine: null, currentErrorLine: null},
+                nominalStackSize: 0,
             });
+
+        // updateInterpretorState((prevState) => {
+        //     return {
+        //         ...prevState,
+        //         globalStack: []
+        //     }
+        // }
+        // )
+
         updateEditorContent(newValue.currentCode.internalText);
 
         console.log("Got the new interpretor value from local storage")
