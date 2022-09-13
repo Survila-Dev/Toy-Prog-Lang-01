@@ -27,7 +27,6 @@ function CallStack({
                 className = "callstackelement"
                 key = {i}
                 id = {i}
-                onClick = {popStackElement}
             >
                 {callStack[i][1]}
             </div>
@@ -58,7 +57,7 @@ function CallStack({
         <div className = "callstackwithtitle">
             <div>
                 <h2>Call Stack</h2>
-                <p class="h2_sub">Remove elements or add by dragging line number from editor</p>
+                <p class="h2_sub">Add by dragging line number from editor</p>
             </div>
             <div
                 className = "callstack"

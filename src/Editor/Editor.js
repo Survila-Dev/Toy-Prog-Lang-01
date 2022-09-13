@@ -38,15 +38,19 @@ const Editor = ({
     // const [lineNumber, changeLineNumber] = React.useState(1)
 
     function handleTextAreaChange(event) {
+
         changeEditorContent(event.target.value)
         resizeEditor();
-        
+
         clearInterval(intervalObj);
         updateInterpretatorState((prevState) => {
-        return {
-            ...prevState,
-            lineMarking: {currentEvalLine: null, currentErrorLine: null},
-        }  
+            const newCode = prevState.currentCode;
+            newCode.internalText = event.target.value;
+            return {
+                ...prevState,
+                currentCode: newCode,
+                lineMarking: {currentEvalLine: null, currentErrorLine: null},
+            }  
         })
     }
 

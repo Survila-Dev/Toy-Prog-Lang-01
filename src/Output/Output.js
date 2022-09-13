@@ -14,10 +14,10 @@ function Output({outputList, errorsInList}) {
 
     for (let i = 0; i < outputList.length; i++) {
         if (errorsInList[i]) {
-            lineNoJSX.push(<div className = "output__line_error">{i + 1}</div>)
+            lineNoJSX.push(<div className = "output__line-no_error">{i + 1}</div>)
             outputTextJSX.push(<div className = "output__line_error">{outputList[i]}</div>)
         } else {
-            lineNoJSX.push(<div>{i + 1}</div>)
+            lineNoJSX.push(<div className = "output__line-no">{i + 1}</div>)
             outputTextJSX.push(<div>{outputList[i]}</div>)
         } 
     }

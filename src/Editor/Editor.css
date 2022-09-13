@@ -30,7 +30,7 @@ textarea {
     resize: none;
     font-family: Arial;
     font-size: var(--font-size-normal);
-    padding: 0px;
+    padding: 0px 0px 0px 10px;
     margin: 0px;
     height: auto;
     line-height: 1.1em;
@@ -45,7 +45,7 @@ textarea:focus {
     resize: none;
     font-family: Arial;
     font-size: var(--font-size-normal);
-    padding: 0px;
+    padding: 0px 0px 0px 10px;
     margin: 0px;
     height: auto;
     line-height: 1.1em;

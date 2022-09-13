@@ -1,12 +1,14 @@
 import "./Selector.css"
 import dropdownIcon from "./1063883_arrow_arrow down_down_drop_stroke arrow_icon.svg"
+import { FLCode } from "../FuncLang/dist/FLCode"
 
 import React from "react";
 
-function Selector() {
+function Selector({updateEditorContent, interpretorState, updateInterpretorState}) {
 
-    const [showOptions, changeShowOptions] = React.useState(true);
+    const [showOptions, changeShowOptions] = React.useState(false);
     const [optionWidth, changeOptionWidth] = React.useState("70%");
+    const [currentSelection, updateCurrentSelection] = React.useState(0)
 
     React.useEffect(() => {
         document.addEventListener("click", closeAllSelect);
@@ -33,17 +35,45 @@ function Selector() {
     function handleSelectorClick(event) {
         changeShowOptions((prevState) => !prevState)
         const articleElements = document.getElementsByClassName("optionarticle");
-        console.log(articleElements)
-        console.log(articleElements["0"])
     }
 
     function handleOptionClick(event) {
         changeShowOptions(false)
+        console.log("Started the option click")
+        // Save current interpretor state to the local storage
+        localStorage.setItem(
+            `snippet${currentSelection}`,
+            JSON.stringify(interpretorState));
+
+        console.log(`snippet${currentSelection}`)
+        console.log("Saved the current state to local storage")
+        updateCurrentSelection(event.target.id);
+
+        console.log("Updated the current selection value")
+        console.log(`snippet${event.target.id}`)
+
+        // Get the new interpretor state from the local storage
+        const newValue = JSON.parse(
+            localStorage.getItem(
+                `snippet${event.target.id}`)
+        )
+
+        console.log(newValue);
+
+        updateInterpretorState(
+            {
+                ...newValue,
+                currentCode: new FLCode(newValue.currentCode.internalText, 200),
+                lineMarking: {currentEvalLine: null, currentErrorLine: null},
+            });
+        updateEditorContent(newValue.currentCode.internalText);
+
+        console.log("Got the new interpretor value from local storage")
     }
 
     const options = []
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 2; i++) {
         options.push(
             <article
                 className = "optionarticle"

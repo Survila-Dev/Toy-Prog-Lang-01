@@ -20,6 +20,38 @@ function App() {
   const [consListErrors, updateConsListErrors] = React.useState([true, false])
 
   React.useEffect(() => {
+    // Set up the local storage
+    localStorage.setItem("snippet0", JSON.stringify(
+      {
+        globalLexEnv: {"a_snip01": [69, "number"]},
+        globalStack: [["","Snip01"]],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        currentCode: new FLCode(
+          "Hello1", 69
+        ),
+        nominalStackSize: 0
+      }
+    ))
+
+    localStorage.setItem("snippet1", JSON.stringify(
+      {
+        globalLexEnv: {"a_snip02": [69, "number"]},
+        globalStack: [["","Snip02"]],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        currentCode: new FLCode(
+          "Hello2", 69
+        ),
+        nominalStackSize: 0
+      }
+    ))
+
+    return (() => {
+      // Clean up function for freeing up the local storage
+      localStorage.clear()
+    })
+  }, [])
+
+  React.useEffect(() => {
 
     // Prepare the input data which is deep copy of the state
     const prevStateCopy = JSON.parse(JSON.stringify(interpretorState));
@@ -62,7 +94,7 @@ function App() {
         curCode.currentLine = 1;
         curEvalLine = interpretorState.lineMarking.currentEvalLine;
       }
-
+      console.log(curCode)
       curCode.runOneStep(
         curEvalLine,
         // interpretorState.lineMarking.currentEvalLine,
@@ -276,7 +308,10 @@ function App() {
             />
           </div>
           <div className = "rightside">
-            <Selector/>
+            <Selector
+              updateEditorContent = {changeEditorContent}
+              interpretorState = {interpretorState}
+              updateInterpretorState = {changeInterpretorState}/>
             <Editor
               editorContent = {editorContent}
               changeEditorContent = {changeEditorContent}
