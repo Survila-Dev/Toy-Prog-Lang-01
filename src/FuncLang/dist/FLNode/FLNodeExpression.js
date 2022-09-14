@@ -76,7 +76,10 @@ var FLNodeExpression = /** @class */ (function (_super) {
         }
         switch (this.expressionSymbol) {
             case "no":
-                if (parseFloat(this.text)) {
+                if (parseFloat(this.text) || parseFloat(this.text) === 0) {
+                    if (parseFloat(this.text) === 0) {
+                        return ([0, ""]);
+                    }
                     return ([parseFloat(this.text), ""]);
                 }
                 else {
@@ -85,6 +88,7 @@ var FLNodeExpression = /** @class */ (function (_super) {
                         return ([scopeEnvironment[this.text], ""]);
                     }
                     else {
+                        console.log(this.text);
                         throw "no_variable_error";
                     }
                 }

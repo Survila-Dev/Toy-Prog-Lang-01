@@ -29,6 +29,8 @@ var ConditionalType;
     ConditionalType["boolean"] = "boolean";
     ConditionalType["unequal"] = "unequal";
     ConditionalType["not"] = "not";
+    ConditionalType["and"] = "and";
+    ConditionalType["or"] = "or";
 })(ConditionalType || (ConditionalType = {}));
 var FLNodeConditional = /** @class */ (function (_super) {
     __extends(FLNodeConditional, _super);
@@ -48,8 +50,26 @@ var FLNodeConditional = /** @class */ (function (_super) {
     // Create children
     FLNodeConditional.prototype.createChildren = function () {
         // Check the conditional type
+        var textExcludingEnclosures = (0, splitString_1.stringIgnoringTags)(this.text, flExpModule.FLNodeExpression.syntaxSymbols.enclosureStart, flExpModule.FLNodeExpression.syntaxSymbols.enclosureEnd);
         // add !, and, or
-        if (this.text.includes(FLNodeConditional.syntaxSymbols.largerEqual)) {
+        if (textExcludingEnclosures.includes(FLNodeConditional.syntaxSymbols.unequal)) {
+            this.conditionalType = ConditionalType.unequal;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.unequal;
+        }
+        else if (textExcludingEnclosures.includes(FLNodeConditional.syntaxSymbols.not)) {
+            this.conditionalType = ConditionalType.not;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.not;
+        }
+        else if (textExcludingEnclosures.includes(FLNodeConditional.syntaxSymbols.and)) {
+            this.conditionalType = ConditionalType.and;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.and;
+        }
+        else if (textExcludingEnclosures.includes(FLNodeConditional.syntaxSymbols.or)) {
+            this.conditionalType = ConditionalType.or;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.or;
+            // other conditional tokens
+        }
+        else if (this.text.includes(FLNodeConditional.syntaxSymbols.largerEqual)) {
             this.conditionalType = ConditionalType.largerEqual;
             this.conditionalSymbol = FLNodeConditional.syntaxSymbols.largerEqual;
         }
@@ -72,21 +92,29 @@ var FLNodeConditional = /** @class */ (function (_super) {
         else if (this.text.includes(FLNodeConditional.syntaxSymbols.unequal)) {
             this.conditionalType = ConditionalType.unequal;
             this.conditionalSymbol = FLNodeConditional.syntaxSymbols.unequal;
+            // defaulting to boolean variable
         }
         else {
             this.conditionalType = ConditionalType.boolean;
             this.conditionalSymbol = null;
         }
-        // If conditional symbol is found then create multiple children
+        var enclosureStartSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureStart;
+        var enclosureEndSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureEnd;
+        // If only boolean create one child
         if (this.conditionalType === ConditionalType.boolean) {
             var onlyChild = new flExpModule.FLNodeExpression(flSuperModule.FLNodeTypeEnum.Expression, this.text);
+            this.children = [onlyChild];
+            return this.children;
+            // If conditional tokens found 
+        }
+        else if (this.conditionalType === ConditionalType.not) {
+            var childText = (0, splitString_1.stringSplitIgnoringTags)(this.text, this.conditionalSymbol, [[enclosureStartSymbol, enclosureEndSymbol]])[1];
+            var onlyChild = new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, childText);
             this.children = [onlyChild];
             return this.children;
         }
         else {
             // Divide to left and right child while ignoring the enclosure symbols
-            var enclosureStartSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureStart;
-            var enclosureEndSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureEnd;
             if (!(this.conditionalSymbol)) {
                 throw "No conditional symbol assigned before spliting the text to children texts";
             }
@@ -102,16 +130,45 @@ var FLNodeConditional = /** @class */ (function (_super) {
         }
     };
     FLNodeConditional.prototype.run = function (scopeEnvironment) {
+        function convertToBoolean(value) {
+            if (parseInt(value) === 1) {
+                return true;
+            }
+            else if (parseInt(value) === 0) {
+                return false;
+            }
+            else {
+                throw "Not a boolean value to be used for not operator";
+            }
+        }
         // Execute the children and give either 1 or 0 for boolean value
         if (this.children.length === 1) {
-            return (this.children[0].run(scopeEnvironment));
+            switch (this.conditionalType) {
+                case ConditionalType.boolean:
+                    return (this.children[0].run(scopeEnvironment));
+                    break;
+                case ConditionalType.not:
+                    var outValue = this.children[0].run(scopeEnvironment)[0];
+                    if (convertToBoolean(outValue)) {
+                        return ([0, ""]);
+                    }
+                    else if (outValue === 0) {
+                        return ([1, ""]);
+                    }
+                    break;
+            }
         }
         else {
             var leftChildValue = this.children[0].run(scopeEnvironment)[0];
             var rightChildValue = this.children[1].run(scopeEnvironment)[0];
             var outputValue = void 0;
             switch (this.conditionalType) {
-                // Add !, or, and
+                case ConditionalType.or:
+                    outputValue = convertToBoolean(leftChildValue) || convertToBoolean(rightChildValue);
+                    break;
+                case ConditionalType.and:
+                    outputValue = convertToBoolean(leftChildValue) && convertToBoolean(rightChildValue);
+                    break;
                 case ConditionalType.equal:
                     outputValue = leftChildValue === rightChildValue;
                     break;
@@ -167,7 +224,9 @@ var FLNodeConditional = /** @class */ (function (_super) {
         largerEqual: ">=",
         lowerEqual: "<=",
         unequal: "!=",
-        not: "!"
+        not: "!",
+        and: "&",
+        or: "|"
     };
     return FLNodeConditional;
 }(flSuperModule.FLNode));

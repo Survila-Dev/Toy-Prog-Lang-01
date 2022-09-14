@@ -107,13 +107,17 @@ export class FLNodeExpression extends flSuperModule.FLNode {
 
         switch(this.expressionSymbol) {
             case "no":
-                if (parseFloat(this.text)) {
+                if (parseFloat(this.text) || parseFloat(this.text) === 0) {
+                    if (parseFloat(this.text) === 0) {
+                        return ([0, ""]);
+                    }
                     return ([parseFloat(this.text), ""]);
                 } else {
                     // Check if it there is a value and if not throw error
                     if (this.text in scopeEnvironment) {
                         return ([scopeEnvironment[this.text], ""])
                     } else {
+                        console.log(this.text)
                         throw "no_variable_error"
                     }
                 }
