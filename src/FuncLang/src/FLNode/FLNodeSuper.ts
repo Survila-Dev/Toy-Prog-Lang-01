@@ -86,7 +86,12 @@ export class FLNode implements FLNodeInterface {
     runOneStep(
         inputCurrentLine: number,
         inputScopeEnvironment: object,
-        inputCallStack: string[]) {
+        inputCallStack: string[]) : {
+            currentLine: number | undefined,
+            scopeEnvironment: object,
+            callStack: string[],
+            output: string | null
+        } {
 
             // This function should do nothing, because all the logic
             // is handled not at the lowest level of the node tree

@@ -8,6 +8,7 @@ import { FLNodeExpression } from "./FLNode/FLNodeExpression";
 import { FLNodePrint } from "./FLNode/FLNodePrint";
 import { FLNodeAssignment } from "./FLNode/FLNodeAssignment";
 import { FLNodeBlock } from "./FLNode/FLNodeBlock";
+import { FLNodeConditional } from "./FLNode/FLNodeConditional";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "./splitString";
 
 /* SETTING UP THE TESTING ENVIRONMENT */
@@ -300,5 +301,11 @@ compareFunctionOutput(() => {
     return testNode.childrenTextPublic.length;
 
 }, 4, []);
+
+compareFunctionOutput(() => {
+
+
+
+})
 
 summaryOfTestSuite();
