@@ -1,5 +1,7 @@
 import * as flSuperModule from "./FLNodeSuper";
 import * as flExpModule from "./FLNodeExpression";
+import { FLNodeConditional } from "../../dist/FLNode/FLNodeConditional";
+// import * as flCondModule from "./FLNodeConditional";
 
 export class FLNodeAssignment extends flSuperModule.FLNode {
     static syntaxSymbols = {
@@ -19,14 +21,45 @@ export class FLNodeAssignment extends flSuperModule.FLNode {
 
     createChildren(): flSuperModule.FLNodeInterface[] {
         
-        const childText: string = this.text.split(
-            FLNodeAssignment.syntaxSymbols.assignment,
-            2)[1]
+        const splitToken = FLNodeAssignment.syntaxSymbols.assignment
 
-        const onlyChild: flSuperModule.FLNodeInterface = new flExpModule.FLNodeExpression(
-            flSuperModule.FLNodeTypeEnum.Expression,
-            childText,
-        )
+        let whereToCutString = 0;
+        for (let i = 0; i < this.text.length; i++) {
+            if (this.text.substring(i, i + splitToken.length) == splitToken) {
+                whereToCutString = i + 1;
+                break;
+            }
+        }
+        const childText = this.text.substring(whereToCutString, this.text.length);
+
+        let conditionalChild = false;
+        let onlyChild: flSuperModule.FLNode;
+
+        // If the conditional tokens are found in the string create in other case FLNodeExpression
+        const keys = Object.keys(FLNodeConditional.syntaxSymbols)
+
+        for (let i = 0; i < keys.length; i++) {
+
+            if (childText.includes(FLNodeConditional.syntaxSymbols[keys[i]])) {
+                
+                conditionalChild = true;
+            }
+        }
+
+        if (conditionalChild) {
+
+            onlyChild = new FLNodeConditional(
+                flSuperModule.FLNodeTypeEnum.Conditional,
+                childText,
+            )
+
+        } else {
+        
+            onlyChild = new flExpModule.FLNodeExpression(
+                flSuperModule.FLNodeTypeEnum.Expression,
+                childText,
+            )
+        }
 
         return [onlyChild]
 

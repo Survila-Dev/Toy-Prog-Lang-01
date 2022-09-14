@@ -9,7 +9,9 @@ enum ConditionalType {
     lower = "lower",
     largerEqual = "largerEqual",
     lowerEqual = "lowerEqual",
-    boolean = "boolean"
+    boolean = "boolean",
+    unequal = "unequal",
+    not = "not"
 }
 
 export class FLNodeConditional extends flSuperModule.FLNode {
@@ -23,6 +25,8 @@ export class FLNodeConditional extends flSuperModule.FLNode {
         lower: "<",
         largerEqual: ">=",
         lowerEqual: "<=",
+        unequal: "!=",
+        not: "!"
     };
     
     constructor(
@@ -35,6 +39,15 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             this.nodeLine = nodeLine;
         }
 
+        // Remove enclosure if the wrap the whole this.text
+
+        if (stringIgnoringTags(
+            this.text,
+            flExpModule.FLNodeExpression.syntaxSymbols.enclosureStart,
+            flExpModule.FLNodeExpression.syntaxSymbols.enclosureEnd).length === 0) {
+                this.text = this.text.substring(1, this.text.length - 1);
+            };
+
         this.createChildren();
     }
 
@@ -42,7 +55,18 @@ export class FLNodeConditional extends flSuperModule.FLNode {
     createChildren(): flSuperModule.FLNodeInterface[] {
 
         // Check the conditional type
-        if (this.text.includes(FLNodeConditional.syntaxSymbols.equal)) {
+
+        // add !, and, or
+
+        if (this.text.includes(FLNodeConditional.syntaxSymbols.largerEqual)) {
+            this.conditionalType = ConditionalType.largerEqual;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.largerEqual
+
+        } else if (this.text.includes(FLNodeConditional.syntaxSymbols.lowerEqual)) {
+            this.conditionalType = ConditionalType.lowerEqual;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.lowerEqual
+
+        } else if (this.text.includes(FLNodeConditional.syntaxSymbols.equal)) {
             this.conditionalType = ConditionalType.equal;
             this.conditionalSymbol = FLNodeConditional.syntaxSymbols.equal
 
@@ -54,13 +78,9 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             this.conditionalType = ConditionalType.lower;
             this.conditionalSymbol = FLNodeConditional.syntaxSymbols.lower
 
-        } else if (this.text.includes(FLNodeConditional.syntaxSymbols.largerEqual)) {
-            this.conditionalType = ConditionalType.largerEqual;
-            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.largerEqual
-
-        } else if (this.text.includes(FLNodeConditional.syntaxSymbols.lowerEqual)) {
-            this.conditionalType = ConditionalType.lowerEqual;
-            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.lowerEqual
+        } else if (this.text.includes(FLNodeConditional.syntaxSymbols.unequal)) {
+            this.conditionalType = ConditionalType.unequal;
+            this.conditionalSymbol = FLNodeConditional.syntaxSymbols.unequal
 
         } else {
             this.conditionalType = ConditionalType.boolean;
@@ -69,17 +89,21 @@ export class FLNodeConditional extends flSuperModule.FLNode {
 
         // If conditional symbol is found then create multiple children
         if (this.conditionalType === ConditionalType.boolean) {
+
             const onlyChild = new flExpModule.FLNodeExpression(
                 flSuperModule.FLNodeTypeEnum.Expression,
                 this.text
             )
-            return [onlyChild]
+            this.children = [onlyChild];
+            return this.children;
+
         } else {
             // Divide to left and right child while ignoring the enclosure symbols
             const enclosureStartSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureStart;
             const enclosureEndSymbol = flExpModule.FLNodeExpression.syntaxSymbols.enclosureEnd;
 
-            if (this.conditionalSymbol) {
+            if (!(this.conditionalSymbol)) {
+                
                 throw "No conditional symbol assigned before spliting the text to children texts"
             }
 
@@ -97,6 +121,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             })
 
             if (this.children.length !== 2) {
+                console.log(this.children)
                 throw "wrong number of children nodes for conditional statement"
             }
 
@@ -107,26 +132,37 @@ export class FLNodeConditional extends flSuperModule.FLNode {
     run(scopeEnvironment: object): [unknown, string] {
 
         // Execute the children and give either 1 or 0 for boolean value
+
         if (this.children.length === 1) {
             return (this.children[0].run(scopeEnvironment));
         } else {
+
             const leftChildValue = this.children[0].run(scopeEnvironment)[0];
             const rightChildValue = this.children[1].run(scopeEnvironment)[0];
 
             let outputValue: boolean;
 
             switch(this.conditionalType) {
-                case ConditionalType.larger:
-                    outputValue = leftChildValue > rightChildValue;
+
+                // Add !, or, and
+
+                case ConditionalType.equal:
+                    outputValue = leftChildValue === rightChildValue;
                     break;
-                case ConditionalType.lower:
-                    outputValue = leftChildValue < rightChildValue;
+                case ConditionalType.unequal:
+                    outputValue = leftChildValue !== rightChildValue;
                     break;
                 case ConditionalType.largerEqual:
                     outputValue = leftChildValue >= rightChildValue;
                     break;
                 case ConditionalType.lowerEqual:
                     outputValue = leftChildValue <= rightChildValue;
+                    break;
+                case ConditionalType.larger:
+                    outputValue = leftChildValue > rightChildValue;
+                    break;
+                case ConditionalType.lower:
+                    outputValue = leftChildValue < rightChildValue;
                     break;
                 default:
                     throw "No conditional type could be found for evaluating the value"

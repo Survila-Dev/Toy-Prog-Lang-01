@@ -1,6 +1,7 @@
 import * as flSuperModule from "./FLNodeSuper";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "../splitString";
 
+
 export class FLNodeExpression extends flSuperModule.FLNode {
 
     static syntaxSymbols = {
@@ -43,6 +44,7 @@ export class FLNodeExpression extends flSuperModule.FLNode {
 
         if (this.type === flSuperModule.FLNodeTypeEnum.Expression) {
             
+
             if (textIgnoreEnclosure.includes(
                 FLNodeExpression.syntaxSymbols.plus)) {
                     this.type = flSuperModule.FLNodeTypeEnum.PlusExp;

@@ -26,8 +26,9 @@ var flNodeWhile = require("./FLNodeWhile");
 var flNodeFunction = require("./FLNodeFunction");
 var FLNodeBlock = /** @class */ (function (_super) {
     __extends(FLNodeBlock, _super);
-    function FLNodeBlock(type, text) {
+    function FLNodeBlock(type, text, nodeLine) {
         var _this = _super.call(this, type, text) || this;
+        _this.nodeLine = nodeLine;
         _this.children = _this.createChildren();
         return _this;
     }
@@ -41,7 +42,11 @@ var FLNodeBlock = /** @class */ (function (_super) {
         ];
         var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, FLNodeBlock.syntaxSymbols.lineBreak, allTagsForBlock);
         this.childrenTextPublic = childrenText;
+        // ! Add the initial line no
         var noOfLineBreaks = 0;
+        if (this.nodeLine) {
+            noOfLineBreaks = this.nodeLine - 1;
+        }
         var children = childrenText.map(function (childText, i) {
             if (childText.includes("\n")) {
                 noOfLineBreaks += childText.split("\n").length - 1;

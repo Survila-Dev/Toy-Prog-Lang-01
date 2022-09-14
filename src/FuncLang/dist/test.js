@@ -7,6 +7,7 @@ var FLNodePrint_1 = require("./FLNode/FLNodePrint");
 var FLNodeAssignment_1 = require("./FLNode/FLNodeAssignment");
 var FLNodeBlock_1 = require("./FLNode/FLNodeBlock");
 var splitString_1 = require("./splitString");
+var FLNodeConditional_1 = require("./FLNode/FLNodeConditional");
 /* SETTING UP THE TESTING ENVIRONMENT */
 var currentTestNo = 1;
 var numOfSuccessfullTests = 0;
@@ -233,4 +234,118 @@ compareFunctionOutput(function () {
         "END");
     return testNode.childrenTextPublic.length;
 }, 4, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "(1)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "2 > 1", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "10 <= 1", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 0, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "10 >= 1", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "69 == 100", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 0, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "100 == 100", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "50 + 50 == 100", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "50 + 50 >= 100", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "(50 + 50) >= 10 * (6 + 6)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 0, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "120 == 10 * (6 + 6)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "120 != 10 * (6 + 6)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 0, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "119 != 10 * (6 + 6)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "10 + 90 == 100", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, " ( 10 + 90 == 100)  ", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var lexEnv = {};
+    var testNode = new FLNodeAssignment_1.FLNodeAssignment(FLNodeSuper_1.FLNodeTypeEnum.VariableAssignment, "a = ( 10 + 90 == 100)  ", 1);
+    var output = testNode.run(lexEnv);
+    return lexEnv["a"];
+}, 1, []);
+compareFunctionOutput(function () {
+    var lexEnv = {};
+    var testNode = new FLNodeAssignment_1.FLNodeAssignment(FLNodeSuper_1.FLNodeTypeEnum.VariableAssignment, "abc = ( 10 + 90 != 100)  ", 1);
+    var output = testNode.run(lexEnv);
+    return lexEnv["abc"];
+}, 0, []);
+// compareFunctionOutput(() => {
+//     const testNode = new FLNodeConditional(
+//         FLNodeTypeEnum.Conditional,
+//         "!(1)",
+//         1)
+//     const output = testNode.run({})
+//     return output[0];
+// }, 0, [])
+// compareFunctionOutput(() => {
+//     const testNode = new FLNodeConditional(
+//         FLNodeTypeEnum.Conditional,
+//         "!(0)",
+//         1)
+//     const output = testNode.run({})
+//     return output[0];
+// }, 1, [])
+// compareFunctionOutput(() => {
+//     const testNode = new FLNodeConditional(
+//         FLNodeTypeEnum.Conditional,
+//         "!(5 > 2)",
+//         1)
+//     const output = testNode.run({})
+//     return output[0];
+// }, 0, [])
+// compareFunctionOutput(() => {
+//     const testNode = new FLNodeConditional(
+//         FLNodeTypeEnum.Conditional,
+//         "!(5 == 5)",
+//         1)
+//     const output = testNode.run({})
+//     return output[0];
+// }, 0, [])
 summaryOfTestSuite();
