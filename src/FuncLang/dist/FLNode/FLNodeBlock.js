@@ -52,6 +52,8 @@ var FLNodeBlock = /** @class */ (function (_super) {
             }
             // Search for IF
             if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
+                console.log("IF FOUND!");
+                console.log(childText);
                 return new flNodeIf.FLNodeIf(flSuperModule.FLNodeTypeEnum.IfConditional, childText, noOfLineBreaks + 1);
             }
             else if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {

@@ -14,18 +14,16 @@ const { FLCode } = require("../dist/FLCode")
 const curCode = new FLCode(
     inputText = 
        "a = 6;\n"
-     + "IF (a > 5) {\n"
+     + "IF (a > 8) {\n"
      + "PRINT(Larger than 5);\n"
      + "b = 206;"
      + "} ELSE {\n"
-     + "\tPRINT(Lesser than 5)\n"
-     + "\tb = 4002;\n"
-     + "}\n"
+     + "PRINT(Lesser than 5);\n"
+     + "b = 4002;\n"
+     + "};\n"
      + "PRINT(b)",
     executionInterval = 1000
 );
-console.log(curCode.child.children)
-console.log(curCode.child.text)
 
 // // If test 02
 // const curCode = new FLCode(
@@ -83,18 +81,18 @@ console.log(curCode.child.text)
 // console.log("ERROR LINE")
 // console.log(curCode.errorLine)
 
-// for (let i = 0; i < 40; i++) {
-//     console.log("==================================================")
-//     console.log(`STEP ${i}`)
-//     console.log("STACK:")
-//     console.log(curCode.callStack)
-//     console.log("LEXENC:")
-//     console.log(curCode.executionContext)
-//     console.log("OUTPUT:")
-//     console.log(curCode.currentOutput)
-//     console.log("CURRENT LINE")
-//     console.log(curCode.currentLine)
-//     console.log("ERROR LINE")
-//     console.log(curCode.errorLine)
-//     curCode.runOneStep(curCode.currentLine, curCode.executionContext, curCode.callStack)
-// }
+for (let i = 0; i < 40; i++) {
+    console.log("==================================================")
+    console.log(`STEP ${i}`)
+    console.log("STACK:")
+    console.log(curCode.callStack)
+    console.log("LEXENC:")
+    console.log(curCode.executionContext)
+    console.log("OUTPUT:")
+    console.log(curCode.currentOutput)
+    console.log("CURRENT LINE")
+    console.log(curCode.currentLine)
+    console.log("ERROR LINE")
+    console.log(curCode.errorLine)
+    curCode.runOneStep(curCode.currentLine, curCode.executionContext, curCode.callStack)
+}

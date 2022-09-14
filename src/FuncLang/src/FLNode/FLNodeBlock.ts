@@ -59,23 +59,31 @@ export class FLNodeBlock extends flSuperModule.FLNode {
             
             // Search for IF
             if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
+                console.log("IF FOUND!")
+                console.log(childText)
+
                 return new flNodeIf.FLNodeIf(
                     flSuperModule.FLNodeTypeEnum.IfConditional,
                     childText,
                     noOfLineBreaks + 1
                 )
+
             } else if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
+                
                 return new flNodeAssignment.FLNodeAssignment(
                     flSuperModule.FLNodeTypeEnum.VariableAssignment,
                     childText,
                     noOfLineBreaks + 1
                 )
+
             } else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
+                
                 return new flNodePrint.FLNodePrint(
                     flSuperModule.FLNodeTypeEnum.Print,
                     childText,
                     noOfLineBreaks + 1
                 )
+
             }
 
         })
