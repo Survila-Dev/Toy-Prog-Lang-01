@@ -592,4 +592,37 @@ compareFunctionOutput(() => {
 
 }, 1, [])
 
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(1 | 0) & 1",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "((2 < 1) | (!(0))) & (5 > 2)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "((2 < a) | (!(c))) & (a > 2)",
+        1)
+
+    const output = testNode.run({"a": 6, "c": 1})
+    return output[0];
+
+}, 1, [])
+
 summaryOfTestSuite();
