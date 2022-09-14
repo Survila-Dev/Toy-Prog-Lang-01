@@ -28,7 +28,7 @@ export class FLCode implements FLLangCodeInterface {
     internalText: string;
 
     // Static properties
-    private child: FLNodeBlock;
+    child: FLNodeBlock;
     private lineNo: number;
 
     constructor (inputText: string, executionInterval: number) {

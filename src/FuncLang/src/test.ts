@@ -10,6 +10,7 @@ import { FLNodeAssignment } from "./FLNode/FLNodeAssignment";
 import { FLNodeBlock } from "./FLNode/FLNodeBlock";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "./splitString";
 import { FLNodeConditional } from "./FLNode/FLNodeConditional";
+import { FLNodeIf } from "./FLNode/FLNodeIf";
 
 /* SETTING UP THE TESTING ENVIRONMENT */
 
@@ -624,5 +625,30 @@ compareFunctionOutput(() => {
     return output[0];
 
 }, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeIf(
+        FLNodeTypeEnum.IfConditional,
+        "IF (1) {\na = 5;\n b=9;\n} ELSE {\na = 6;\n b=12;\n}",
+        1)
+    // console.log(testNode.text)
+
+    const lexEnv = {"a": 0}
+    testNode.run(lexEnv)
+    return [lexEnv["a"], lexEnv["b"]];
+
+}, [5, 9], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeIf(
+        FLNodeTypeEnum.IfConditional,
+        "IF (0) {\na = 5;\n b=9;\n} ELSE {\na = 6;\n b=12;\n}",
+        1)
+
+    const lexEnv = {"a": 6}
+    testNode.run(lexEnv)
+    return [lexEnv["a"], lexEnv["b"]];
+
+}, [6, 12], [])
 
 summaryOfTestSuite();

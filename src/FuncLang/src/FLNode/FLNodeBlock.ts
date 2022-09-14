@@ -30,7 +30,7 @@ export class FLNodeBlock extends flSuperModule.FLNode {
     createChildren() : flSuperModule.FLNode[]{
 
         const allTagsForBlock: [string, string][] = [
-            [flNodeIf.FLNodeIf.syntaxSymbols.startTag, flNodeIf.FLNodeIf.syntaxSymbols.endTag],
+            [flNodeIf.FLNodeIf.syntaxSymbols.enclosureStartTag, flNodeIf.FLNodeIf.syntaxSymbols.enclosureEndTag],
             [flNodeWhile.FLNodeWhile.syntaxSymbols.startTag, flNodeWhile.FLNodeWhile.syntaxSymbols.endTag],
             [flNodeFor.FLNodeFor.syntaxSymbols.startTag, flNodeFor.FLNodeFor.syntaxSymbols.endTag],
             [flNodeFunction.FLNodeFunction.syntaxSymbols.startTag, flNodeFunction.FLNodeFunction.syntaxSymbols.endTag],
@@ -43,19 +43,28 @@ export class FLNodeBlock extends flSuperModule.FLNode {
 
         this.childrenTextPublic = childrenText;
 
-        // ! Add the initial line no
         let noOfLineBreaks = 0;
         if (this.nodeLine) {
             noOfLineBreaks = this.nodeLine - 1;
         }
         
-        const children: (flNodeAssignment.FLNodeAssignment | flNodePrint.FLNodePrint)[] = childrenText.map((childText, i) => {
+        const children: (
+            flNodeAssignment.FLNodeAssignment
+            | flNodePrint.FLNodePrint
+            | flNodeIf.FLNodeIf )[] = childrenText.map((childText, i) => {
             
             if (childText.includes("\n")) {
                 noOfLineBreaks += childText.split("\n").length - 1;
             }
             
-            if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
+            // Search for IF
+            if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
+                return new flNodeIf.FLNodeIf(
+                    flSuperModule.FLNodeTypeEnum.IfConditional,
+                    childText,
+                    noOfLineBreaks + 1
+                )
+            } else if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
                 return new flNodeAssignment.FLNodeAssignment(
                     flSuperModule.FLNodeTypeEnum.VariableAssignment,
                     childText,
@@ -101,6 +110,7 @@ export class FLNodeBlock extends flSuperModule.FLNode {
                 }
             }
 
+            this.status = flSuperModule.GlobalStatusEnum.postRun;
             return {
                 currentLine: inputCurrentLine,
                 scopeEnvironment: inputScopeEnvironment,
