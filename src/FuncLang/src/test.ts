@@ -3,12 +3,13 @@
 /* IMPORTING THE FUNCTIONS TO BE TESTED */
 
 import { inputFunctionHere, functionToTestString, mixedInputArgs } from "./testFunctions";
-import { FLNodeTypeEnum } from "./FLNode/FLNodeSuper";
+import { FLNode, FLNodeTypeEnum } from "./FLNode/FLNodeSuper";
 import { FLNodeExpression } from "./FLNode/FLNodeExpression";
 import { FLNodePrint } from "./FLNode/FLNodePrint";
 import { FLNodeAssignment } from "./FLNode/FLNodeAssignment";
 import { FLNodeBlock } from "./FLNode/FLNodeBlock";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "./splitString";
+import { FLNodeConditional } from "./FLNode/FLNodeConditional";
 
 /* SETTING UP THE TESTING ENVIRONMENT */
 
@@ -300,5 +301,295 @@ compareFunctionOutput(() => {
     return testNode.childrenTextPublic.length;
 
 }, 4, []);
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "2 > 1",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "10 <= 1",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "10 >= 1",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "69 == 100",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "100 == 100",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "50 + 50 == 100",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "50 + 50 >= 100",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(50 + 50) >= 10 * (6 + 6)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "120 == 10 * (6 + 6)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "120 != 10 * (6 + 6)",
+        1)
+        
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "119 != 10 * (6 + 6)",
+        1)
+        
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "10 + 90 == 100",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        " ( 10 + 90 == 100)  ",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+
+    const lexEnv = {}
+    const testNode = new FLNodeAssignment(
+        FLNodeTypeEnum.VariableAssignment,
+        "a = ( 10 + 90 == 100)  ",
+        1)
+
+    const output = testNode.run(lexEnv)
+    return lexEnv["a"];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+
+    const lexEnv = {}
+    const testNode = new FLNodeAssignment(
+        FLNodeTypeEnum.VariableAssignment,
+        "abc = ( 10 + 90 != 100)  ",
+        1)
+
+    const output = testNode.run(lexEnv)
+    return lexEnv["abc"];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "!(1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "!(0)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "!(5 > 2)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "!(5 == 5)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(1 & 1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(0 & 1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(0 | 1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "(0 | 0)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 0, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "((1 | 0) | 0)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeConditional(
+        FLNodeTypeEnum.Conditional,
+        "((1 | 0) & 1)",
+        1)
+
+    const output = testNode.run({})
+    return output[0];
+
+}, 1, [])
 
 summaryOfTestSuite();

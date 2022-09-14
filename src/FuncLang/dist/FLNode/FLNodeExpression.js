@@ -76,38 +76,42 @@ var FLNodeExpression = /** @class */ (function (_super) {
         }
         switch (this.expressionSymbol) {
             case "no":
-                if (parseFloat(this.text)) {
-                    return [parseFloat(this.text), ""];
+                if (parseFloat(this.text) || parseFloat(this.text) === 0) {
+                    if (parseFloat(this.text) === 0) {
+                        return ([0, ""]);
+                    }
+                    return ([parseFloat(this.text), ""]);
                 }
                 else {
                     // Check if it there is a value and if not throw error
                     if (this.text in scopeEnvironment) {
-                        return [scopeEnvironment[this.text], ""];
+                        return ([scopeEnvironment[this.text], ""]);
                     }
                     else {
+                        console.log(this.text);
                         throw "no_variable_error";
                     }
                 }
                 break;
             case "+":
                 // make numbers add before string
-                return [childrenRunResult.reduce(function (partialRes, a) {
+                return ([childrenRunResult.reduce(function (partialRes, a) {
                         if (!isNaN(partialRes) && !isNaN(a)) {
                             return (parseFloat(partialRes) + parseFloat(a));
                         }
                         else {
                             return partialRes + a;
                         }
-                    }), ""];
+                    }), ""]);
                 break;
             case "-":
-                return [childrenRunResult.reduce(function (partialRes, a) { return partialRes - a; }), ""];
+                return ([childrenRunResult.reduce(function (partialRes, a) { return partialRes - a; }), ""]);
                 break;
             case "*":
-                return [childrenRunResult.reduce(function (partialRes, a) { return partialRes * a; }), ""];
+                return ([childrenRunResult.reduce(function (partialRes, a) { return partialRes * a; }), ""]);
                 break;
             case "/":
-                return [childrenRunResult.reduce(function (partialRes, a) { return partialRes / a; }), ""];
+                return ([childrenRunResult.reduce(function (partialRes, a) { return partialRes / a; }), ""]);
                 break;
         }
     };

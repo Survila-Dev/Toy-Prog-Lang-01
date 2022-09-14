@@ -26,8 +26,9 @@ var flNodeWhile = require("./FLNodeWhile");
 var flNodeFunction = require("./FLNodeFunction");
 var FLNodeBlock = /** @class */ (function (_super) {
     __extends(FLNodeBlock, _super);
-    function FLNodeBlock(type, text) {
+    function FLNodeBlock(type, text, nodeLine) {
         var _this = _super.call(this, type, text) || this;
+        _this.nodeLine = nodeLine;
         _this.children = _this.createChildren();
         return _this;
     }
@@ -41,12 +42,20 @@ var FLNodeBlock = /** @class */ (function (_super) {
         ];
         var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, FLNodeBlock.syntaxSymbols.lineBreak, allTagsForBlock);
         this.childrenTextPublic = childrenText;
+        // ! Add the initial line no
+        var noOfLineBreaks = 0;
+        if (this.nodeLine) {
+            noOfLineBreaks = this.nodeLine - 1;
+        }
         var children = childrenText.map(function (childText, i) {
+            if (childText.includes("\n")) {
+                noOfLineBreaks += childText.split("\n").length - 1;
+            }
             if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
-                return new flNodeAssignment.FLNodeAssignment(flSuperModule.FLNodeTypeEnum.VariableAssignment, childText, i + 1);
+                return new flNodeAssignment.FLNodeAssignment(flSuperModule.FLNodeTypeEnum.VariableAssignment, childText, noOfLineBreaks + 1);
             }
             else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
-                return new flNodePrint.FLNodePrint(flSuperModule.FLNodeTypeEnum.Print, childText, i + 1);
+                return new flNodePrint.FLNodePrint(flSuperModule.FLNodeTypeEnum.Print, childText, noOfLineBreaks + 1);
             }
         });
         children.pop();

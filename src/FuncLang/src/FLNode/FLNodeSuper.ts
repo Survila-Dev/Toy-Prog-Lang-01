@@ -3,11 +3,11 @@ export enum FLNodeTypeEnum {
     Line = "Line",
     VariableAssignment = "VariableAssignment",
     Expression = "Expression",
+    Conditional = "Conditional",
     PlusExp = "PlusExp",
     MinusExp = "MinusExp",
     MultipleExp = "MultipleExt",
     DivisionExp = "DivisionExp",
-    Condition = "Condition",
     IfConditional = "IfConditional",
     WhileControl = "WhileControl",
     ForControl = "ForControl",
@@ -62,6 +62,10 @@ export class FLNode implements FLNodeInterface {
         nodeLine?: number) {
 
             this.type = type;
+            if (!(text)) {
+                console.log("Text undefined here is the type:")
+                console.log(type);
+            }
             this.text = text.trim();
             this.status = GlobalStatusEnum.noRun;
             this.runCycleStatus = RunCycleStatusEnum.beforeRun;
@@ -82,7 +86,12 @@ export class FLNode implements FLNodeInterface {
     runOneStep(
         inputCurrentLine: number,
         inputScopeEnvironment: object,
-        inputCallStack: string[]) {
+        inputCallStack: string[]) : {
+            currentLine: number | undefined,
+            scopeEnvironment: object,
+            callStack: string[],
+            output: string | null
+        } {
 
             // This function should do nothing, because all the logic
             // is handled not at the lowest level of the node tree
@@ -105,12 +114,12 @@ export function genericStateChange(
 
     switch(inputNode.runCycleStatus) {
         case RunCycleStatusEnum.beforeRun:
-            inputNode.runCycleStatus = RunCycleStatusEnum.selectLine;
+            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
             inputNode.status = GlobalStatusEnum.inRun;
             break;
-        case RunCycleStatusEnum.selectLine:
-            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
-            break;
+        // case RunCycleStatusEnum.selectLine:
+        //     inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
+        //     break;
         case RunCycleStatusEnum.pushToStack:
             outputCallStack.push(inputNode.text);
             inputNode.runCycleStatus = RunCycleStatusEnum.evaluate;

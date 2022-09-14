@@ -1,6 +1,7 @@
 import * as flSuperModule from "./FLNodeSuper";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "../splitString";
 
+
 export class FLNodeExpression extends flSuperModule.FLNode {
 
     static syntaxSymbols = {
@@ -43,6 +44,7 @@ export class FLNodeExpression extends flSuperModule.FLNode {
 
         if (this.type === flSuperModule.FLNodeTypeEnum.Expression) {
             
+
             if (textIgnoreEnclosure.includes(
                 FLNodeExpression.syntaxSymbols.plus)) {
                     this.type = flSuperModule.FLNodeTypeEnum.PlusExp;
@@ -105,13 +107,17 @@ export class FLNodeExpression extends flSuperModule.FLNode {
 
         switch(this.expressionSymbol) {
             case "no":
-                if (parseFloat(this.text)) {
-                    return [parseFloat(this.text), ""];
+                if (parseFloat(this.text) || parseFloat(this.text) === 0) {
+                    if (parseFloat(this.text) === 0) {
+                        return ([0, ""]);
+                    }
+                    return ([parseFloat(this.text), ""]);
                 } else {
                     // Check if it there is a value and if not throw error
                     if (this.text in scopeEnvironment) {
-                        return [scopeEnvironment[this.text], ""]
+                        return ([scopeEnvironment[this.text], ""])
                     } else {
+                        console.log(this.text)
                         throw "no_variable_error"
                     }
                 }
@@ -119,23 +125,23 @@ export class FLNodeExpression extends flSuperModule.FLNode {
             case "+":
                 // make numbers add before string
                 
-                return [childrenRunResult.reduce((partialRes, a) => {
+                return ([childrenRunResult.reduce((partialRes, a) => {
                     if (!isNaN(partialRes) && !isNaN(a)) {
                         return (parseFloat(partialRes as unknown as string) + parseFloat(a as unknown as string))
                     } else {
                         return partialRes + a
                     }
                     }
-                    ), ""];
+                    ), ""]);
                 break;
             case "-":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes - a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes - a), ""]);
                 break;
             case "*":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes * a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes * a), ""]);
                 break;
             case "/":
-                return [childrenRunResult.reduce((partialRes, a) => partialRes / a), ""];
+                return ([childrenRunResult.reduce((partialRes, a) => partialRes / a), ""]);
                 break;
         }
     };

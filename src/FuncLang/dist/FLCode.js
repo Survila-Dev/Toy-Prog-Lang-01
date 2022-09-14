@@ -13,7 +13,7 @@ var FLCode = /** @class */ (function () {
         this.breakPoints = [];
         this.currentOutput = null;
         // Parsing the inputText
-        this.child = new FLNodeBlock_1.FLNodeBlock(FLNode.FLNodeTypeEnum.Block, this.internalText);
+        this.child = new FLNodeBlock_1.FLNodeBlock(FLNode.FLNodeTypeEnum.Block, inputText);
         // console.log(this.child)
         this.callStack = [];
         this.executionContext = {};

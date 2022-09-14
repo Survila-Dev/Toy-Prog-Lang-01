@@ -7,11 +7,11 @@ var FLNodeTypeEnum;
     FLNodeTypeEnum["Line"] = "Line";
     FLNodeTypeEnum["VariableAssignment"] = "VariableAssignment";
     FLNodeTypeEnum["Expression"] = "Expression";
+    FLNodeTypeEnum["Conditional"] = "Conditional";
     FLNodeTypeEnum["PlusExp"] = "PlusExp";
     FLNodeTypeEnum["MinusExp"] = "MinusExp";
     FLNodeTypeEnum["MultipleExp"] = "MultipleExt";
     FLNodeTypeEnum["DivisionExp"] = "DivisionExp";
-    FLNodeTypeEnum["Condition"] = "Condition";
     FLNodeTypeEnum["IfConditional"] = "IfConditional";
     FLNodeTypeEnum["WhileControl"] = "WhileControl";
     FLNodeTypeEnum["ForControl"] = "ForControl";
@@ -36,6 +36,10 @@ var RunCycleStatusEnum;
 var FLNode = /** @class */ (function () {
     function FLNode(type, text, nodeLine) {
         this.type = type;
+        if (!(text)) {
+            console.log("Text undefined here is the type:");
+            console.log(type);
+        }
         this.text = text.trim();
         this.status = GlobalStatusEnum.noRun;
         this.runCycleStatus = RunCycleStatusEnum.beforeRun;
@@ -72,12 +76,12 @@ function genericStateChange(inputNode, inputCallStack) {
     var outputCallStack = inputCallStack;
     switch (inputNode.runCycleStatus) {
         case RunCycleStatusEnum.beforeRun:
-            inputNode.runCycleStatus = RunCycleStatusEnum.selectLine;
+            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
             inputNode.status = GlobalStatusEnum.inRun;
             break;
-        case RunCycleStatusEnum.selectLine:
-            inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
-            break;
+        // case RunCycleStatusEnum.selectLine:
+        //     inputNode.runCycleStatus = RunCycleStatusEnum.pushToStack;
+        //     break;
         case RunCycleStatusEnum.pushToStack:
             outputCallStack.push(inputNode.text);
             inputNode.runCycleStatus = RunCycleStatusEnum.evaluate;

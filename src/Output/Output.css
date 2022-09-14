@@ -20,8 +20,24 @@
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
-    width: calc(var(--line-number-width) - 5px);   
-    background-color: var(--grey-02);
+    width: calc(var(--line-number-width) - 3px);   
+    height: auto;
     text-align: right;
-    padding: var(--line-number-padding);
+    background-color: var(--grey-02);
+    
+}
+
+.output__line_error {
+    color: red;
+}
+
+.output__line-no_error {
+    color: red;
+    padding: 0px 12px 0px 0px;
+    background-color: var(--grey-02);
+}
+
+.output__line-no {
+    background-color: var(--grey-02);
+    padding: 0px 12px 0px 0px;
 }

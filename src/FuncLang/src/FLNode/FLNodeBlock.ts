@@ -10,6 +10,7 @@ import * as flNodeFunction from "./FLNodeFunction";
 export class FLNodeBlock extends flSuperModule.FLNode {
 
     childrenTextPublic: string[];
+    nodeLine: number | undefined;
 
     static syntaxSymbols = {
         lineBreak: ";"
@@ -17,9 +18,12 @@ export class FLNodeBlock extends flSuperModule.FLNode {
 
     constructor(
         type: flSuperModule.FLNodeTypeEnum,
-        text: flSuperModule.BlockTextInterface) {
+        text: flSuperModule.BlockTextInterface,
+        nodeLine?: number) {
 
             super(type, text);
+            this.nodeLine = nodeLine;
+            
             this.children = this.createChildren();
         };
 
@@ -39,21 +43,32 @@ export class FLNodeBlock extends flSuperModule.FLNode {
 
         this.childrenTextPublic = childrenText;
 
+        // ! Add the initial line no
+        let noOfLineBreaks = 0;
+        if (this.nodeLine) {
+            noOfLineBreaks = this.nodeLine - 1;
+        }
+        
         const children: (flNodeAssignment.FLNodeAssignment | flNodePrint.FLNodePrint)[] = childrenText.map((childText, i) => {
+            
+            if (childText.includes("\n")) {
+                noOfLineBreaks += childText.split("\n").length - 1;
+            }
             
             if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
                 return new flNodeAssignment.FLNodeAssignment(
                     flSuperModule.FLNodeTypeEnum.VariableAssignment,
                     childText,
-                    i + 1
+                    noOfLineBreaks + 1
                 )
             } else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
                 return new flNodePrint.FLNodePrint(
                     flSuperModule.FLNodeTypeEnum.Print,
                     childText,
-                    i + 1
+                    noOfLineBreaks + 1
                 )
             }
+
         })
         
         children.pop()
