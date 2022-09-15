@@ -18,7 +18,7 @@ function compareFunctionOutput(inputFunc, expectedOutput, funcArgs) {
     var funcOutput = inputFunc.apply(void 0, funcArgs);
     var isEqual = false;
     // Compare arrays because of JS
-    if (Array.isArray(funcOutput)) {
+    if (Array.isArray(funcOutput) || typeof funcOutput === "string" || funcOutput instanceof String) {
         isEqual = true;
         for (var i = 0; i < funcOutput.length; i++) {
             if (funcOutput[i] !== expectedOutput[i]) {
@@ -395,4 +395,10 @@ compareFunctionOutput(function () {
     testNode.run(lexEnv);
     return [lexEnv["a"], lexEnv["b"]];
 }, [6, 12], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeExpression_1.FLNodeExpression(FLNodeSuper_1.FLNodeTypeEnum.Expression, "\"hello\"");
+    console.log(testNode);
+    console.log(testNode.run({})[0]);
+    return testNode.run({})[0];
+}, "hello", []);
 summaryOfTestSuite();

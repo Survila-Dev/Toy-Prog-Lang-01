@@ -43,37 +43,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
         }
 
     createChildren(): flSuperModule.FLNode[] {
-        // Create children - ifConditional, ifCaseBlock, elseCaseBlock (not always)
-        // Pass in text and the line position
-        // console.log("this.text")
-        // console.log(this.text)
-
-        function findSubstringBetweenTags(text: string, startTag: string, endTag: string): [string, string] {
-            let stringCutStart: number;
-            let stringCutEnd: number;
-            let foundTheFirstTag: boolean = false;
-            let foundTheSecondTag: boolean = false;
-
-            for (let i = 0; i < text.length; i++) {
-
-                if (text.substring(i, i + startTag.length) === startTag) {
-                    stringCutStart = i + startTag.length;
-                    foundTheFirstTag = true;
-                }
-
-                if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
-                    stringCutEnd = i + endTag.length;
-                    foundTheSecondTag = true;
-                }
-
-                if (foundTheFirstTag && foundTheSecondTag) {
-                    return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
-                }
-            }
-
-            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
-        }
-
+        
         this.elseCaseExists = this.text.includes(FLNodeIf.syntaxSymbols.ifElseTag);
 
         // Find the text for conditional
@@ -104,8 +74,6 @@ export class FLNodeIf extends flSuperModule.FLNode {
             const [elseCaseText, rest4] = findSubstringBetweenTags(
                 rest3, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag
             )
-
-            
 
             let elseCaseLine = this.nodeLine 
                 + ifConditionalText.split("\n").length - 1
@@ -219,4 +187,30 @@ export class FLNodeIf extends flSuperModule.FLNode {
         
     }
 
+}
+
+export function findSubstringBetweenTags(text: string, startTag: string, endTag: string): [string, string] {
+    let stringCutStart: number;
+    let stringCutEnd: number;
+    let foundTheFirstTag: boolean = false;
+    let foundTheSecondTag: boolean = false;
+
+    for (let i = 0; i < text.length; i++) {
+
+        if (text.substring(i, i + startTag.length) === startTag) {
+            stringCutStart = i + startTag.length;
+            foundTheFirstTag = true;
+        }
+
+        if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
+            stringCutEnd = i + endTag.length;
+            foundTheSecondTag = true;
+        }
+
+        if (foundTheFirstTag && foundTheSecondTag) {
+            return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
+        }
+    }
+
+    throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
 }

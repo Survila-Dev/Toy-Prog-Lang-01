@@ -31,7 +31,7 @@ export class FLNodeBlock extends flSuperModule.FLNode {
 
         const allTagsForBlock: [string, string][] = [
             [flNodeIf.FLNodeIf.syntaxSymbols.enclosureStartTag, flNodeIf.FLNodeIf.syntaxSymbols.enclosureEndTag],
-            [flNodeWhile.FLNodeWhile.syntaxSymbols.startTag, flNodeWhile.FLNodeWhile.syntaxSymbols.endTag],
+            [flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureStartTag, flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureEndTag],
             [flNodeFor.FLNodeFor.syntaxSymbols.startTag, flNodeFor.FLNodeFor.syntaxSymbols.endTag],
             [flNodeFunction.FLNodeFunction.syntaxSymbols.startTag, flNodeFunction.FLNodeFunction.syntaxSymbols.endTag],
         ]

@@ -30,7 +30,7 @@ function compareFunctionOutput<T>(
     let isEqual: boolean = false;
 
     // Compare arrays because of JS
-    if (Array.isArray(funcOutput)) {
+    if (Array.isArray(funcOutput) || typeof funcOutput === "string" || funcOutput instanceof String) {
         isEqual = true;
         for (let i = 0; i < funcOutput.length; i++) {
             if (funcOutput[i] !== expectedOutput[i]) {

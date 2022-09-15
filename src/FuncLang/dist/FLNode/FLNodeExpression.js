@@ -84,10 +84,14 @@ var FLNodeExpression = /** @class */ (function (_super) {
                 }
                 else {
                     // Check if it there is a value and if not throw error
+                    // if (this.text[0] === "\"" && this.text[this.text.length] === "\"") {
+                    //     return ([this.text.substring(1, this.text.length - 1), ""])
+                    // } else 
                     if (this.text in scopeEnvironment) {
                         return ([scopeEnvironment[this.text], ""]);
                     }
                     else {
+                        return ([this.text, ""]);
                         console.log(this.text);
                         throw "no_variable_error";
                     }
