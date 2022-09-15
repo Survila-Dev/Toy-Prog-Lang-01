@@ -19,6 +19,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
     }
 
     whichBlockChildToEval: number;
+    elseCaseExists: boolean;
 
     constructor(
         type: flSuperModule.FLNodeTypeEnum,
@@ -26,7 +27,17 @@ export class FLNodeIf extends flSuperModule.FLNode {
         nodeLine?: number) {
 
             super(type, text);
-            this.nodeLine = nodeLine;
+
+            let stringUntilIf: string = "";
+            const ifTag = FLNodeIf.syntaxSymbols.ifStartTag;
+            for (let i = 0; i < this.text.length; i++) {
+                if (this.text.substring(i, i + ifTag.length) === ifTag) {
+                    console.log("If tag length: ")
+                    console.log(ifTag.length)
+                    const stringUntilIf = this.text.substring(0, i + 1);
+                }
+            }
+            this.nodeLine = nodeLine + stringUntilIf.split("\n").length - this.text.split("\n").length;
             
             this.children = this.createChildren();
         }
@@ -63,48 +74,63 @@ export class FLNodeIf extends flSuperModule.FLNode {
             throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
         }
 
+        this.elseCaseExists = this.text.includes(FLNodeIf.syntaxSymbols.ifElseTag);
+
         // Find the text for conditional
         const [ifConditionalText, rest1] = findSubstringBetweenTags(
             this.text, FLNodeIf.syntaxSymbols.ifStartTag, FLNodeIf.syntaxSymbols.enclosureStartTag
         )
-        // console.log("ifConditionalText");
-        // console.log(ifConditionalText);
 
         const [ifCaseChildText, rest2] = findSubstringBetweenTags(
             rest1, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag
         )
-        // console.log("ifCaseChildText");
-        // console.log(ifCaseChildText);
 
-        const [elseText, rest3] = findSubstringBetweenTags(
-            rest2, FLNodeIf.syntaxSymbols.enclosureEndTag, FLNodeIf.syntaxSymbols.enclosureStartTag
-        )
-        // console.log("elseText");
-        // console.log(elseText);
+        let ifCaseLine = this.nodeLine + ifConditionalText.split("\n").length - 1;
+        if (ifCaseChildText.trimStart().split("\n").length
+        !== ifCaseChildText.split("\n").length) {
 
-        if (elseText.trim() !== FLNodeIf.syntaxSymbols.ifElseTag) {
-            throw "Invalid text close to the ELSE token"
+            ifCaseLine += ifCaseChildText.split("\n").length - ifCaseChildText.trimStart().split("\n").length;
         }
 
-        const [elseCaseText, rest4] = findSubstringBetweenTags(
-            rest3, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag
-        )
-        // console.log("elseCaseText");
-        // console.log(elseCaseText);
+        if (this.elseCaseExists) {
+            const [elseText, rest3] = findSubstringBetweenTags(
+                rest2, FLNodeIf.syntaxSymbols.enclosureEndTag, FLNodeIf.syntaxSymbols.enclosureStartTag
+            )
 
-        // Calc the line positions
+            if (elseText.trim() !== FLNodeIf.syntaxSymbols.ifElseTag) {
+                throw "Invalid text close to the ELSE token"
+            }
 
-        const ifCaseLine = this.nodeLine + ifConditionalText.split("\n").length;
-        const elseCaseLine = ifCaseLine + elseText.split("\n").length + elseCaseText.split("\n").length;
+            const [elseCaseText, rest4] = findSubstringBetweenTags(
+                rest3, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag
+            )
 
-        const children = ([
-            new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, ifConditionalText, this.nodeLine),
-            new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, ifCaseChildText, ifCaseLine),
-            new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, elseCaseText, elseCaseLine),
+            
+
+            let elseCaseLine = this.nodeLine 
+                + ifConditionalText.split("\n").length - 1
+                + ifCaseChildText.split("\n").length - 1; // + elseText.split("\n").length;
+
+            if (elseCaseText.trimStart().split("\n").length
+                !== elseCaseText.split("\n").length) {
+
+                elseCaseLine += elseCaseText.split("\n").length - elseCaseText.trimStart().split("\n").length;
+            }
+            const children = ([
+                new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, ifConditionalText, this.nodeLine),
+                new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, ifCaseChildText, ifCaseLine),
+                new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, elseCaseText, elseCaseLine),
         ])
-
-        this.children = children;
-        return children;
+            this.children = children;
+            return children;
+        } else {
+            const children = ([
+                new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, ifConditionalText, this.nodeLine),
+                new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, ifCaseChildText, ifCaseLine),
+            ])
+            this.children = children;
+            return children;
+        }
     }
 
     run(scopeEnvironment: object) : [unknown, string[] | null] {
@@ -114,7 +140,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
         let returnVal: [unknown, string[] | null];
         if (ifCondEvaluation) {
             returnVal = this.children[1].run(scopeEnvironment)
-        } else {
+        } else if (this.children.length == 3) {
             returnVal = this.children[2].run(scopeEnvironment)
         }
         return returnVal
@@ -129,16 +155,18 @@ export class FLNodeIf extends flSuperModule.FLNode {
             callStack: string[];
             output: string | null; } {
 
-        const ifCondEvaluation = convertToBoolean(this.children[0].run(inputScopeEnvironment)[0]);
-
-        if (ifCondEvaluation) {
-            this.whichBlockChildToEval = 1;
-        } else {
-            this.whichBlockChildToEval = 2;
-        }
+        
         // Check if conditional was run? if not run it and set which child block will be eval
 
         if (this.children[0].status !== flSuperModule.GlobalStatusEnum.postRun) {
+
+            const ifCondEvaluation = convertToBoolean(this.children[0].run(inputScopeEnvironment)[0]);
+
+            if (ifCondEvaluation) {
+                this.whichBlockChildToEval = 1;
+            } else {
+                this.whichBlockChildToEval = 2;
+            }
 
             const {
                 currentLine: newCurLine,
@@ -153,8 +181,19 @@ export class FLNodeIf extends flSuperModule.FLNode {
                 scopeEnvironment: newScopeEnv,
                 callStack: newCallStack,
                 output: newOutput})
-                
-        } else {
+
+        } else if (this.whichBlockChildToEval === 2 && !this.elseCaseExists) {
+            this.status = flSuperModule.GlobalStatusEnum.postRun;
+            return ({
+                currentLine: inputCurrentLine,
+                scopeEnvironment: inputScopeEnvironment,
+                callStack: inputCallStack,
+                output: null
+            })
+        
+        } else if (this.children[this.whichBlockChildToEval].status !== flSuperModule.GlobalStatusEnum.postRun){
+            
+            
             const {
                 currentLine: newCurLine,
                 scopeEnvironment: newScopeEnv,
@@ -170,25 +209,14 @@ export class FLNodeIf extends flSuperModule.FLNode {
                 output: newOutput})
         }
         
-
-        let curLine = inputCurrentLine;
-        let curScopeEnvironment = inputScopeEnvironment;
-        let curStack = inputCallStack;
-
-        return ({
-            currentLine: curLine,
-            scopeEnvironment: curScopeEnvironment,
-            callStack: curStack,
-            output: null
-        })
-
-        this.status = flSuperModule.GlobalStatusEnum.postRun;
-        return ({
-            currentLine: inputCurrentLine,
-            scopeEnvironment: inputScopeEnvironment,
-            callStack: inputCallStack,
-            output: null
-        })
+            this.status = flSuperModule.GlobalStatusEnum.postRun;
+            return ({
+                currentLine: inputCurrentLine,
+                scopeEnvironment: inputScopeEnvironment,
+                callStack: inputCallStack,
+                output: null
+            })
+        
     }
 
 }
