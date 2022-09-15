@@ -13,17 +13,36 @@ const { FLCode } = require("../dist/FLCode")
 // If test 01
 const curCode = new FLCode(
     inputText = 
-       "a = 6;\n"
-     + "IF (a > 5) {\n"
-     + "\PRINT(Larger than 5);\n"
-     + "\b = 206;"
+       "a = 2;\n"
+     + "PRINT(2);\n"
+     + "IF (a > 8) {\n"
+     + "\n\n"
+     + "\tb = 206;\n"
+     + "\tPRINT(2);\n"
+     + "\ta = 201;\n"
      + "} ELSE {\n"
-     + "\tPRINT(Lesser than 5)\n"
      + "\tb = 4002;\n"
-     + "}\n"
-     + "PRINT(b)",
+     + "\ta = 3001;\n"
+     + "};\n"
+     + "c = 45;\n"
+     + "PRINT(2);",
     executionInterval = 1000
 );
+
+// const curCode = new FLCode(
+//     inputText = 
+//        "a = 2;\n"
+//      + "PRINT(2);\n"
+//      + "IF (a > 8) {\n"
+//      + "\n\n"
+//      + "\tb = 206;\n"
+//      + "\tPRINT(2);\n"
+//      + "\ta = 201;\n"
+//      + "};\n"
+//      + "c = 45;\n"
+//      + "PRINT(2);",
+//     executionInterval = 1000
+// );
 
 // // If test 02
 // const curCode = new FLCode(

@@ -125,7 +125,6 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             this.children = [onlyChild];
             return this.children;
 
-        // If conditional tokens found 
         } else if (this.conditionalType === ConditionalType.not){
 
             const childText = stringSplitIgnoringTags(
@@ -155,14 +154,13 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             )
 
             this.children = childrenText.map((childText) => {
-                return new flExpModule.FLNodeExpression(
-                    flSuperModule.FLNodeTypeEnum.Expression,
+                return new FLNodeConditional(
+                    flSuperModule.FLNodeTypeEnum.Conditional,
                     childText
                 )
             })
 
             if (this.children.length !== 2) {
-                console.log(this.children)
                 throw "wrong number of children nodes for conditional statement"
             }
 
@@ -172,15 +170,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
 
     run(scopeEnvironment: object): [unknown, string] {
 
-        function convertToBoolean(value: number) {
-            if (parseInt(value as unknown as string) === 1) {
-                return true
-            } else if (parseInt(value as unknown as string) === 0) {
-                return false
-            } else {
-                throw "Not a boolean value to be used for not operator"
-            }
-        }
+        
 
         // Execute the children and give either 1 or 0 for boolean value
 
@@ -257,6 +247,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
 
         if (this.runCycleStatus === flSuperModule.RunCycleStatusEnum.evaluate) {
             this.runCycleStatus = flSuperModule.RunCycleStatusEnum.popOffStack;
+            
             return {
                 currentLine: this.nodeLine,
                 scopeEnvironment: inputScopeEnvironment,
@@ -272,5 +263,15 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             scopeEnvironment: inputScopeEnvironment,
             callStack: outputCallStack,
             output: null})
+    }
+}
+
+export function convertToBoolean(value: number) {
+    if (parseInt(value as unknown as string) === 1) {
+        return true
+    } else if (parseInt(value as unknown as string) === 0) {
+        return false
+    } else {
+        throw "Not a boolean value to be used for not operator"
     }
 }

@@ -35,14 +35,13 @@ var FLNodeBlock = /** @class */ (function (_super) {
     ;
     FLNodeBlock.prototype.createChildren = function () {
         var allTagsForBlock = [
-            [flNodeIf.FLNodeIf.syntaxSymbols.startTag, flNodeIf.FLNodeIf.syntaxSymbols.endTag],
+            [flNodeIf.FLNodeIf.syntaxSymbols.enclosureStartTag, flNodeIf.FLNodeIf.syntaxSymbols.enclosureEndTag],
             [flNodeWhile.FLNodeWhile.syntaxSymbols.startTag, flNodeWhile.FLNodeWhile.syntaxSymbols.endTag],
             [flNodeFor.FLNodeFor.syntaxSymbols.startTag, flNodeFor.FLNodeFor.syntaxSymbols.endTag],
             [flNodeFunction.FLNodeFunction.syntaxSymbols.startTag, flNodeFunction.FLNodeFunction.syntaxSymbols.endTag],
         ];
         var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, FLNodeBlock.syntaxSymbols.lineBreak, allTagsForBlock);
         this.childrenTextPublic = childrenText;
-        // ! Add the initial line no
         var noOfLineBreaks = 0;
         if (this.nodeLine) {
             noOfLineBreaks = this.nodeLine - 1;
@@ -51,7 +50,13 @@ var FLNodeBlock = /** @class */ (function (_super) {
             if (childText.includes("\n")) {
                 noOfLineBreaks += childText.split("\n").length - 1;
             }
-            if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
+            // Search for IF
+            if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
+                console.log("IF FOUND!");
+                console.log(childText);
+                return new flNodeIf.FLNodeIf(flSuperModule.FLNodeTypeEnum.IfConditional, childText, noOfLineBreaks + 1);
+            }
+            else if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
                 return new flNodeAssignment.FLNodeAssignment(flSuperModule.FLNodeTypeEnum.VariableAssignment, childText, noOfLineBreaks + 1);
             }
             else if (childText.includes(flNodePrint.FLNodePrint.syntaxSymbols.printStart)) {
@@ -74,6 +79,7 @@ var FLNodeBlock = /** @class */ (function (_super) {
                 };
             }
         }
+        this.status = flSuperModule.GlobalStatusEnum.postRun;
         return {
             currentLine: inputCurrentLine,
             scopeEnvironment: inputScopeEnvironment,

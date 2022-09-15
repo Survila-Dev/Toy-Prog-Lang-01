@@ -8,6 +8,7 @@ var FLNodeAssignment_1 = require("./FLNode/FLNodeAssignment");
 var FLNodeBlock_1 = require("./FLNode/FLNodeBlock");
 var splitString_1 = require("./splitString");
 var FLNodeConditional_1 = require("./FLNode/FLNodeConditional");
+var FLNodeIf_1 = require("./FLNode/FLNodeIf");
 /* SETTING UP THE TESTING ENVIRONMENT */
 var currentTestNo = 1;
 var numOfSuccessfullTests = 0;
@@ -366,4 +367,32 @@ compareFunctionOutput(function () {
     var output = testNode.run({});
     return output[0];
 }, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "(1 | 0) & 1", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "((2 < 1) | (!(0))) & (5 > 2)", 1);
+    var output = testNode.run({});
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "((2 < a) | (!(c))) & (a > 2)", 1);
+    var output = testNode.run({ "a": 6, "c": 1 });
+    return output[0];
+}, 1, []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeIf_1.FLNodeIf(FLNodeSuper_1.FLNodeTypeEnum.IfConditional, "IF (1) {\na = 5;\n b=9;\n} ELSE {\na = 6;\n b=12;\n}", 1);
+    // console.log(testNode.text)
+    var lexEnv = { "a": 0 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"], lexEnv["b"]];
+}, [5, 9], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeIf_1.FLNodeIf(FLNodeSuper_1.FLNodeTypeEnum.IfConditional, "IF (0) {\na = 5;\n b=9;\n} ELSE {\na = 6;\n b=12;\n}", 1);
+    var lexEnv = { "a": 6 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"], lexEnv["b"]];
+}, [6, 12], []);
 summaryOfTestSuite();

@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-exports.FLNodeConditional = void 0;
+exports.convertToBoolean = exports.FLNodeConditional = void 0;
 var flSuperModule = require("./FLNodeSuper");
 var flExpModule = require("./FLNodeExpression");
 var splitString_1 = require("../splitString");
@@ -105,7 +105,6 @@ var FLNodeConditional = /** @class */ (function (_super) {
             var onlyChild = new flExpModule.FLNodeExpression(flSuperModule.FLNodeTypeEnum.Expression, this.text);
             this.children = [onlyChild];
             return this.children;
-            // If conditional tokens found 
         }
         else if (this.conditionalType === ConditionalType.not) {
             var childText = (0, splitString_1.stringSplitIgnoringTags)(this.text, this.conditionalSymbol, [[enclosureStartSymbol, enclosureEndSymbol]])[1];
@@ -120,27 +119,15 @@ var FLNodeConditional = /** @class */ (function (_super) {
             }
             var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, this.conditionalSymbol, [[enclosureStartSymbol, enclosureEndSymbol]]);
             this.children = childrenText.map(function (childText) {
-                return new flExpModule.FLNodeExpression(flSuperModule.FLNodeTypeEnum.Expression, childText);
+                return new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, childText);
             });
             if (this.children.length !== 2) {
-                console.log(this.children);
                 throw "wrong number of children nodes for conditional statement";
             }
             return this.children;
         }
     };
     FLNodeConditional.prototype.run = function (scopeEnvironment) {
-        function convertToBoolean(value) {
-            if (parseInt(value) === 1) {
-                return true;
-            }
-            else if (parseInt(value) === 0) {
-                return false;
-            }
-            else {
-                throw "Not a boolean value to be used for not operator";
-            }
-        }
         // Execute the children and give either 1 or 0 for boolean value
         if (this.children.length === 1) {
             switch (this.conditionalType) {
@@ -231,3 +218,15 @@ var FLNodeConditional = /** @class */ (function (_super) {
     return FLNodeConditional;
 }(flSuperModule.FLNode));
 exports.FLNodeConditional = FLNodeConditional;
+function convertToBoolean(value) {
+    if (parseInt(value) === 1) {
+        return true;
+    }
+    else if (parseInt(value) === 0) {
+        return false;
+    }
+    else {
+        throw "Not a boolean value to be used for not operator";
+    }
+}
+exports.convertToBoolean = convertToBoolean;

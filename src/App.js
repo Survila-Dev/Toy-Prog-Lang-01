@@ -39,7 +39,19 @@ function App() {
         globalStack: [["","Snip02"]],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "Hello2", 69
+          "a = 20;\n"
+        + "PRINT(2);\n"
+        + "IF (a > 8) {\n"
+        + "\n\n"
+        + "\tb = 206;\n"
+        + "\tPRINT(2);\n"
+        + "\ta = 201;\n"
+        + "} ELSE {\n"
+        + "\tb = 4002;\n"
+        + "\ta = 3001;\n"
+        + "};\n"
+        + "c = 45;\n"
+        + "PRINT(2);", 69
         ),
         nominalStackSize: 0
       }
