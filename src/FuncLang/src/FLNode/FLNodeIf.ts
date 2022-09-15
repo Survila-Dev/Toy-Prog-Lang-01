@@ -29,6 +29,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
             super(type, text);
 
             let stringUntilIf: string = "";
+            
             const ifTag = FLNodeIf.syntaxSymbols.ifStartTag;
             for (let i = 0; i < this.text.length; i++) {
                 if (this.text.substring(i, i + ifTag.length) === ifTag) {
@@ -43,7 +44,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
         }
 
     createChildren(): flSuperModule.FLNode[] {
-        
+
         this.elseCaseExists = this.text.includes(FLNodeIf.syntaxSymbols.ifElseTag);
 
         // Find the text for conditional
