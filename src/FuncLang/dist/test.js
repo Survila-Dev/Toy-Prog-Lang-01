@@ -9,6 +9,7 @@ var FLNodeBlock_1 = require("./FLNode/FLNodeBlock");
 var splitString_1 = require("./splitString");
 var FLNodeConditional_1 = require("./FLNode/FLNodeConditional");
 var FLNodeIf_1 = require("./FLNode/FLNodeIf");
+var FLNodeFor_1 = require("./FLNode/FLNodeFor");
 /* SETTING UP THE TESTING ENVIRONMENT */
 var currentTestNo = 1;
 var numOfSuccessfullTests = 0;
@@ -18,7 +19,7 @@ function compareFunctionOutput(inputFunc, expectedOutput, funcArgs) {
     var funcOutput = inputFunc.apply(void 0, funcArgs);
     var isEqual = false;
     // Compare arrays because of JS
-    if (Array.isArray(funcOutput)) {
+    if (Array.isArray(funcOutput) || typeof funcOutput === "string" || funcOutput instanceof String) {
         isEqual = true;
         for (var i = 0; i < funcOutput.length; i++) {
             if (funcOutput[i] !== expectedOutput[i]) {
@@ -219,23 +220,6 @@ compareFunctionOutput(function () {
     return [scopeEnv.a, scopeEnv.b, scopeEnv.c, scopeEnv.d];
 }, [10, 26, 36, 26], []);
 compareFunctionOutput(function () {
-    var scopeEnv = {
-        "a": 20,
-        "b": 25
-    };
-    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "a = 10;" +
-        "b = 26;" +
-        "FUNCTION Here I am" +
-        "text;" +
-        "END;" +
-        "WHILE" +
-        "text;" +
-        "( )" +
-        ";" +
-        "END");
-    return testNode.childrenTextPublic.length;
-}, 4, []);
-compareFunctionOutput(function () {
     var testNode = new FLNodeConditional_1.FLNodeConditional(FLNodeSuper_1.FLNodeTypeEnum.Conditional, "(1)", 1);
     var output = testNode.run({});
     return output[0];
@@ -395,4 +379,49 @@ compareFunctionOutput(function () {
     testNode.run(lexEnv);
     return [lexEnv["a"], lexEnv["b"]];
 }, [6, 12], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "a = 2;\nWHILE (a < 10) {\na = a + 1;\nPRINT(a);\n};\n", 1);
+    var lexEnv = { "a": 6 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"]];
+}, [10], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "a = 22;\nWHILE (a < 10) {\na = a + 1;\nPRINT(a);\n};\n", 1);
+    var lexEnv = { "a": 6 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"]];
+}, [22], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "a = 3;\nb=22;\nIF (a < 10) {\na = a + 1;\na = a + 2;\nIF (b > 5) {\nb = b + 1;\na = a + 15;\n};\nPRINT(a);\n};\n", 1);
+    // console.log(testNode.children[2]);
+    // const firstIfBlockNode = testNode.children[2].children[1] as FLNode;
+    // console.log(firstIfBlockNode.childrenTextPublic);
+    var lexEnv = { "a": 6 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"], lexEnv["b"]];
+}, [21, 23], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "a = 2;\nb=2;\nWHILE (a < 10) {\na = a + 1;\nIF (a > 5){\n b = b + 1;\n};\nPRINT(a);\n};\n", 1);
+    var lexEnv = { "a": 6 };
+    testNode.run(lexEnv);
+    return [lexEnv["a"], lexEnv["b"]];
+}, [10, 7], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "c = 0;\na = 0;\nWHILE (a < 10) {\nb = 0;\nWHILE (b < 10) {\nc = c + 1;\n b = b + 1;\n};a = a + 1;\n};", 1);
+    var lexEnv = {};
+    testNode.run(lexEnv);
+    return [lexEnv["c"]];
+}, [100], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeFor_1.FLNodeFor(FLNodeSuper_1.FLNodeTypeEnum.ForControl, "FOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};", 1);
+    var lexEnv = {};
+    testNode.run(lexEnv);
+    return [lexEnv["c"], lexEnv["b"]];
+}, [18, 12], []);
+compareFunctionOutput(function () {
+    var testNode = new FLNodeBlock_1.FLNodeBlock(FLNodeSuper_1.FLNodeTypeEnum.Block, "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};\nd = 16;", 1);
+    var lexEnv = {};
+    testNode.run(lexEnv);
+    return [lexEnv["c"], lexEnv["b"], lexEnv["k"], lexEnv["d"]];
+}, [18, 12, 2, 16], []);
 summaryOfTestSuite();

@@ -29,11 +29,10 @@ export class FLNodeIf extends flSuperModule.FLNode {
             super(type, text);
 
             let stringUntilIf: string = "";
+            
             const ifTag = FLNodeIf.syntaxSymbols.ifStartTag;
             for (let i = 0; i < this.text.length; i++) {
                 if (this.text.substring(i, i + ifTag.length) === ifTag) {
-                    console.log("If tag length: ")
-                    console.log(ifTag.length)
                     const stringUntilIf = this.text.substring(0, i + 1);
                 }
             }
@@ -43,36 +42,6 @@ export class FLNodeIf extends flSuperModule.FLNode {
         }
 
     createChildren(): flSuperModule.FLNode[] {
-        // Create children - ifConditional, ifCaseBlock, elseCaseBlock (not always)
-        // Pass in text and the line position
-        // console.log("this.text")
-        // console.log(this.text)
-
-        function findSubstringBetweenTags(text: string, startTag: string, endTag: string): [string, string] {
-            let stringCutStart: number;
-            let stringCutEnd: number;
-            let foundTheFirstTag: boolean = false;
-            let foundTheSecondTag: boolean = false;
-
-            for (let i = 0; i < text.length; i++) {
-
-                if (text.substring(i, i + startTag.length) === startTag) {
-                    stringCutStart = i + startTag.length;
-                    foundTheFirstTag = true;
-                }
-
-                if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
-                    stringCutEnd = i + endTag.length;
-                    foundTheSecondTag = true;
-                }
-
-                if (foundTheFirstTag && foundTheSecondTag) {
-                    return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
-                }
-            }
-
-            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
-        }
 
         this.elseCaseExists = this.text.includes(FLNodeIf.syntaxSymbols.ifElseTag);
 
@@ -105,8 +74,6 @@ export class FLNodeIf extends flSuperModule.FLNode {
                 rest3, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag
             )
 
-            
-
             let elseCaseLine = this.nodeLine 
                 + ifConditionalText.split("\n").length - 1
                 + ifCaseChildText.split("\n").length - 1; // + elseText.split("\n").length;
@@ -137,7 +104,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
 
         // Depending on the ifConditional result eval one of the remaining children
         const ifCondEvaluation = convertToBoolean(this.children[0].run(scopeEnvironment)[0]);
-        let returnVal: [unknown, string[] | null];
+        let returnVal: [unknown, string[] | null] = [, []];
         if (ifCondEvaluation) {
             returnVal = this.children[1].run(scopeEnvironment)
         } else if (this.children.length == 3) {
@@ -209,14 +176,87 @@ export class FLNodeIf extends flSuperModule.FLNode {
                 output: newOutput})
         }
         
-            this.status = flSuperModule.GlobalStatusEnum.postRun;
-            return ({
-                currentLine: inputCurrentLine,
-                scopeEnvironment: inputScopeEnvironment,
-                callStack: inputCallStack,
-                output: null
-            })
+        this.status = flSuperModule.GlobalStatusEnum.postRun;
+        return ({
+            currentLine: inputCurrentLine,
+            scopeEnvironment: inputScopeEnvironment,
+            callStack: inputCallStack,
+            output: null
+        })
         
     }
 
+}
+
+export function findSubstringBetweenTags(text: string, startTag: string, endTag: string): [string, string] {
+    let stringCutStart: number;
+    let stringCutEnd: number;
+    let foundTheFirstTag: boolean = false;
+    let foundTheSecondTag: boolean = false;
+
+    let tagStack = 0;
+
+    const tagsIdentical = startTag === endTag;
+
+    if (tagsIdentical) {
+        // console.log("identical tags")
+
+        for (let i = 0; i < text.length; i++) {
+            if (foundTheFirstTag && foundTheSecondTag) {
+                return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
+            }
+
+            if ((!foundTheFirstTag) &&text.substring(i, i + startTag.length) === startTag) { 
+                stringCutStart = i + startTag.length;
+                foundTheFirstTag = true;
+                continue;
+            }
+
+            if (text.substring(i, i + endTag.length) === endTag) { 
+                stringCutEnd = i + endTag.length;
+                foundTheSecondTag = true;
+                continue;
+            }
+        }
+
+        if (foundTheFirstTag && foundTheSecondTag) {
+            return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
+        } else {
+            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
+        }
+
+    } else {
+
+        for (let i = 0; i < text.length; i++) {
+            // console.log(`Symbol ${text[i]}, found first tag = ${foundTheFirstTag}, found second tag = ${foundTheSecondTag}`)
+
+            if (foundTheFirstTag && foundTheSecondTag) {
+                return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
+            }
+
+            if (text.substring(i, i + startTag.length) === startTag) { 
+                if (tagStack === 0 && !foundTheFirstTag) {
+                    stringCutStart = i + startTag.length;
+                    foundTheFirstTag = true;
+                }
+                if (!tagsIdentical) tagStack++;
+                continue;
+            }
+
+            if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
+                if (!tagsIdentical) tagStack--;
+                if (tagStack === 0) {
+                    stringCutEnd = i + endTag.length;;
+                    foundTheSecondTag = true;
+                }
+                continue;
+            }
+        }
+
+        if (foundTheFirstTag && foundTheSecondTag) {
+            return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
+        } else {
+            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
+        }
+    }
 }

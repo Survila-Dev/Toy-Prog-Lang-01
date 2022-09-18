@@ -27,7 +27,7 @@ function App() {
         globalStack: [["","Snip01"]],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "Hello1", 69
+          "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69
         ),
         nominalStackSize: 0
       }
@@ -39,19 +39,19 @@ function App() {
         globalStack: [["","Snip02"]],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "a = 20;\n"
-        + "PRINT(2);\n"
-        + "IF (a > 8) {\n"
-        + "\n\n"
-        + "\tb = 206;\n"
-        + "\tPRINT(2);\n"
-        + "\ta = 201;\n"
-        + "} ELSE {\n"
-        + "\tb = 4002;\n"
-        + "\ta = 3001;\n"
-        + "};\n"
-        + "c = 45;\n"
-        + "PRINT(2);", 69
+          "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};\nd = 16;", 69
+        ),
+        nominalStackSize: 0
+      }
+    ))
+
+    localStorage.setItem("snippet3", JSON.stringify(
+      {
+        globalLexEnv: {"a_snip02": [69, "number"]},
+        globalStack: [["","Snip02"]],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        currentCode: new FLCode(
+          "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69
         ),
         nominalStackSize: 0
       }
@@ -238,7 +238,7 @@ function App() {
         currentErrorLine: 3,
     },
     currentCode: new FLCode(
-      "Ei = 6;\nPRINT(2);\nTu = 12;\nc = Ei+Ei;\nEi = 6;\n\n\nPRINT(2);\nTu = 12;\nc = Ei+Ei;",
+      "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;",
       1000
     ),
     nominalStackSize: 0}

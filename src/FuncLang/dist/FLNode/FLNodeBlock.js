@@ -36,8 +36,9 @@ var FLNodeBlock = /** @class */ (function (_super) {
     FLNodeBlock.prototype.createChildren = function () {
         var allTagsForBlock = [
             [flNodeIf.FLNodeIf.syntaxSymbols.enclosureStartTag, flNodeIf.FLNodeIf.syntaxSymbols.enclosureEndTag],
-            [flNodeWhile.FLNodeWhile.syntaxSymbols.startTag, flNodeWhile.FLNodeWhile.syntaxSymbols.endTag],
-            [flNodeFor.FLNodeFor.syntaxSymbols.startTag, flNodeFor.FLNodeFor.syntaxSymbols.endTag],
+            [flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureStartTag, flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureEndTag],
+            [flNodeFor.FLNodeFor.syntaxSymbols.enclosureStartTag, flNodeFor.FLNodeFor.syntaxSymbols.enclosureEndTag],
+            // [flNodeFor.FLNodeFor.syntaxSymbols.declEnclosureStartTag, flNodeFor.FLNodeFor.syntaxSymbols.declEnclosureEndTag],
             [flNodeFunction.FLNodeFunction.syntaxSymbols.startTag, flNodeFunction.FLNodeFunction.syntaxSymbols.endTag],
         ];
         var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, FLNodeBlock.syntaxSymbols.lineBreak, allTagsForBlock);
@@ -50,10 +51,14 @@ var FLNodeBlock = /** @class */ (function (_super) {
             if (childText.includes("\n")) {
                 noOfLineBreaks += childText.split("\n").length - 1;
             }
-            // Search for IF
-            if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
-                console.log("IF FOUND!");
-                console.log(childText);
+            if (childText.includes(flNodeFor.FLNodeFor.syntaxSymbols.forStart)) {
+                return new flNodeFor.FLNodeFor(flSuperModule.FLNodeTypeEnum.ForControl, childText, noOfLineBreaks + 1);
+            }
+            else if (childText.includes(flNodeWhile.FLNodeWhile.syntaxSymbols.whileStart)) {
+                return new flNodeWhile.FLNodeWhile(flSuperModule.FLNodeTypeEnum.WhileControl, childText, noOfLineBreaks + 1);
+                // Search for IF
+            }
+            else if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
                 return new flNodeIf.FLNodeIf(flSuperModule.FLNodeTypeEnum.IfConditional, childText, noOfLineBreaks + 1);
             }
             else if (childText.includes(flNodeAssignment.FLNodeAssignment.syntaxSymbols.assignment)) {
@@ -88,18 +93,20 @@ var FLNodeBlock = /** @class */ (function (_super) {
         };
     };
     FLNodeBlock.prototype.run = function (scopeEnvironment) {
-        var _a;
         var consOut;
         var singleConsOut;
         consOut = [];
         for (var i = 0; i < this.children.length; i++) {
-            _a = this.children[i].run(scopeEnvironment), singleConsOut = _a[1];
+            var outTemp = this.children[i].run(scopeEnvironment);
+            // console.log(this.children[i])
+            // console.log(outTemp);
+            singleConsOut = outTemp[1];
             if (singleConsOut) {
                 consOut.push(singleConsOut);
             }
         }
         if (consOut.length > 0) {
-            console.log(consOut);
+            // console.log(consOut);
             return ([null, consOut]);
         }
         return ([null, null]);

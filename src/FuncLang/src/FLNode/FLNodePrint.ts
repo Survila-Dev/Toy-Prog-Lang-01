@@ -30,6 +30,7 @@ export class FLNodePrint extends flSuperModule.FLNode {
         const child = new flExpModule.FLNodeExpression(
             flSuperModule.FLNodeTypeEnum.Expression,
             childText);
+        
         this.children = [child]
         return [child]
     }

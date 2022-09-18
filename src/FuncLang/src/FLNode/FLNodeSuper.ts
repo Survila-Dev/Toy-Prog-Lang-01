@@ -46,6 +46,7 @@ export interface FLNodeInterface {
 
     status: GlobalStatusEnum;
     runCycleStatus: RunCycleStatusEnum;
+    
 }
 
 export class FLNode implements FLNodeInterface {
@@ -55,6 +56,7 @@ export class FLNode implements FLNodeInterface {
     status: GlobalStatusEnum;
     runCycleStatus: RunCycleStatusEnum;
     nodeLine?: number;
+    childrenTextPublic: string[];
 
     constructor(
         type: FLNodeTypeEnum,
