@@ -17,6 +17,9 @@ export class FLNodeWhile extends flSuperModule.FLNode {
         enclosureEndTag: "}"
     }
 
+    shouldConditionalChildBeRun: boolean;
+    executeBlockChild: boolean;
+
     constructor(
         type: flSuperModule.FLNodeTypeEnum,
         text: flSuperModule.BlockTextInterface,
@@ -35,6 +38,7 @@ export class FLNodeWhile extends flSuperModule.FLNode {
             }
             this.nodeLine = nodeLine + stringUntilWhile.split("\n").length - this.text.split("\n").length;
             
+            this.shouldConditionalChildBeRun = true;
             this.children = this.createChildren();
         }
 
@@ -95,12 +99,63 @@ export class FLNodeWhile extends flSuperModule.FLNode {
             callStack: string[];
             output: string | null; } {
 
-        this.status = flSuperModule.GlobalStatusEnum.postRun;
-        return ({
-            currentLine: inputCurrentLine,
-            scopeEnvironment: inputScopeEnvironment,
-            callStack: inputCallStack,
-            output: null
-        })
+        // check if conditional node should be run
+        if (this.shouldConditionalChildBeRun) {
+
+            // if conditional child is postrun when let this node execute the block and stop executing
+            if (this.children[0].status === flSuperModule.GlobalStatusEnum.postRun) {
+                this.shouldConditionalChildBeRun = false;
+                const conditionalChildValue = convertToBoolean(this.children[0].run(inputScopeEnvironment)[0]);
+                this.executeBlockChild = conditionalChildValue;
+
+                if (!conditionalChildValue) {
+                    this.status = flSuperModule.GlobalStatusEnum.postRun;
+                    return ({
+                        currentLine: inputCurrentLine,
+                        scopeEnvironment: inputScopeEnvironment,
+                        callStack: inputCallStack,
+                        output: null
+                    })
+                }
+            } else { // runs conditional child
+                const {
+                    currentLine: newCurLine,
+                    scopeEnvironment: newScopeEnv,
+                    callStack: newCallStack,
+                    output: newOutput} =
+                        this.children[0].runOneStep(
+                        inputCurrentLine, inputScopeEnvironment, inputCallStack);
+
+                    return ({
+                        currentLine: newCurLine,
+                        scopeEnvironment: newScopeEnv,
+                        callStack: newCallStack,
+                        output: newOutput})
+            }
+
+        } else { // block child will be run, if block child is postrun run the conditional again
+            if (this.children[1].status === flSuperModule.GlobalStatusEnum.postRun) {
+                this.shouldConditionalChildBeRun = true;
+                
+            } else { // Block child is evaluted
+                const {
+                    currentLine: newCurLine,
+                    scopeEnvironment: newScopeEnv,
+                    callStack: newCallStack,
+                    output: newOutput} =
+                        this.children[0].runOneStep(
+                        inputCurrentLine, inputScopeEnvironment, inputCallStack);
+
+                return ({
+                    currentLine: newCurLine,
+                    scopeEnvironment: newScopeEnv,
+                    callStack: newCallStack,
+                    output: newOutput})
+            }
+
+        }
+
+        // this node is done running
+        
     }
 }
