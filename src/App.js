@@ -20,6 +20,9 @@ function App() {
   const [consListErrors, updateConsListErrors] = React.useState([])
 
   React.useEffect(() => {
+    // Initialization of the page
+    document.title =  "Toy Programming Language";
+
     // Set up the local storage
     localStorage.setItem("snippet0", JSON.stringify(
       {
