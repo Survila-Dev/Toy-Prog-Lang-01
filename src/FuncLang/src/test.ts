@@ -10,7 +10,9 @@ import { FLNodeAssignment } from "./FLNode/FLNodeAssignment";
 import { FLNodeBlock } from "./FLNode/FLNodeBlock";
 import { stringIgnoringTags, stringSplitIgnoringTags } from "./splitString";
 import { FLNodeConditional } from "./FLNode/FLNodeConditional";
-import { FLNodeIf } from "./FLNode/FLNodeIf";
+import { findSubstringBetweenTags, FLNodeIf } from "./FLNode/FLNodeIf";
+import { FLNodeWhile } from "./FLNode/FLNodeWhile";
+import { FLNodeFor } from "./FLNode/FLNodeFor";
 
 /* SETTING UP THE TESTING ENVIRONMENT */
 
@@ -280,28 +282,6 @@ compareFunctionOutput(() => {
     return [scopeEnv.a, scopeEnv.b, scopeEnv.c, scopeEnv.d];
 
 }, [10, 26, 36, 26], []);
-
-compareFunctionOutput(() => {
-    let scopeEnv = {
-        "a": 20,
-        "b": 25,
-    }
-    const testNode = new FLNodeBlock(FLNodeTypeEnum.Block,
-        "a = 10;" +
-        "b = 26;" +
-        "FUNCTION Here I am" +
-        "text;" +
-        "END;" +
-        "WHILE" +
-        "text;" +
-        "( )" +
-        ";" +
-        "END"
-        );
-    
-    return testNode.childrenTextPublic.length;
-
-}, 4, []);
 
 compareFunctionOutput(() => {
     const testNode = new FLNodeConditional(
@@ -650,5 +630,92 @@ compareFunctionOutput(() => {
     return [lexEnv["a"], lexEnv["b"]];
 
 }, [6, 12], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "a = 2;\nWHILE (a < 10) {\na = a + 1;\nPRINT(a);\n};\n",
+        1)
+
+    const lexEnv = {"a": 6}
+    testNode.run(lexEnv)
+    return [lexEnv["a"]];
+
+}, [10], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "a = 22;\nWHILE (a < 10) {\na = a + 1;\nPRINT(a);\n};\n",
+        1)
+
+    const lexEnv = {"a": 6}
+    testNode.run(lexEnv)
+    return [lexEnv["a"]];
+
+}, [22], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "a = 3;\nb=22;\nIF (a < 10) {\na = a + 1;\na = a + 2;\nIF (b > 5) {\nb = b + 1;\na = a + 15;\n};\nPRINT(a);\n};\n",
+        1)
+
+    // console.log(testNode.children[2]);
+    // const firstIfBlockNode = testNode.children[2].children[1] as FLNode;
+    // console.log(firstIfBlockNode.childrenTextPublic);
+    const lexEnv = {"a": 6}
+    testNode.run(lexEnv)
+    return [lexEnv["a"], lexEnv["b"]];
+
+}, [21, 23], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "a = 2;\nb=2;\nWHILE (a < 10) {\na = a + 1;\nIF (a > 5){\n b = b + 1;\n};\nPRINT(a);\n};\n",
+        1)
+
+    const lexEnv = {"a": 6}
+    testNode.run(lexEnv)
+    return [lexEnv["a"], lexEnv["b"]];
+
+}, [10, 7], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "c = 0;\na = 0;\nWHILE (a < 10) {\nb = 0;\nWHILE (b < 10) {\nc = c + 1;\n b = b + 1;\n};a = a + 1;\n};",
+        1)
+
+    const lexEnv = {}
+    testNode.run(lexEnv)
+    return [lexEnv["c"]];
+
+}, [100], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeFor(
+        FLNodeTypeEnum.ForControl,
+        "FOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};",
+        1)
+
+    const lexEnv = {}
+    testNode.run(lexEnv)
+    return [lexEnv["c"], lexEnv["b"]];
+
+}, [18, 12], [])
+
+compareFunctionOutput(() => {
+    const testNode = new FLNodeBlock(
+        FLNodeTypeEnum.Block,
+        "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};\nd = 16;",
+        1)
+
+    const lexEnv = {}
+    testNode.run(lexEnv)
+    return [lexEnv["c"], lexEnv["b"], lexEnv["k"], lexEnv["d"]];
+
+}, [18, 12, 2, 16], [])
 
 summaryOfTestSuite();

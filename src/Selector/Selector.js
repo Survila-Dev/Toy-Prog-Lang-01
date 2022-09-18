@@ -87,7 +87,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     const options = []
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         options.push(
             <article
                 className = "optionarticle"

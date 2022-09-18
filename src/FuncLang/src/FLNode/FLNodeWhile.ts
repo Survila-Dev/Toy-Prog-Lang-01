@@ -20,12 +20,22 @@ export class FLNodeWhile extends flSuperModule.FLNode {
     shouldConditionalChildBeRun: boolean;
     executeBlockChild: boolean;
 
+    forInitString: string;
+    forIterString: string;
+
     constructor(
         type: flSuperModule.FLNodeTypeEnum,
         text: flSuperModule.BlockTextInterface,
-        nodeLine?: number) {
+        nodeLine?: number,
+        forInitString: string = "",
+        forIterString: string = "",) {
 
             super(type, text);
+
+            this.forInitString = forInitString;
+            this.forIterString = forIterString;
+            if (this.forInitString.length !== 0) this.forInitString += ";"
+            if (this.forIterString.length !== 0) this.forIterString += ";"
 
             let stringUntilWhile: string = "";
             
@@ -42,7 +52,7 @@ export class FLNodeWhile extends flSuperModule.FLNode {
             this.children = this.createChildren();
         }
 
-    createChildren(): flSuperModule.FLNode[] {
+    createChildren(onlyFirstTwo = false): flSuperModule.FLNode[] {
         // Create child for whileCondition, whileCase
         const [whileConditionalText, rest1] = flNodeIf.findSubstringBetweenTags(
             this.text, FLNodeWhile.syntaxSymbols.whileStart, FLNodeWhile.syntaxSymbols.enclosureStartTag
@@ -69,10 +79,29 @@ export class FLNodeWhile extends flSuperModule.FLNode {
                 - whileCaseText.trimStart().split("\n").length;
         }
 
-        const children = ([
-            new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, whileConditionalText),
-            new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, whileCaseText)
-        ]);
+        let children: flSuperModule.FLNode[];
+        if (this.forInitString.length === 0) {
+            children = ([
+                new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, whileConditionalText, whileConditionalLine),
+                new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, whileCaseText + this.forIterString, whileCaseLine)
+            ]);
+        } else {
+            if (onlyFirstTwo) {
+                children = ([
+                    new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, whileConditionalText, whileConditionalLine),
+                    new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, whileCaseText + this.forIterString, whileCaseLine),
+                    this.children[2] as FLNodeBlock,
+                ]);
+
+            } else {
+                children = ([
+                    new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, whileConditionalText, whileConditionalLine),
+                    new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, whileCaseText + this.forIterString, whileCaseLine),
+                    new FLNodeBlock(flSuperModule.FLNodeTypeEnum.Block, this.forInitString, whileConditionalLine),
+                ]);
+            }
+        }
+        
         this.children = children;
 
         return children;
@@ -81,6 +110,13 @@ export class FLNodeWhile extends flSuperModule.FLNode {
     run(scopeEnvironment: object) : [unknown, string[] | null] {
 
         let returnVal: [unknown, string[] | null]
+        returnVal = [, []];
+        if (this.children.length === 3) { // Running for init command
+            const returnValNew = this.children[2].run(scopeEnvironment);
+            // console.log("scopeEnvironment");
+            // console.log(scopeEnvironment);
+            returnVal[1] = returnVal[1].concat([returnValNew[1]])
+        }
         while(convertToBoolean(this.children[0].run(scopeEnvironment)[0])) {
             const returnValNew = this.children[1].run(scopeEnvironment);
             returnVal[1] = returnVal[1].concat([returnValNew[1]])
@@ -99,45 +135,49 @@ export class FLNodeWhile extends flSuperModule.FLNode {
             callStack: string[];
             output: string | null; } {
 
+        // console.log(this.shouldConditionalChildBeRun)
+        if (this.children.length === 3
+            && this.children[2].status !== flSuperModule.GlobalStatusEnum.postRun) { // Run for init
+            const {
+                currentLine: newCurLine,
+                scopeEnvironment: newScopeEnv,
+                callStack: newCallStack,
+                output: newOutput} =
+                    this.children[2].runOneStep(
+                    inputCurrentLine, inputScopeEnvironment, inputCallStack);
+
+            return ({
+                currentLine: newCurLine,
+                scopeEnvironment: newScopeEnv,
+                callStack: newCallStack,
+                output: newOutput})
+        }
+
         // check if conditional node should be run
         if (this.shouldConditionalChildBeRun) {
+            // console.log("Conditional child starts running")
 
             // if conditional child is postrun when let this node execute the block and stop executing
             if (this.children[0].status === flSuperModule.GlobalStatusEnum.postRun) {
+
                 this.shouldConditionalChildBeRun = false;
                 const conditionalChildValue = convertToBoolean(this.children[0].run(inputScopeEnvironment)[0]);
                 this.executeBlockChild = conditionalChildValue;
 
                 if (!conditionalChildValue) {
                     this.status = flSuperModule.GlobalStatusEnum.postRun;
-                    return ({
-                        currentLine: inputCurrentLine,
-                        scopeEnvironment: inputScopeEnvironment,
-                        callStack: inputCallStack,
-                        output: null
-                    })
                 }
+
+                return ({
+                    currentLine: inputCurrentLine,
+                    scopeEnvironment: inputScopeEnvironment,
+                    callStack: inputCallStack,
+                    output: null
+                })
+
             } else { // runs conditional child
-                const {
-                    currentLine: newCurLine,
-                    scopeEnvironment: newScopeEnv,
-                    callStack: newCallStack,
-                    output: newOutput} =
-                        this.children[0].runOneStep(
-                        inputCurrentLine, inputScopeEnvironment, inputCallStack);
-
-                    return ({
-                        currentLine: newCurLine,
-                        scopeEnvironment: newScopeEnv,
-                        callStack: newCallStack,
-                        output: newOutput})
-            }
-
-        } else { // block child will be run, if block child is postrun run the conditional again
-            if (this.children[1].status === flSuperModule.GlobalStatusEnum.postRun) {
-                this.shouldConditionalChildBeRun = true;
-                
-            } else { // Block child is evaluted
+                // console.log("Conditional child runs a step")
+                // console.log(this.children[0])
                 const {
                     currentLine: newCurLine,
                     scopeEnvironment: newScopeEnv,
@@ -153,9 +193,37 @@ export class FLNodeWhile extends flSuperModule.FLNode {
                     output: newOutput})
             }
 
-        }
+        } else { // block child will be run, if block child is postrun run the conditional again
+            if (this.children[1].status === flSuperModule.GlobalStatusEnum.postRun) {
 
-        // this node is done running
-        
+                // Both childs are redeclared
+                this.createChildren(true);
+
+                this.shouldConditionalChildBeRun = true;
+                return ({
+                    currentLine: inputCurrentLine,
+                    scopeEnvironment: inputScopeEnvironment,
+                    callStack: inputCallStack,
+                    output: null
+                })
+
+            } else { // Block child is evaluted
+                // console.log("Block child with in while is evaluated");
+                const {
+                    currentLine: newCurLine,
+                    scopeEnvironment: newScopeEnv,
+                    callStack: newCallStack,
+                    output: newOutput} =
+                        this.children[1].runOneStep(
+                        inputCurrentLine, inputScopeEnvironment, inputCallStack);
+
+                return ({
+                    currentLine: newCurLine,
+                    scopeEnvironment: newScopeEnv,
+                    callStack: newCallStack,
+                    output: newOutput})
+            }
+
+        }
     }
 }

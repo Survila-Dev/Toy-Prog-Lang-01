@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-exports.FLNodeIf = void 0;
+exports.findSubstringBetweenTags = exports.FLNodeIf = void 0;
 var flSuperModule = require("./FLNodeSuper");
 var FLNodeConditional_1 = require("./FLNodeConditional");
 var FLNodeBlock_1 = require("./FLNodeBlock");
@@ -27,8 +27,6 @@ var FLNodeIf = /** @class */ (function (_super) {
         var ifTag = FLNodeIf.syntaxSymbols.ifStartTag;
         for (var i = 0; i < _this.text.length; i++) {
             if (_this.text.substring(i, i + ifTag.length) === ifTag) {
-                console.log("If tag length: ");
-                console.log(ifTag.length);
                 var stringUntilIf_1 = _this.text.substring(0, i + 1);
             }
         }
@@ -37,30 +35,6 @@ var FLNodeIf = /** @class */ (function (_super) {
         return _this;
     }
     FLNodeIf.prototype.createChildren = function () {
-        // Create children - ifConditional, ifCaseBlock, elseCaseBlock (not always)
-        // Pass in text and the line position
-        // console.log("this.text")
-        // console.log(this.text)
-        function findSubstringBetweenTags(text, startTag, endTag) {
-            var stringCutStart;
-            var stringCutEnd;
-            var foundTheFirstTag = false;
-            var foundTheSecondTag = false;
-            for (var i = 0; i < text.length; i++) {
-                if (text.substring(i, i + startTag.length) === startTag) {
-                    stringCutStart = i + startTag.length;
-                    foundTheFirstTag = true;
-                }
-                if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
-                    stringCutEnd = i + endTag.length;
-                    foundTheSecondTag = true;
-                }
-                if (foundTheFirstTag && foundTheSecondTag) {
-                    return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
-                }
-            }
-            throw "Not possible to find the start or end tags (start tag: ".concat(foundTheFirstTag, ", end tag: ").concat(foundTheSecondTag, ")");
-        }
         this.elseCaseExists = this.text.includes(FLNodeIf.syntaxSymbols.ifElseTag);
         // Find the text for conditional
         var _a = findSubstringBetweenTags(this.text, FLNodeIf.syntaxSymbols.ifStartTag, FLNodeIf.syntaxSymbols.enclosureStartTag), ifConditionalText = _a[0], rest1 = _a[1];
@@ -103,7 +77,7 @@ var FLNodeIf = /** @class */ (function (_super) {
     FLNodeIf.prototype.run = function (scopeEnvironment) {
         // Depending on the ifConditional result eval one of the remaining children
         var ifCondEvaluation = (0, FLNodeConditional_1.convertToBoolean)(this.children[0].run(scopeEnvironment)[0]);
-        var returnVal;
+        var returnVal = [, []];
         if (ifCondEvaluation) {
             returnVal = this.children[1].run(scopeEnvironment);
         }
@@ -165,3 +139,69 @@ var FLNodeIf = /** @class */ (function (_super) {
     return FLNodeIf;
 }(flSuperModule.FLNode));
 exports.FLNodeIf = FLNodeIf;
+function findSubstringBetweenTags(text, startTag, endTag) {
+    var stringCutStart;
+    var stringCutEnd;
+    var foundTheFirstTag = false;
+    var foundTheSecondTag = false;
+    var tagStack = 0;
+    var tagsIdentical = startTag === endTag;
+    if (tagsIdentical) {
+        // console.log("identical tags")
+        for (var i = 0; i < text.length; i++) {
+            if (foundTheFirstTag && foundTheSecondTag) {
+                return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
+            }
+            if ((!foundTheFirstTag) && text.substring(i, i + startTag.length) === startTag) {
+                stringCutStart = i + startTag.length;
+                foundTheFirstTag = true;
+                continue;
+            }
+            if (text.substring(i, i + endTag.length) === endTag) {
+                stringCutEnd = i + endTag.length;
+                foundTheSecondTag = true;
+                continue;
+            }
+        }
+        if (foundTheFirstTag && foundTheSecondTag) {
+            return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
+        }
+        else {
+            throw "Not possible to find the start or end tags (start tag: ".concat(foundTheFirstTag, ", end tag: ").concat(foundTheSecondTag, ")");
+        }
+    }
+    else {
+        for (var i = 0; i < text.length; i++) {
+            // console.log(`Symbol ${text[i]}, found first tag = ${foundTheFirstTag}, found second tag = ${foundTheSecondTag}`)
+            if (foundTheFirstTag && foundTheSecondTag) {
+                return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
+            }
+            if (text.substring(i, i + startTag.length) === startTag) {
+                if (tagStack === 0 && !foundTheFirstTag) {
+                    stringCutStart = i + startTag.length;
+                    foundTheFirstTag = true;
+                }
+                if (!tagsIdentical)
+                    tagStack++;
+                continue;
+            }
+            if (foundTheFirstTag && text.substring(i, i + endTag.length) === endTag) {
+                if (!tagsIdentical)
+                    tagStack--;
+                if (tagStack === 0) {
+                    stringCutEnd = i + endTag.length;
+                    ;
+                    foundTheSecondTag = true;
+                }
+                continue;
+            }
+        }
+        if (foundTheFirstTag && foundTheSecondTag) {
+            return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
+        }
+        else {
+            throw "Not possible to find the start or end tags (start tag: ".concat(foundTheFirstTag, ", end tag: ").concat(foundTheSecondTag, ")");
+        }
+    }
+}
+exports.findSubstringBetweenTags = findSubstringBetweenTags;

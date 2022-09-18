@@ -32,7 +32,8 @@ export class FLNodeBlock extends flSuperModule.FLNode {
         const allTagsForBlock: [string, string][] = [
             [flNodeIf.FLNodeIf.syntaxSymbols.enclosureStartTag, flNodeIf.FLNodeIf.syntaxSymbols.enclosureEndTag],
             [flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureStartTag, flNodeWhile.FLNodeWhile.syntaxSymbols.enclosureEndTag],
-            [flNodeFor.FLNodeFor.syntaxSymbols.startTag, flNodeFor.FLNodeFor.syntaxSymbols.endTag],
+            [flNodeFor.FLNodeFor.syntaxSymbols.enclosureStartTag, flNodeFor.FLNodeFor.syntaxSymbols.enclosureEndTag],
+            // [flNodeFor.FLNodeFor.syntaxSymbols.declEnclosureStartTag, flNodeFor.FLNodeFor.syntaxSymbols.declEnclosureEndTag],
             [flNodeFunction.FLNodeFunction.syntaxSymbols.startTag, flNodeFunction.FLNodeFunction.syntaxSymbols.endTag],
         ]
 
@@ -51,16 +52,32 @@ export class FLNodeBlock extends flSuperModule.FLNode {
         const children: (
             flNodeAssignment.FLNodeAssignment
             | flNodePrint.FLNodePrint
-            | flNodeIf.FLNodeIf )[] = childrenText.map((childText, i) => {
+            | flNodeIf.FLNodeIf
+            | flNodeWhile.FLNodeWhile
+            | flNodeFor.FLNodeFor )[] = childrenText.map((childText, i) => {
             
             if (childText.includes("\n")) {
                 noOfLineBreaks += childText.split("\n").length - 1;
             }
+
+            if (childText.includes(flNodeFor.FLNodeFor.syntaxSymbols.forStart)) {
+
+                return new flNodeFor.FLNodeFor(
+                    flSuperModule.FLNodeTypeEnum.ForControl,
+                    childText,
+                    noOfLineBreaks + 1
+                )
+
+            } else if (childText.includes(flNodeWhile.FLNodeWhile.syntaxSymbols.whileStart)) {
+
+                return new flNodeWhile.FLNodeWhile(
+                    flSuperModule.FLNodeTypeEnum.WhileControl,
+                    childText,
+                    noOfLineBreaks + 1
+                )
             
             // Search for IF
-            if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
-                console.log("IF FOUND!")
-                console.log(childText)
+            } else if (childText.includes(flNodeIf.FLNodeIf.syntaxSymbols.ifStartTag)) {
 
                 return new flNodeIf.FLNodeIf(
                     flSuperModule.FLNodeTypeEnum.IfConditional,
@@ -132,14 +149,18 @@ export class FLNodeBlock extends flSuperModule.FLNode {
         let singleConsOut: string | null;
         consOut = [];
         for (let i = 0; i < this.children.length; i++) {
-            [, singleConsOut] = this.children[i].run(scopeEnvironment);
+            const outTemp = this.children[i].run(scopeEnvironment);
+            // console.log(this.children[i])
+            // console.log(outTemp);
+            singleConsOut = outTemp[1];
+
             if (singleConsOut) {
                 consOut.push(singleConsOut)
             }
         }
 
         if (consOut.length > 0) {
-            console.log(consOut);
+            // console.log(consOut);
             return ([null, consOut]);
         }
         return ([null, null]);
