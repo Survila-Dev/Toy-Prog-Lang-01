@@ -40,7 +40,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 <h2>{currentArticle.title}</h2>
                 {whichPopUp !== "contact"? 
                 <div className = "pop-up-article__content">
-                    <img src = {photo} alt = "profile photo"/>
+                    <img src = {photo} alt = "profile photo" className = "pop-up-article_image"/>
                     {currentArticle.text}
                 </div>  
                 :
