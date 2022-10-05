@@ -116,7 +116,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                     {showOptions? options : <></>}
                 </div>
             </div>
-            {showOptions? <div className = "popupcover"></div> : <></>}
+            {showOptions? <div className = "selector__popup-cover"></div> : <></>}
         </>
     )
 }

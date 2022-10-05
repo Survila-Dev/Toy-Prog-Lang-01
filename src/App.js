@@ -260,6 +260,8 @@ function App() {
   )
   
   const [setInterObj, changeSetInterObj] = React.useState();
+  const [showPopUp, updateShowPopUp] = React.useState(true);
+  const [whichPopUp, updateWhichPopUp] = React.useState("help");
 
   function handleRunAuto(event) {
 
@@ -318,11 +320,12 @@ function App() {
     updateConsListErrors([])
   }
 
-  const showPopUp = false;
-
   return (
     <div className = "App">
-      <NavBar/>
+      <NavBar
+        updateShowPopUp = {updateShowPopUp}
+        updateWhichPopUp = {updateWhichPopUp}
+      />
       
       <div className="AppGrid">
         
@@ -364,7 +367,10 @@ function App() {
 
           
       </div>
-      {showPopUp? <PopUpMessage/> : <></>}
+      {showPopUp? <PopUpMessage
+        whichPopUp = {whichPopUp}
+        updateShowPopUp = {updateShowPopUp}
+        /> : <></>}
     </div>
   );
 }
