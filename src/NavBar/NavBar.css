@@ -18,9 +18,16 @@
     gap: 50px;
 }
 
-.navbuttons p {
+.navbuttons button:hover {
+    color: var(--dark-blue-og);
+    background-color: transparent;
+}
+
+.navbuttons button {
     padding: 0px;
     margin: 0px;
+    background-color: transparent;
+    border: none;
 }
 
 .titleandsubtitle p {

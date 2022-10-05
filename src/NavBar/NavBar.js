@@ -26,9 +26,9 @@ function NavBar({updateShowPopUp, updateWhichPopUp}) {
                 <p>Eimantas Survila © 2022</p>
             </div>
             <div className = "navbuttons">
-                <p onClick = {handleHelpClick} >Help</p>
-                <p onClick = {handleAboutClick} >About</p>
-                <p onClick = {handleContactClick} >Contact</p>
+                <button onClick = {handleHelpClick}>Help</button>
+                <button onClick = {handleAboutClick}>About</button>
+                <button onClick = {handleContactClick}>Contact</button>
             </div>
         </div>
     )

@@ -1,4 +1,5 @@
 import "./PopUpMessage.css"
+import photo from "./Bewerbungsfoto.JPG";
 
 import React from "react"
 
@@ -39,9 +40,9 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 <h2>{currentArticle.title}</h2>
                 {whichPopUp !== "contact"? 
                 <div className = "pop-up-article__content">
-                    <p>{currentArticle.imageLocator}</p>
+                    <img src = {photo} alt = "profile photo"/>
                     {currentArticle.text}
-                </div>
+                </div>  
                 :
                 <div className = "pop-up-article__content_contact">
                     <p>Contact form here</p>
