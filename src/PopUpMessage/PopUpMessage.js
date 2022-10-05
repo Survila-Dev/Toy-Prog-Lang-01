@@ -28,21 +28,32 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
     function handleNextClick(event) {
         updateCurrentArticlePage((cur) => cur + 1)
     }
+    function handleSendClick(event){
+        return;
+    }
 
     return (
         <div className = "popupenv">
         <article className = "popuparticle">
             <div>
                 <h2>{currentArticle.title}</h2>
+                {whichPopUp !== "contact"? 
                 <div className = "pop-up-article__content">
                     <p>{currentArticle.imageLocator}</p>
                     {currentArticle.text}
                 </div>
+                :
+                <div className = "pop-up-article__content_contact">
+                    <p>Contact form here</p>
+                </div>
+                }
+
             </div>
             <div className = "popupcontrol">
                 <button className = "popupclosebutton" onClick = {handleExitClick}>X</button>
-                {!currentArticle.firstArticle? <button onClick = {handlePreviousClick}>Previous</button>: <div></div>}
-                {!currentArticle.lastArticle? <button onClick = {handleNextClick}>Next</button>: <div></div>}   
+                {(!currentArticle.firstArticle && whichPopUp !== "contact")? <button onClick = {handlePreviousClick}>Previous</button>: <div></div>}
+                {(!currentArticle.lastArticle && whichPopUp !== "contact")? <button onClick = {handleNextClick}>Next</button>: <></>}   
+                {whichPopUp === "contact"? <button onClick = {handleSendClick}>Send</button>: <></>}
             </div>
         </article>
         <div className = "popupcover"></div>
