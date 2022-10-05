@@ -37,8 +37,28 @@ const Editor = ({
     const lineNumber = editorContent.split("\n").length;
     // const [lineNumber, changeLineNumber] = React.useState(1)
 
+    function textAreaChange(value) {
+
+        changeEditorContent(value)
+        resizeEditor();
+
+        clearInterval(intervalObj);
+        updateInterpretatorState((prevState) => {
+            const newCode = prevState.currentCode;
+            newCode.internalText = value;
+            // console.log(newCode.internalText);
+            return {
+                ...prevState,
+                globalStack: [],
+                currentCode: newCode,
+                lineMarking: {currentEvalLine: null, currentErrorLine: null},
+            }  
+        })
+    }
+
     function handleTextAreaChange(event) {
 
+        // textAreaChange(event.target.value);
         changeEditorContent(event.target.value)
         resizeEditor();
 
@@ -75,7 +95,8 @@ const Editor = ({
                 const cursorPosition = start + 1;
                 textAreaRef.current.value = textAreaRef.current.value.substring(0, start) + "\t" + textAreaRef.current.value.substring(end);
                 textAreaRef.current.setSelectionRange(cursorPosition, cursorPosition)
-                // changeEditorContent(textAreaRef.current.value)
+
+                textAreaChange(textAreaRef.current.value)
             }
 
         } else if (event.key === "Enter") {
@@ -109,7 +130,7 @@ const Editor = ({
             const cursorPos = start + insertString.length;
             textAreaRef.current.setSelectionRange(cursorPos, cursorPos);
             resizeEditor();
-            changeEditorContent(textAreaRef.current.value)
+            textAreaChange(textAreaRef.current.value);
             
         }
         

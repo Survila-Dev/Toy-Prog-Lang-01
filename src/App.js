@@ -90,10 +90,13 @@ function App() {
 
     // try {
     // Input the data to the "code"
-    if (interpretorState.nominalStackSize === interpretorState.globalStack.length) {
+    if (interpretorState.nominalStackSize === interpretorState.globalStack.length ||
+        (!altTempStack[altTempStack.length-1])) {
       
       // Check if current pos is null if so creat the new currentCode
       if (interpretorState.lineMarking.currentEvalLine === null) {
+
+        console.log(editorContent);
 
         curCode = new FLCode(editorContent, 200);
         curEvalLine = null;
@@ -135,39 +138,41 @@ function App() {
       // here is something taking place
 
       // !This one is executing on empty text
+      // if (altTempStack[altTempStack.length-1]) {
 
-      const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
-      curConsOut = tempNode.run(altTempLexEnv);
-      // curConsOut = curConsOutAll[1]
-      
-      altTempStack.pop()
-      outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
-      outStack = JSON.parse(JSON.stringify(altTempStack));
+        const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
+        curConsOut = tempNode.run(altTempLexEnv);
+        // curConsOut = curConsOutAll[1]
+        
+        altTempStack.pop()
+        outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
+        outStack = JSON.parse(JSON.stringify(altTempStack));
 
-      curCode = interpretorState.currentCode;
-      curEvalLine = interpretorState.lineMarking.currentEvalLine;
+        curCode = interpretorState.currentCode;
+        curEvalLine = interpretorState.lineMarking.currentEvalLine;
 
-      if (curConsOut[1]) {
+        if (curConsOut[1]) {
 
-        if (curConsOut[1].length !== 0) {
-          updateOutConsList((prevValue) => {
+          if (curConsOut[1].length !== 0) {
+            updateOutConsList((prevValue) => {
 
-            // const outputArray = [];
-            // outputArray = outputArray.concat(prevValue);
-            // outputArray = outputArray.concat(curConsOut);
-            return [...prevValue, ...curConsOut[1]];
-          })
+              // const outputArray = [];
+              // outputArray = outputArray.concat(prevValue);
+              // outputArray = outputArray.concat(curConsOut);
+              return [...prevValue, ...curConsOut[1]];
+            })
 
-          updateConsListErrors((prevList) => {
+            updateConsListErrors((prevList) => {
 
-            const newList = [];
-            for (let i = 0; i < curConsOut.length; i++) {
-              newList.push(false)
-            }
-            return [...prevList, ...newList];
-          })
+              const newList = [];
+              for (let i = 0; i < curConsOut.length; i++) {
+                newList.push(false)
+              }
+              return [...prevList, ...newList];
+            })
+          }
         }
-      }
+      // }
 
       
     }

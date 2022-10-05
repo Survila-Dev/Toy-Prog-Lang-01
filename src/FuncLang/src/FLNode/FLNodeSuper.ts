@@ -66,6 +66,7 @@ export class FLNode implements FLNodeInterface {
             this.type = type;
             if (!(text)) {
                 console.log("Text undefined here is the type:")
+                console.log(text);
                 console.log(type);
             }
             this.text = text.trim();
