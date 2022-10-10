@@ -19,6 +19,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     function resizeOptions() {
         const newOptionWidth = document.getElementsByClassName("selectorbutton")[0].offsetWidth;
+        console.log(newOptionWidth)
         changeOptionWidth(newOptionWidth)
     }
 
