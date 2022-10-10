@@ -1,22 +1,40 @@
 import "./PopUpMessage.css"
-import photo from "./Bewerbungsfoto.JPG";
+import photoAbout from "./Bewerbungsfoto.JPG";
 
 import React from "react"
 
 function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
     const [currentArticlePage, updateCurrentArticlePage] = React.useState(0);
+    const aboutArticle = {
+        title: "Toy Programming Language by Eimantas Survila",
+        image: photoAbout,
+        text: [
+            <p>Hello,</p>,
+            <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in manufacturing technologies and learning front-end development in the free time.</p>
+            ],
+        firstArticle: true,
+        lastArticle: true
+    }
+    const contactArticle = {
+        title: "Get in Contact!",
+        image: "",
+        text: [
+            <p>E-Mail: eimantas.survila.contact@gmail.com</p>,
+            <p>E-Mail: eimantas.survila.contact@gmail.com</p>
+        ],
+        firstArticle: true,
+        lastArticle: true
+    }
 
     // whichPopUp === "help", "about", "contact"
     const [currentArticle, updateCurrentArticle] = React.useState(
-        {
-            title: "First title",
-            imageLocator: "image location",
-            text: <p>Text of the article</p>,
-            firstArticle: false,
-            lastArticle: false
-        }
+        aboutArticle
     )
+
+    if (whichPopUp === "contact") {
+        updateCurrentArticle(contactArticle)
+    }
 
     function handleExitClick(event) {
         updateShowPopUp(false);
@@ -32,20 +50,25 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
     function handleSendClick(event){
         return;
     }
-
+//
     return (
         <div className = "popupenv">
         <article className = "popuparticle">
-            <div>
+            <div className = "pop-up-article__upper-part">
                 <h2>{currentArticle.title}</h2>
                 {whichPopUp !== "contact"? 
                 <div className = "pop-up-article__content">
-                    <img src = {photo} alt = "profile photo" className = "pop-up-article_image"/>
-                    {currentArticle.text}
+                    <img src = {currentArticle.image} alt = "profile photo" className = "pop-up-article_image"/>
+                    <div className = "pop-up-article__content__text">
+                        {currentArticle.text}
+                    </div>
                 </div>  
                 :
                 <div className = "pop-up-article__content_contact">
-                    <p>Contact form here</p>
+                    <div className = "pop-up-article__content__text">
+                        <p>Hello</p>
+                        {currentArticle.text}
+                    </div>
                 </div>
                 }
 
