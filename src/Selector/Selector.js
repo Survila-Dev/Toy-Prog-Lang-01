@@ -1,6 +1,7 @@
 import "./Selector.css"
 import dropdownIcon from "./1063883_arrow_arrow down_down_drop_stroke arrow_icon.svg"
 import { FLCode } from "../FuncLang/dist/FLCode"
+import gifExample from "./example_gif.gif";
 
 import React from "react";
 
@@ -90,13 +91,24 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     for (let i = 0; i < 3; i++) {
         options.push(
             <article
-                className = "optionarticle"
+                className = "option_article"
                 style = {{width: optionWidth}}
                 id = {i}
                 key = {i}
                 onClick = {handleOptionClick}
             >
-                {"Here some text \n \n Text "+i}
+                <img src = {gifExample}></img>
+                <div className = "option-article_content">
+                    <div>
+                        <h3>I am also here</h3>
+                        <p>I am also here</p>
+                    </div>
+                    <div className = "option-article_tags">
+                        <div>IF</div>
+                        <div>FOR</div>
+                        <div>WHILE</div>
+                    </div>
+                </div>
             </article>
         )
     }
@@ -112,9 +124,11 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                         <img className = "clickignore select__dropdown-symbol" src = {dropdownIcon} alt = "v"/>
                     </div>
                 </div>
-                <div className = "selectoroptions">
-                    {showOptions? options : <></>}
-                </div>
+                {showOptions?
+                    <div className = "selector-options">
+                        {options}
+                    </div>: <></>
+                }
             </div>
             {showOptions? <div className = "selector__popup-cover"></div> : <></>}
         </>
