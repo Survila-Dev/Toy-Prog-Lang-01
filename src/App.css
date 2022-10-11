@@ -42,6 +42,7 @@
     font-family: Arial;
 
     --corner-radius: 10px;
+    background-color: var(--grey-01);
 
 }
 
@@ -153,13 +154,13 @@ h2 {
 .calltoaction {
     background-color: var(--dark-blue-og);
     color: white;
-    border-radius: 3px;
+    border-radius: 0px;
     text-decoration: none;
-    border: 1px solid black;
+    border: 1px solid transparent;
 }
 
 button {
-    border-radius: 3px;
+    border-radius: 0px;
     border: 1px solid grey;
     background-color: var(--grey-01);
 }

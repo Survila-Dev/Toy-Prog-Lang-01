@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto 1fr;
-    background-color: var(--grey-01);
+    background-color: white;
     padding: var(--leftside-padding);
     border: var(--element-border);
     border-radius: var(--corner-radius);
@@ -83,4 +83,11 @@
 .button_icon {
     padding: 0px 0px 3px 0px;
     margin: 0px;
+    background-color: var(--grey-01);
+    border: none;
+}
+
+.button_icon:hover {
+    background-color: red;
+    color: white;
 }

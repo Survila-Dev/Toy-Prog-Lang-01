@@ -1,7 +1,7 @@
 .selector {
     
     width: 100%;
-    background-color: var(--grey-01);
+    background-color: white;
     font-size: var(--font-size-large);
     border: var(--element-border);
     border-radius: var(--corner-radius) var(--corner-radius) 0px  0px;
@@ -24,12 +24,15 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: var(--leftside-padding);
+    border-radius: var(--corner-radius) var(--corner-radius) 0px  0px;
     
 }
 
 .selectorbutton:hover {
-    background-color: var(--grey-03);
+    background-color: var(--light-blue);
+    border-color: var(--middle-blue);
 }
+
 
 .option_article {
     padding: 5px;
@@ -61,7 +64,7 @@
 }
 
 .option_article:hover {
-    background-color: var(--grey-03);
+    background-color: var(--light-blue);
 }
 
 .option-article_content {
