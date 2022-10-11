@@ -9,6 +9,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     const [showOptions, changeShowOptions] = React.useState(false);
     const [optionWidth, changeOptionWidth] = React.useState("70%");
+    const [optionSelectorHeight, updateOptionSelectorHeight] = React.useState(0.8 * window.innerHeight)
     const [currentSelection, updateCurrentSelection] = React.useState(0)
 
     React.useEffect(() => {
@@ -18,9 +19,18 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     }, [])
 
     function resizeOptions() {
-        const newOptionWidth = document.getElementsByClassName("selectorbutton")[0].offsetWidth;
+
+        const newOptionWidth =
+            document.getElementsByClassName("selectorbutton")[0].offsetWidth
+        const newOptionSelectorHeight = window.innerHeight
+            - document.getElementsByClassName("selectorbutton")[0].offsetHeight
+            - document.getElementsByClassName("navbar")[0].offsetHeight
+            - 20;
+            
+
         console.log(newOptionWidth)
         changeOptionWidth(newOptionWidth)
+        updateOptionSelectorHeight(newOptionSelectorHeight)
     }
 
     function closeAllSelect(event) {
@@ -89,11 +99,11 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     const options = []
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 6; i++) {
         options.push(
             <article
                 className = "option_article"
-                style = {{width: optionWidth}}
+                
                 id = {i}
                 key = {i}
                 onClick = {handleOptionClick}
@@ -126,7 +136,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                     </div>
                 </div>
                 {showOptions?
-                    <div className = "selector-options">
+                    <div className = "selector-options" style = {{width: optionWidth, height: optionSelectorHeight}}>
                         {options}
                     </div>: <></>
                 }

@@ -12,10 +12,10 @@
 
 .selector-options {
     position: absolute;
-    width: 50%;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 50%;
+    height: 80%;
+    min-height: 0px;
 }
 
 .selectorbutton {
@@ -31,7 +31,8 @@
 
 .option_article {
     padding: 5px;
-    height: 150px;
+    height: 250px;
+    min-width: 100%;
     display: flex;
     flex-direction: row;
     gap: 10px;
