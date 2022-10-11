@@ -5,6 +5,7 @@
     background-color: var(--grey-01);
     padding: var(--leftside-padding);
     border: var(--element-border);
+    border-radius: var(--corner-radius);
 }
 
 .callstackwithtitle > * {
@@ -25,4 +26,5 @@
     padding: 10px;
     text-align: center;
     background-color: var(--grey-02);
+    border-radius: var(--corner-radius);
 }

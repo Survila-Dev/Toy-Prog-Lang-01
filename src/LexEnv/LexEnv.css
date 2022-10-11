@@ -5,6 +5,7 @@
     background-color: var(--grey-01);
     padding: var(--leftside-padding);
     border: var(--element-border);
+    border-radius: var(--corner-radius);
 }
 
 

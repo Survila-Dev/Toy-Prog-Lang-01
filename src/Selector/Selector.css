@@ -4,6 +4,7 @@
     background-color: var(--grey-01);
     font-size: var(--font-size-large);
     border: var(--element-border);
+    border-radius: var(--corner-radius) var(--corner-radius) 0px  0px;
 }
 
 .selector {
@@ -23,6 +24,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: var(--leftside-padding);
+    
 }
 
 .selectorbutton:hover {
