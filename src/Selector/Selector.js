@@ -5,7 +5,7 @@ import gifExample from "./example_gif.gif";
 
 import React from "react";
 
-function Selector({updateEditorContent, interpretorState, updateInterpretorState, intervalObj}) {
+function Selector({updateEditorContent, interpretorState, updateInterpretorState, intervalObj, updateCodeInAutoRun}) {
 
     const [showOptions, changeShowOptions] = React.useState(false);
     const [optionWidth, changeOptionWidth] = React.useState("70%");
@@ -47,11 +47,14 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     function handleSelectorClick(event) {
         changeShowOptions((prevState) => !prevState)
         const articleElements = document.getElementsByClassName("optionarticle");
+        clearInterval(intervalObj);
+        updateCodeInAutoRun(false);
+
     }
 
     function handleOptionClick(event) {
         changeShowOptions(false)
-        clearInterval(intervalObj)
+        
         console.log("Started the option click")
         // Save current interpretor state to the local storage
         localStorage.setItem(

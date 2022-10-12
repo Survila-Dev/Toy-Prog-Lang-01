@@ -259,22 +259,28 @@ function App() {
     ["wrong line", "wrong code"]
   )
   
+  const [codeInAutoRun, updateCodeInAutoRun] = React.useState(false);
   const [setInterObj, changeSetInterObj] = React.useState();
   const [showPopUp, updateShowPopUp] = React.useState(true);
   const [whichPopUp, updateWhichPopUp] = React.useState("help");
 
   function handleRunAuto(event) {
 
-    let i = 0;
-    const interObj = (setInterval(() => {
-      flipTriggerForEval((prev) => !prev);
-    }, 200))
+    const RUN_INTERVAL = 200;
+    if (!codeInAutoRun) {
 
-    changeSetInterObj(interObj)
+      let i = 0;
+      const interObj = (setInterval(() => {
+        flipTriggerForEval((prev) => !prev);
+      }, RUN_INTERVAL))
+      updateCodeInAutoRun(true);
+      changeSetInterObj(interObj)
+    }
   }
 
   function handleRunStop(event) {
     clearInterval(setInterObj);
+    updateCodeInAutoRun(false);
   }
 
   function determineTheVarType(varValue) {
@@ -303,6 +309,7 @@ function App() {
   function handleJumpToCodeStart(event) {
     // The same if textarea is changed
     clearInterval(setInterObj);
+    updateCodeInAutoRun(false);
     
     changeInterpretorState((prevState) => {
       return {
@@ -343,7 +350,8 @@ function App() {
               updateEditorContent = {changeEditorContent}
               interpretorState = {interpretorState}
               updateInterpretorState = {changeInterpretorState}
-              intervalObj = {setInterObj}/>
+              intervalObj = {setInterObj}
+              updateCodeInAutoRun = {updateCodeInAutoRun}/>
             <Editor
               editorContent = {editorContent}
               changeEditorContent = {changeEditorContent}
@@ -359,6 +367,7 @@ function App() {
               startAtCodeStart = {handleJumpToCodeStart}
               stopRun = {handleRunStop}
               handleClear = {handleClear}
+              codeInAutoRun = {codeInAutoRun}
             />
             <Output
               outputList = {outConsList}

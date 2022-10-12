@@ -184,3 +184,15 @@ img {
 .calltoaction:active {
     background-color: black;
 }
+
+button:disabled {
+    background-color: var(--grey-03);
+    color:  var(--grey-01);
+    border: 1px solid var(--grey-03);
+}
+
+button:disabled:hover {
+    background-color: var(--grey-03);
+    color:  var(--grey-01);
+    border: 1px solid var(--grey-03);
+}
