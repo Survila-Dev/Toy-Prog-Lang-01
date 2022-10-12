@@ -1,6 +1,7 @@
 import "./PopUpMessage.css"
 import photoAbout from "./Bewerbungsfoto.JPG";
 import gifExample from "./example_gif.gif";
+import iconX from "./8666595_x_icon.svg";
 
 import React from "react"
 
@@ -90,6 +91,10 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
     function handleSendClick(event){
         return;
     }
+
+    function handleBackgroundClick(event) {
+        updateShowPopUp(false);
+    }
 //
     return (
         <div className = "popupenv">
@@ -113,13 +118,16 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
             </div>
             <div className = "popupcontrol">
-                <button className = "popupclosebutton" onClick = {handleExitClick}>X</button>
-                {(!currentArticle[currentArticlePage].firstArticle && whichPopUp !== "contact")? <button onClick = {handlePreviousClick}>Previous</button>: <div></div>}
-                {(!currentArticle[currentArticlePage].lastArticle && whichPopUp !== "contact")? <button onClick = {handleNextClick}>Next</button>: <></>}   
-                {whichPopUp === "contact"? <button onClick = {handleSendClick}>Send</button>: <></>}
+                <button className = "popupclosebutton" onClick = {handleExitClick}>
+                    <img src={iconX} alt="x"/>
+                </button>
+
+                {(!currentArticle[currentArticlePage].firstArticle && whichPopUp !== "contact")? <button onClick = {handlePreviousClick} className = "pop-up__control_button">PREVIOUS</button>: <div></div>}
+                {(!currentArticle[currentArticlePage].lastArticle && whichPopUp !== "contact")? <button onClick = {handleNextClick} className = "pop-up__control_button">NEXT</button>: <></>}   
+                {whichPopUp === "contact"? <button onClick = {handleSendClick} className = "pop-up__control_button">SEND</button>: <></>}
             </div>
         </article>
-        <div className = "popupcover"></div>
+        <div className = "popupcover" onClick = {handleBackgroundClick}></div>
         
         </div>
     )

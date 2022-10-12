@@ -33,6 +33,10 @@
     border-color: var(--middle-blue);
 }
 
+.selectorbutton:hover h2 {
+    color: var(--middle-blue);
+}
+
 
 .option_article {
     padding: 5px;

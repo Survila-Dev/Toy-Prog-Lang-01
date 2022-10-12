@@ -31,11 +31,17 @@
     border-radius: 0px;
     top: 0px;
     right: 0px;
+    padding: 3px 0px 0px 0px;
 }
 
 .popupclosebutton:hover {
     background-color: rgb(254, 53, 53);
     color: white;
+    padding: 3px 0px 0px 0px;
+}
+
+.popupclosebutton:hover img{
+    filter: invert(100%);
 }
 
 .popupcover {
@@ -104,4 +110,8 @@
 .pop-up-article__upper-part > * {
     min-height: 0px;
     min-width: 0px;
+}
+
+.pop-up__control_button {
+    padding: 2px 10px;
 }

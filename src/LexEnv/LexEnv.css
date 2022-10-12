@@ -90,4 +90,18 @@
 .button_icon:hover {
     background-color: red;
     color: white;
+    
+}
+
+.button_icon:hover img {
+    filter: invert(100%);
+}
+
+
+.button_icon__plus {
+    background-color: var(--dark-blue-og);
+}
+
+.button_icon__plus:hover {
+    background-color: var(--darker-blue);
 }
