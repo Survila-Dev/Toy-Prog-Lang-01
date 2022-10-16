@@ -26,8 +26,40 @@ function App() {
     // Set up the local storage
     localStorage.setItem("snippet0", JSON.stringify(
       {
-        globalLexEnv: {"a_snip01": [69, "number"]},
-        globalStack: [["","Snip01"]],
+        name: "For Loop with If Condition",
+        tags: ["FOR", "IF", "PRINT"],
+        description: "A for loop with nested if condition using multiple variables and print command.",
+        globalLexEnv: {},
+        globalStack: [],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        currentCode: new FLCode(
+          "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) "+
+          "{\n\tc = i + k;\n\tIF (i > 10) {\n\t\tPRINT(i);\n\t}\n\tPRINT(i);\n};\nd = i + k + c * 2;", 100
+        ),
+        nominalStackSize: 0
+      }
+    ))
+
+    localStorage.setItem("snippet1", JSON.stringify(
+      {
+        name: "Two Nested For Loops",
+        tags: ["FOR", "PRINT"],
+        description: "Two nested loops with print statement inside the nested for loops.",
+        globalLexEnv: {},
+        globalStack: [],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        currentCode: new FLCode(
+          "k = 2;\nFOR (i = 0 | i < 10 | i = i + 1) {\n\t" +
+          "FOR (j = 0 | j < 10 | j = j + 1) {\n\t\tPRINT(j * i);\n\t\t};};", 69
+        ),
+        nominalStackSize: 0
+      }
+    ))
+
+    localStorage.setItem("snippet3", JSON.stringify(
+      {
+        globalLexEnv: {},
+        globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
           "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69
@@ -36,22 +68,10 @@ function App() {
       }
     ))
 
-    localStorage.setItem("snippet1", JSON.stringify(
+    localStorage.setItem("snippet4", JSON.stringify(
       {
-        globalLexEnv: {"a_snip02": [69, "number"]},
-        globalStack: [["","Snip02"]],
-        lineMarking: {currentEvalLine: null, currentErrorLine: null},
-        currentCode: new FLCode(
-          "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) {\nc = i;\n b = 12;\n};\nd = 16;", 69
-        ),
-        nominalStackSize: 0
-      }
-    ))
-
-    localStorage.setItem("snippet3", JSON.stringify(
-      {
-        globalLexEnv: {"a_snip02": [69, "number"]},
-        globalStack: [["","Snip02"]],
+        globalLexEnv: {},
+        globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
           "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69

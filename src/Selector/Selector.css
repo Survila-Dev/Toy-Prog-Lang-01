@@ -40,7 +40,7 @@
 
 .option_article {
     padding: 5px;
-    height: 250px;
+    height: 100px;
     min-width: 100%;
     display: flex;
     flex-direction: row;
