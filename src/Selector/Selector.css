@@ -47,6 +47,7 @@
     gap: 10px;
     background-color: var(--grey-01);
     border: var(--element-border);
+    overflow:hidden;
 }
 
 .option_article img {

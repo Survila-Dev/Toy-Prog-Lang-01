@@ -33,8 +33,7 @@ function App() {
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "k = 2; \nFOR (i = 0 | i < 20 | i = i + 3) "+
-          "{\n\tc = i + k;\n\tIF (i > 10) {\n\t\tPRINT(i);\n\t}\n\tPRINT(i);\n};\nd = i + k + c * 2;", 100
+          "FIRST", 100
         ),
         nominalStackSize: 0
       }
@@ -56,25 +55,31 @@ function App() {
       }
     ))
 
-    localStorage.setItem("snippet3", JSON.stringify(
+    localStorage.setItem("snippet2", JSON.stringify(
       {
+        name: "For Loop with If Condition",
+        tags: ["FOR", "IF", "PRINT"],
+        description: "A for loop with nested if condition using multiple variables and print command.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69
+          "THIRD;", 100
         ),
         nominalStackSize: 0
       }
     ))
 
-    localStorage.setItem("snippet4", JSON.stringify(
+    localStorage.setItem("snippet3", JSON.stringify(
       {
+        name: "For Loop with If Condition",
+        tags: ["FOR", "IF", "PRINT"],
+        description: "A for loop with nested if condition using multiple variables and print command.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;", 69
+          "FORTH", 100
         ),
         nominalStackSize: 0
       }

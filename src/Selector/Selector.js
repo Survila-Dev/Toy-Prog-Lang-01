@@ -1,7 +1,7 @@
 import "./Selector.css"
 import dropdownIcon from "./1063883_arrow_arrow down_down_drop_stroke arrow_icon.svg"
 import { FLCode } from "../FuncLang/dist/FLCode"
-import gifExample from "./example_gif.gif";
+import snippetImage from "./example_gif.gif";
 
 import React from "react";
 
@@ -11,11 +11,54 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     const [optionWidth, changeOptionWidth] = React.useState("70%");
     const [optionSelectorHeight, updateOptionSelectorHeight] = React.useState(0.8 * window.innerHeight)
     const [currentSelection, updateCurrentSelection] = React.useState(0)
+    const [options, updateOptions] = React.useState({});
 
     React.useEffect(() => {
         document.addEventListener("click", closeAllSelect);
         resizeOptions();
         window.addEventListener("resize", resizeOptions)
+
+        // Create options from local storage
+        updateOptions(() => {
+            const optionsReturn = [];
+            for (let i = 0; i < 10; i++) {
+                console.log("i = ")
+                console.log(i)
+
+                // Read from local storage
+
+                const curSnippet = JSON.parse( localStorage.getItem(`snippet${i}`));
+                if (curSnippet === null) {
+                    console.log("Breaking from for loop")
+                    break;
+
+                }
+
+                console.log(curSnippet)
+
+                optionsReturn.push(
+                    <article
+                        className = "option_article"
+                        id = {i}
+                        key = {i}
+                        onClick = {handleOptionClick}
+                    >
+                        
+                        <div className = "option-article_content">
+                            <div>
+                                <h3>{curSnippet.name}</h3>
+                                <p>{curSnippet.description}</p>
+                            </div>
+                            <div className = "option-article_tags">
+                                {curSnippet.tags.map((item) => {
+                                    return <div>{item}</div>
+                                })}
+                            </div>
+                        </div>
+                    </article>
+                )}
+            return optionsReturn;
+        })
     }, [])
 
     function resizeOptions() {
@@ -100,32 +143,9 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
         console.log("Got the new interpretor value from local storage")
     }
 
-    const options = []
+    
 
-    for (let i = 0; i < 6; i++) {
-        options.push(
-            <article
-                className = "option_article"
-                
-                id = {i}
-                key = {i}
-                onClick = {handleOptionClick}
-            >
-                <img src = {gifExample}></img>
-                <div className = "option-article_content">
-                    <div>
-                        <h3>I am also here</h3>
-                        <p>I am also here</p>
-                    </div>
-                    <div className = "option-article_tags">
-                        <div>IF</div>
-                        <div>FOR</div>
-                        <div>WHILE</div>
-                    </div>
-                </div>
-            </article>
-        )
-    }
+
     return (
         <>
             <div className = "selector">

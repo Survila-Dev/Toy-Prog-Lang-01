@@ -84,7 +84,7 @@ textarea:focus {
 .editor__syntax-helper_button {
     position: absolute;
     height: auto;
-    width: var(--editor-helper-width);
+    width: calc(var(--editor-helper-width) + 20px);
     background-color: var(--dark-blue-og);
     color: white;
     border-radius: 0px 0px 5px 5px;

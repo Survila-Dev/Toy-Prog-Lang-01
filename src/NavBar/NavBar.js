@@ -22,7 +22,7 @@ function NavBar({updateShowPopUp, updateWhichPopUp}) {
     return (
         <div className = "navbar">
             <div className = "titleandsubtitle">
-                <h1>Functional Toy Programming language</h1>
+                <h1>Toy Programming language & Interpreter</h1>
                 <p>Eimantas Survila © 2022</p>
             </div>
             <div className = "navbuttons">
