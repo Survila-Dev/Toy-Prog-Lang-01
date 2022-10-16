@@ -154,14 +154,19 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
         updateEditorContent(newValue.currentCode.internalText);
     }
 
-    
+    let selectorCaption = "-- Select a code snippet --"
+    try {
+        selectorCaption = `Snippet ${Number(currentSelection)+ 1} - ` + options[currentSelection].name
+    } catch {
+
+    }
 
     return (
         <>
             <div className = "selector">
                 <div className = "selectorbutton" onClick = {handleSelectorClick}>
                     <div className = "clickignore">
-                        <h2 className = "clickignore">{options[currentSelection].name}</h2>
+                        <h2 className = "clickignore">{selectorCaption}</h2>
                         <p className = "h2_sub clickignore">Select pre-written code snippets</p>
                     </div>
                     <div className = "clickignore select__dropdown-symbol__div">
