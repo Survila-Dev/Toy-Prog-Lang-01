@@ -28,12 +28,12 @@ function App() {
       {
         name: "For Loop with If Condition",
         tags: ["FOR", "IF", "PRINT"],
-        description: "A for loop with nested if condition using multiple variables and print command.",
+        description: "A for loop with nested if condition with print command.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "FIRST", 100
+          "PRINT(Start of the code);\nFOR (i = 5 | i < 20 | i = i + 4) {\n\tIF (i >= 15) {\n\t\tPRINT(i larger than 15);\n\t} ELSE {\n\t\tPRINT(i smaller than 15);\n\t};\n};\nPRINT(End of code);", 100
         ),
         nominalStackSize: 0
       }
@@ -41,15 +41,14 @@ function App() {
 
     localStorage.setItem("snippet1", JSON.stringify(
       {
-        name: "Two Nested For Loops",
-        tags: ["FOR", "PRINT"],
+        name: "Boolean, String and Number Variable",
+        tags: ["BOOLEAN", "STRING", "PRINT"],
         description: "Two nested loops with print statement inside the nested for loops.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "k = 2;\nFOR (i = 0 | i < 10 | i = i + 1) {\n\t" +
-          "FOR (j = 0 | j < 10 | j = j + 1) {\n\t\tPRINT(j * i);\n\t\t};};", 69
+          "num01 = 40;\nnum02 = 56;\nmyString = hello;\nmyBool = true;\n\nmyBool2 = (num02 == 56) & (num01 == 40);\nmyBool3 = (num02 == 56) | (num01 == 45);\nmyBool3 = !(num02 == 56);\nmyString2 = myString + _not_hello;\nnum03 = num02 * num02 / 15;", 69
         ),
         nominalStackSize: 0
       }
@@ -57,14 +56,14 @@ function App() {
 
     localStorage.setItem("snippet2", JSON.stringify(
       {
-        name: "For Loop with If Condition",
-        tags: ["FOR", "IF", "PRINT"],
-        description: "A for loop with nested if condition using multiple variables and print command.",
+        name: "While Loop",
+        tags: ["WHILE", "BOOLEAN"],
+        description: "A while loop with boolean and number variables.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "THIRD;", 100
+          "boolVal = true;\nvar1 = 100;\nvar2 = 200;\nWHILE (boolVal) {\n\tvar1 = var1 + 5;\n\tvar2 = var2 - 5;\n\tboolVal = var1 <= var2;\n};", 100
         ),
         nominalStackSize: 0
       }
@@ -72,18 +71,20 @@ function App() {
 
     localStorage.setItem("snippet3", JSON.stringify(
       {
-        name: "For Loop with If Condition",
-        tags: ["FOR", "IF", "PRINT"],
-        description: "A for loop with nested if condition using multiple variables and print command.",
+        name: "Nested For Loops",
+        tags: ["FOR WITHIN FOR"],
+        description: "A for loop nested within a for loop.",
         globalLexEnv: {},
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "FORTH", 100
+          "countdown = 1000;\nFOR (j = 3 | j < 20 | j = j + 8) {\n\tcountdown = countdown - j;\n\tFOR (k = j | k < 20 | k = k + 4) {\n\t\tPRINT(k * j);\n\t};\n};\nPRINT(countdown);", 100
         ),
         nominalStackSize: 0
       }
     ))
+
+
 
     return (() => {
       // Clean up function for freeing up the local storage
@@ -271,7 +272,7 @@ function App() {
         currentErrorLine: 3,
     },
     currentCode: new FLCode(
-      "i = 2; \nWHILE (i < 20) {\nc = i;\n b = 12;\ni = i + 3;\n};\nd = 16;",
+      "PRINT(Start of the code);\nFOR (i = 5 | i < 20 | i = i + 4) {\n\tIF (i >= 15) {\n\t\tPRINT(i larger than 15);\n\t} ELSE {\n\t\tPRINT(i smaller than 15);\n\t};\n};\nPRINT(End of code);",
       1000
     ),
     nominalStackSize: 0}

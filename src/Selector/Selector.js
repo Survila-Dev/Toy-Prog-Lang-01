@@ -11,7 +11,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     const [optionWidth, changeOptionWidth] = React.useState("70%");
     const [optionSelectorHeight, updateOptionSelectorHeight] = React.useState(0.8 * window.innerHeight)
     const [currentSelection, updateCurrentSelection] = React.useState(0)
-    const [options, updateOptions] = React.useState({});
+    const [options, updateOptions] = React.useState([]);
 
     React.useEffect(() => {
         document.addEventListener("click", closeAllSelect);
@@ -20,24 +20,22 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
         // Create options from local storage
         updateOptions(() => {
+
             const optionsReturn = [];
             for (let i = 0; i < 10; i++) {
-                console.log("i = ")
-                console.log(i)
 
                 // Read from local storage
                 const curSnippet = JSON.parse(localStorage.getItem(`snippet${i}`));
                 if (curSnippet === null) {
-                    console.log("Breaking from for loop")
                     break;
                 } else {
                     optionsReturn.push(JSON.parse(localStorage.getItem(`snippet${i}`)));
                 }
-
-                // console.log(curSnippet)
                 }
-            // console.log(optionsReturn)
+            console.log("optionsReturn")
+            console.log(optionsReturn)
             return optionsReturn;
+
         })
     }, [])
 
@@ -49,17 +47,19 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                 key = {i}
                 onClick = {handleOptionClick}
             >
-                
-                <div className = "option-article_content" id = {i} key = {i}>
+                <div className = "option-article_content">
+
                     <div>
                         <h3>{"Snippet " + (i+1) + " - " + item.name}</h3>
                         <p>{item.description}</p>
                     </div>
+
                     <div className = "option-article_tags">
                         {item.tags.map((itemSub, j) => {
-                            return <div id = {j} key = {j}>{itemSub}</div>
+                            return <div id = {j + 10} key = {j + 10}>{itemSub}</div>
                         })}
                     </div>
+
                 </div>
             </article>
         )
@@ -123,29 +123,18 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
     function handleOptionClick(event) {
 
-        console.log("ID")
-        console.log(event.target.key)
+        changeShowOptions(false);
 
-        changeShowOptions(false)
-        
-        console.log("Started the option click")
-        // Save current interpretor state to the local storage
         localStorage.setItem(
             `snippet${currentSelection}`,
             JSON.stringify(interpretorState));
 
-        console.log(`snippet${currentSelection}`)
-        console.log("Saved the current state to local storage")
-
-        updateCurrentSelection(event.target.id);
-        console.log("Updated the current selection value")
-        console.log(`snippet${event.target.id}`)
-
+        updateCurrentSelection(event.currentTarget.id);
     
         // Get the new interpretor state from the local storage
         const newValue = JSON.parse(
             localStorage.getItem(
-                `snippet${event.target.id}`)
+                `snippet${event.currentTarget.id}`)
         )
 
         console.log("Selected value");
@@ -162,28 +151,17 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                 }
             });
 
-        // updateInterpretorState((prevState) => {
-        //     return {
-        //         ...prevState,
-        //         globalStack: []
-        //     }
-        // }
-        // )
-
         updateEditorContent(newValue.currentCode.internalText);
-
-        console.log("Got the new interpretor value from local storage")
     }
 
     
-
 
     return (
         <>
             <div className = "selector">
                 <div className = "selectorbutton" onClick = {handleSelectorClick}>
                     <div className = "clickignore">
-                        <h2 className = "clickignore">Selector</h2>
+                        <h2 className = "clickignore">{options[currentSelection].name}</h2>
                         <p className = "h2_sub clickignore">Select pre-written code snippets</p>
                     </div>
                     <div className = "clickignore select__dropdown-symbol__div">

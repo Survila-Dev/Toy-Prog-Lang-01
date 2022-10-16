@@ -32,7 +32,7 @@
     --rightside-gap: 5px;
     --h2-lower-padding: 10px;
     --element-border: 0.1px solid var(--grey-03);
-    --lexenv-grid-template: 70px 70px auto 25px;
+    --lexenv-grid-template: 140px 70px auto 25px;
 
     --line-number-padding: 0px 10px 0px 0px;
     --line-number-padding-with-border: 0px 6px 0px 0px;
