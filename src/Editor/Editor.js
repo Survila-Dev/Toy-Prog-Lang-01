@@ -32,6 +32,8 @@ const Editor = ({
         window.addEventListener("resize", resizeEditor)
     }, [])
 
+    const [displayHelper, updateDisplayHelper] = React.useState(true);
+
     const textAreaRef = React.useRef();
 
     const lineNumber = editorContent.split("\n").length;
@@ -136,6 +138,19 @@ const Editor = ({
         
     }
 
+    function handleHelperClick(event) {
+
+        if (displayHelper) {
+            // Set width of button to auto
+            document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "auto";
+        } else {
+            // Set width to the width to a given varialbe
+            document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "calc(var(--editor-helper-width) + 20px)";
+        }
+
+        updateDisplayHelper((prevVal) => !prevVal)
+    }
+
     const lineNumbersJSX = []
     const backgroundLinesJSX = []
     for (let i = 1; i <= lineNumber; i++) {
@@ -203,6 +218,7 @@ const Editor = ({
 
     return (
         <div className = "editor">
+            <button className = "editor__syntax-helper_button" onClick = {handleHelperClick}>SYNTAX GUIDE</button>
             <div className ="linenumbers">
                 {lineNumbersJSX}
             </div>
@@ -212,6 +228,12 @@ const Editor = ({
                 onChange = {handleTextAreaChange}
                 onKeyDown = {handleTabPress}>
             </textarea>
+            {displayHelper? <div className = "editor__syntax-helper">
+                Some text helper
+                Some text helper
+                Some text helper
+            </div> : <></>}
+            
         </div>
     )
 }
