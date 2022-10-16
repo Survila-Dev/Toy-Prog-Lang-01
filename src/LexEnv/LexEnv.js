@@ -189,7 +189,7 @@ function LexEnv({lexEnv, changeInterpretorState}) {
 
     return (
         <div className ="lexenvwithtitle">
-            <div>
+            <div className = "lexenv__header">
                 <h2>Execution Context</h2>
                 <p class="h2_sub">Add, change and delete variables</p>
             </div>
@@ -227,7 +227,7 @@ function LexEnv({lexEnv, changeInterpretorState}) {
                     onKeyDown = {handleKeyPressDownAdd}
                 />
                 <button
-                    className = "calltoaction button_icon"
+                    className = "button_icon__plus calltoaction button_icon"
                     onClick = {addNewLexEnvElement}
                 >
                     <img

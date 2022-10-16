@@ -1,18 +1,22 @@
 .selector {
     
     width: 100%;
-    background-color: var(--grey-01);
+    background-color: white;
     font-size: var(--font-size-large);
     border: var(--element-border);
+    border-radius: var(--corner-radius) var(--corner-radius) 0px  0px;
 }
 
 .selector {
     z-index: 98;
 }
 
-.selectoroptions {
+.selector-options {
     position: absolute;
-    width: 50%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 80%;
+    min-height: 0px;
 }
 
 .selectorbutton {
@@ -20,24 +24,74 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: var(--leftside-padding);
+    border-radius: var(--corner-radius) var(--corner-radius) 0px  0px;
+    
 }
 
 .selectorbutton:hover {
-    background-color: var(--grey-03);
+    background-color: var(--light-blue);
+    border-color: var(--middle-blue);
 }
 
-.optionarticle {
+.selectorbutton:hover h2 {
+    color: var(--middle-blue);
+}
+
+
+.option_article {
+    padding: 5px;
+    height: 100px;
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
     background-color: var(--grey-01);
     border: var(--element-border);
 }
 
-.optionarticle:hover {
-    background-color: var(--grey-03);
+.option_article img {
+    height: 100%;
+}
+
+.option_article h3 {
+    padding: 0px;
+    margin: 0px;
+    font-size: 20px;
+    color: black;
+}
+
+.option_article p {
+    padding: 0px;
+    margin: 0px;
+    font-size: 15px;
+    color: black;
+}
+
+.option_article:hover {
+    background-color: var(--light-blue);
+}
+
+.option-article_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .selectorbutton p {
     padding: 0px;
     margin: 0px;
+}
+
+.option-article_tags {
+    display: flex;
+}
+
+.option-article_tags div {  
+    background-color: var(--dark-blue-og);
+    color: white;
+    margin: 2px;
+    padding: 2px;
+    font-size: 15px;
 }
 
 .select__dropdown-symbol__div {
@@ -54,4 +108,15 @@
 
 .select__dropdown-symbol {
     filter: invert(0%);
+}
+
+.selector__popup-cover {
+    z-index: 95;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    width: 100vw;
+    background-color: grey;
+    opacity: 0.7;
 }
