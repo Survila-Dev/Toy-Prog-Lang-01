@@ -27,7 +27,7 @@
     padding: 0px;
     margin: 0px;
     border: 0px;
-    width: calc(var(--line-number-width)*0.9);
+    width: calc(var(--line-number-width));
     
     min-width: 0px;
     min-height: 0px;
