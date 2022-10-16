@@ -258,6 +258,19 @@ function App() {
     
   , [triggerForEval])
 
+  React.useEffect(() => {
+    changeInterpretorState((prevState) => {
+      return {
+        ...prevState,
+        globalStack: [],
+        lineMarking: {currentEvalLine: null, currentErrorLine: null},
+        nominalStackSize: 0
+        //!
+      }  
+    })
+
+  }, [])
+
   const [interpretorState, changeInterpretorState] = React.useState({
     globalLexEnv: {},
         // "a": [6, "number"],

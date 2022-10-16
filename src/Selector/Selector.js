@@ -157,9 +157,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     let selectorCaption = "-- Select a code snippet --"
     try {
         selectorCaption = `Snippet ${Number(currentSelection)+ 1} - ` + options[currentSelection].name
-    } catch {
-
-    }
+    } catch {}
 
     return (
         <>
