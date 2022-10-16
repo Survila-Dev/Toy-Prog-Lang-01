@@ -26,40 +26,66 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                 console.log(i)
 
                 // Read from local storage
-
-                const curSnippet = JSON.parse( localStorage.getItem(`snippet${i}`));
+                const curSnippet = JSON.parse(localStorage.getItem(`snippet${i}`));
                 if (curSnippet === null) {
                     console.log("Breaking from for loop")
                     break;
-
+                } else {
+                    optionsReturn.push(JSON.parse(localStorage.getItem(`snippet${i}`)));
                 }
 
-                console.log(curSnippet)
-
-                optionsReturn.push(
-                    <article
-                        className = "option_article"
-                        id = {i}
-                        key = {i}
-                        onClick = {handleOptionClick}
-                    >
-                        
-                        <div className = "option-article_content">
-                            <div>
-                                <h3>{curSnippet.name}</h3>
-                                <p>{curSnippet.description}</p>
-                            </div>
-                            <div className = "option-article_tags">
-                                {curSnippet.tags.map((item) => {
-                                    return <div>{item}</div>
-                                })}
-                            </div>
-                        </div>
-                    </article>
-                )}
+                // console.log(curSnippet)
+                }
+            // console.log(optionsReturn)
             return optionsReturn;
         })
     }, [])
+
+    const optionsJSX = options.map((item, i) => {
+        return (
+            <article
+                className = "option_article"
+                id = {i}
+                key = {i}
+                onClick = {handleOptionClick}
+            >
+                
+                <div className = "option-article_content" id = {i} key = {i}>
+                    <div>
+                        <h3>{"Snippet " + (i+1) + " - " + item.name}</h3>
+                        <p>{item.description}</p>
+                    </div>
+                    <div className = "option-article_tags">
+                        {item.tags.map((itemSub, j) => {
+                            return <div id = {j} key = {j}>{itemSub}</div>
+                        })}
+                    </div>
+                </div>
+            </article>
+        )
+    })
+
+    // optionsReturn.push(
+    //     <article
+    //         className = "option_article"
+    //         id = {i}
+    //         key = {i}
+    //         onClick = {handleOptionClick}
+    //     >
+            
+    //         <div className = "option-article_content" id = {i} key = {i}>
+    //             <div>
+    //                 <h3>{"Snippet " + (i+1) + " - " + curSnippet.name}</h3>
+    //                 <p>{curSnippet.description}</p>
+    //             </div>
+    //             <div className = "option-article_tags">
+    //                 {curSnippet.tags.map((item) => {
+    //                     return <div>{item}</div>
+    //                 })}
+    //             </div>
+    //         </div>
+    //     </article>
+    // )
 
     function resizeOptions() {
 
@@ -96,6 +122,10 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     }
 
     function handleOptionClick(event) {
+
+        console.log("ID")
+        console.log(event.target.key)
+
         changeShowOptions(false)
         
         console.log("Started the option click")
@@ -106,11 +136,12 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
         console.log(`snippet${currentSelection}`)
         console.log("Saved the current state to local storage")
-        updateCurrentSelection(event.target.id);
 
+        updateCurrentSelection(event.target.id);
         console.log("Updated the current selection value")
         console.log(`snippet${event.target.id}`)
 
+    
         // Get the new interpretor state from the local storage
         const newValue = JSON.parse(
             localStorage.getItem(
@@ -121,13 +152,14 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
         console.log(newValue.currentCode.internalText);
         // newValue.callStack = [];
 
-        updateInterpretorState(
-            {
-                ...newValue,
-                globalStack: [],
-                currentCode: new FLCode(newValue.currentCode.internalText, 200),
-                lineMarking: {currentEvalLine: null, currentErrorLine: null},
-                nominalStackSize: 0,
+        updateInterpretorState((oldValue) => {
+                return {
+                    ...newValue,
+                    globalStack: [],
+                    currentCode: new FLCode(newValue.currentCode.internalText, 200),
+                    lineMarking: {currentEvalLine: null, currentErrorLine: null},
+                    nominalStackSize: 0,
+                }
             });
 
         // updateInterpretorState((prevState) => {
@@ -160,7 +192,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
                 </div>
                 {showOptions?
                     <div className = "selector-options" style = {{width: optionWidth, height: optionSelectorHeight}}>
-                        {options}
+                        {optionsJSX}
                     </div>: <></>
                 }
             </div>
