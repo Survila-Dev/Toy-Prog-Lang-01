@@ -15,10 +15,37 @@ import { FLNodeBlock } from "./FuncLang/dist/FLNode/FLNodeBlock"
 
 function App() {
 
+  // -- STATE VARIABLES --
   const [triggerForEval, flipTriggerForEval] = React.useState(false);
   const [outConsList, updateOutConsList] = React.useState([])
   const [consListErrors, updateConsListErrors] = React.useState([])
+  const [codeInAutoRun, updateCodeInAutoRun] = React.useState(false);
+  const [setInterObj, changeSetInterObj] = React.useState();
+  const [showPopUp, updateShowPopUp] = React.useState(true);
+  const [whichPopUp, updateWhichPopUp] = React.useState("help");
 
+  const [interpretorState, changeInterpretorState] = React.useState({
+    globalLexEnv: {},
+    globalStack: [],
+    lineMarking: {
+        currentEvalLine: 1,
+        currentErrorLine: 3,
+    },
+    currentCode: new FLCode(
+      "PRINT(Start of the code);\nFOR (i = 5 | i < 20 | i = i + 4) {\n\tIF (i >= 15) {\n\t\tPRINT(i larger than 15);\n\t} ELSE {\n\t\tPRINT(i smaller than 15);\n\t};\n};\nPRINT(End of code);",
+      1000
+    ),
+    nominalStackSize: 0}
+  )
+  
+  const [editorContent, changeEditorContent] =
+    React.useState(interpretorState.currentCode.internalText);
+
+  const [lineDragContent, changeLineDragContent] = React.useState(
+    ["wrong line", "wrong code"]
+  )
+
+  // -- USE EFFECT CALLBACKS --
   React.useEffect(() => {
     // Initialization of the page
     document.title =  "Toy Programming Language";
@@ -48,7 +75,7 @@ function App() {
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "num01 = 40;\nnum02 = 56;\nmyString = hello;\nmyBool = true;\n\nmyBool2 = (num02 == 56) & (num01 == 40);\nmyBool3 = (num02 == 56) | (num01 == 45);\nmyBool3 = !(num02 == 56);\nmyString2 = myString + _not_hello;\nnum03 = num02 * num02 / 15;", 69
+          "num01 = 40;\nnum02 = 56;\nmyString = hello;\nmyBool = 1;\n\nmyBool2 = (num02 == 56) & (num01 == 40);\nmyBool3 = (num02 == 56) | (num01 == 45);\nmyBool3 = !(num02 == 56);\nmyString2 = myString + _not_hello;\nnum03 = num02 * num02 / 15;", 69
         ),
         nominalStackSize: 0
       }
@@ -83,9 +110,6 @@ function App() {
         nominalStackSize: 0
       }
     ))
-
-
-
     return (() => {
       // Clean up function for freeing up the local storage
       localStorage.clear()
@@ -93,6 +117,7 @@ function App() {
   }, [])
 
   React.useEffect(() => {
+    // Run everytime the code is executed
 
     // Prepare the input data which is deep copy of the state
     const prevStateCopy = JSON.parse(JSON.stringify(interpretorState));
@@ -114,7 +139,7 @@ function App() {
     let curEvalLine = null;
     let curCode;
 
-    // try {
+    try {
     // Input the data to the "code"
     if (interpretorState.nominalStackSize === interpretorState.globalStack.length ||
         (!altTempStack[altTempStack.length-1])) {
@@ -163,7 +188,6 @@ function App() {
       // Create block element and execute
       // here is something taking place
 
-      // !This one is executing on empty text
       // if (altTempStack[altTempStack.length-1]) {
 
         const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
@@ -225,84 +249,65 @@ function App() {
       })
 
   } 
-  // catch (error) {
+  catch (error) {
 
-  //     // Error handling here
+      // Error handling here
 
-  //     if (error === "no_variable_error") {
-  //       // Stop automatic running, if it is on
-  //       clearInterval(setInterObj);
+      // if (error === "no_variable_error") {
+        // Stop automatic running, if it is on
+        clearInterval(setInterObj);
 
-  //       // Mark the line as error 
-  //       errorLine = interpretorState.lineMarking.currentEvalLine;
+        // Mark the line as error 
+        errorLine = interpretorState.lineMarking.currentEvalLine;
 
-  //       // Log to the console
-  //       updateOutConsList((prevValue) => {
-  //         return [...prevValue, `Error: ${error} in ${errorLine} line`]})
-  //       changeInterpretorState((prevState) => {
-  //         return {
-  //           ...prevState,
-  //           lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: errorLine},
-  //         }  
-  //       })
-  //       updateConsListErrors((prevList) => [...prevList, true])
+        // Log to the console
+        updateOutConsList((prevValue) => {
+          return [...prevValue, `Error: ${error} in ${errorLine} line`]})
 
-  //     }
-  //   }
+        changeInterpretorState((prevState) => {
+          return {
+            ...prevState,
+            lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: errorLine},
+          }  
+        })
+        updateConsListErrors((prevList) => [...prevList, true])
 
-    
-
-    // Prepare the data to be output as state (also deep copy)
-    
-    
+      // }
+    }
+  }
+    //Prepare the data to be output as state (also deep copy)
     
   , [triggerForEval])
 
   React.useEffect(() => {
+    // Set the execution state of the code to start start
     changeInterpretorState((prevState) => {
       return {
         ...prevState,
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         nominalStackSize: 0
-        //!
       }  
     })
-
   }, [])
 
-  const [interpretorState, changeInterpretorState] = React.useState({
-    globalLexEnv: {},
-        // "a": [6, "number"],
-        // "b": ["Eimantas", "string"],
-        // "c": [true, "boolean"]},
-    globalStack: [],
-    //     ["name1", "code1"],
-    //     ["name4", "code4"],
-    // ],
-    lineMarking: {
-        currentEvalLine: 1,
-        currentErrorLine: 3,
-    },
-    currentCode: new FLCode(
-      "PRINT(Start of the code);\nFOR (i = 5 | i < 20 | i = i + 4) {\n\tIF (i >= 15) {\n\t\tPRINT(i larger than 15);\n\t} ELSE {\n\t\tPRINT(i smaller than 15);\n\t};\n};\nPRINT(End of code);",
-      1000
-    ),
-    nominalStackSize: 0}
-  )
-  
-  const [editorContent, changeEditorContent] =
-    React.useState(interpretorState.currentCode.internalText);
+  // -- SUBROUTINES --
+  function determineTheVarType(varValue) {
 
-  const [lineDragContent, changeLineDragContent] = React.useState(
-    ["wrong line", "wrong code"]
-  )
+    let varType = "none"
+    if (varValue === "") {
+        varType = "none"
+    } else if (varValue === "true" || varValue === "false") {
+        varType = "boolean"
+    } else if (!isNaN(varValue)) {
+        varType = "number"
+    } else {
+        varType = "string"
+    }
+    return varType;
+  }
   
-  const [codeInAutoRun, updateCodeInAutoRun] = React.useState(false);
-  const [setInterObj, changeSetInterObj] = React.useState();
-  const [showPopUp, updateShowPopUp] = React.useState(true);
-  const [whichPopUp, updateWhichPopUp] = React.useState("help");
-
+  // -- HANDLE FUNCTIONS --
   function handleRunAuto(event) {
 
     const RUN_INTERVAL = 200;
@@ -322,27 +327,10 @@ function App() {
     updateCodeInAutoRun(false);
   }
 
-  function determineTheVarType(varValue) {
-
-    let varType = "none"
-    if (varValue === "") {
-        varType = "none"
-    } else if (varValue === "true" || varValue === "false") {
-        varType = "boolean"
-    } else if (!isNaN(varValue)) {
-        varType = "number"
-    } else {
-        varType = "string"
-    }
-    return varType;
-  }
+  
 
   function handleRunOneStep(event) {
     flipTriggerForEval((prev) => !prev);
-  }
-
-  function handleRunToBreak(event) {
-
   }
 
   function handleJumpToCodeStart(event) {
@@ -372,9 +360,7 @@ function App() {
         updateShowPopUp = {updateShowPopUp}
         updateWhichPopUp = {updateWhichPopUp}
       />
-      
       <div className="AppGrid">
-        
           <div className = "leftside">
             <LexEnv lexEnv = {interpretorState.globalLexEnv} changeInterpretorState = {changeInterpretorState}/>
             <CallStack
@@ -402,7 +388,6 @@ function App() {
             <ControlPanel
               runOneStep = {handleRunOneStep}
               runAuto = {handleRunAuto}
-              runToBreakPoint = {handleRunToBreak}
               startAtCodeStart = {handleJumpToCodeStart}
               stopRun = {handleRunStop}
               handleClear = {handleClear}
@@ -412,8 +397,6 @@ function App() {
               outputList = {outConsList}
               errorsInList = {consListErrors}/>
           </div>
-
-          
       </div>
       {showPopUp? <PopUpMessage
         whichPopUp = {whichPopUp}

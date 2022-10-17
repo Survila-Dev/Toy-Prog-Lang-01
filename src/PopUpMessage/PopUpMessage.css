@@ -115,3 +115,74 @@
 .pop-up__control_button {
     padding: 2px 10px;
 }
+
+.pop-up__contact_grid {
+    display: grid;
+    grid-template:
+        "a a"
+        "b c";
+    gap: 10px;
+}
+
+.pop-up__contact_grid a {
+    color: black;
+    text-decoration: none;
+}
+
+.pop-up__contact_grid a:link { text-decoration: none; }
+.pop-up__contact_grid a:visited { text-decoration: none; }
+.pop-up__contact_grid a:hover { text-decoration: none; }
+.pop-up__contact_grid a:active { text-decoration: none; }
+
+.contact_grid_a {
+    grid-area: a;
+    background-color:var(--grey-01);;
+    padding: 20px;
+    border-radius: 10px;
+    align-content: center;
+    border: var(--element-border);
+}
+
+.contact_grid_b {
+    grid-area: b;
+    background-color:var(--grey-01);;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: var(--element-border);
+}
+
+.contact_grid_b:hover {
+    background-color: var(--light-blue);
+}
+.contact_grid_c:hover {
+    background-color: var(--light-blue);
+}
+
+.contact_grid_c {
+    grid-area: c;
+    background-color: var(--grey-01);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: var(--element-border);
+}
+
+.contact_grid_a p {
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+.about__tech_tag {
+    display: flex;
+    gap: 10px;
+    flex-wrap:wrap;
+}
+
+.about__tech_tag div {
+    padding: 15px;
+    background: var(--grey-01);
+    border-radius: 10px;
+    border: var(--element-border);
+}

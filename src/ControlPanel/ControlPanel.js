@@ -2,7 +2,7 @@ import "./ControlPanel.css"
 
 import React from "react";
 
-function ControlPanel({runOneStep, runAuto, runToBreakPoint, startAtCodeStart, stopRun, handleClear, codeInAutoRun}) {
+function ControlPanel({runOneStep, runAuto, startAtCodeStart, stopRun, handleClear, codeInAutoRun}) {
     return (
         <div className = "controlpanel">
             <div className = "control-panel__leftside">

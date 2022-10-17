@@ -33,10 +33,11 @@ function LexEnv({lexEnv, changeInterpretorState}) {
         let varType = "none"
         if (varValue === "") {
             varType = "none"
-        } else if (varValue === "true" || varValue === "false") {
-            varType = "boolean"
         } else if (!isNaN(varValue)) {
             varType = "number"
+            if (varValue == 1 || varValue == 0) {
+                varType = "boolean";
+            }
         } else {
             varType = "string"
         }
@@ -115,13 +116,9 @@ function LexEnv({lexEnv, changeInterpretorState}) {
                 ...prevState,
                 globalLexEnv: {...newLexEnv}
         }})
-
     }
 
-
-
     function handleArrowKeyDown(event) {
-
         
         function calcNewId(currentId, delta) {
             let no = parseInt(currentId.substring(IDPREPEND.length, currentId.length))

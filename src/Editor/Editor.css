@@ -101,5 +101,26 @@ textarea:focus {
 .editor__syntax-helper {
     width: calc(var(--editor-helper-width) + 20px);
     flex: 0 0 var(--editor-helper-width);
-    margin: 30px 10px 0px 10px;
+    margin: 20px 10px 0px 10px;
+    overflow-y: auto;
+}
+
+
+
+.editor__helper__text {
+    padding: 10px 0px 5px 0px;
+    margin: 0px;
+}
+
+.editor__helper__syntax {
+    padding: 10px;
+    margin: 0px;
+    color: var(--grey-07);
+    width: 90%;
+    background-color: var(--grey-02);
+}
+
+.editor__syntax-helper h3 {
+    padding: 15px 0px 0px 0px;
+    margin: 0px;
 }

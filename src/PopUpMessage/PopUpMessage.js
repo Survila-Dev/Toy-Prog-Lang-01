@@ -11,12 +11,21 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
     const aboutArticle = [
         {
-        title: "Toy Programming Language by Eimantas Survila 1",
+        title: "Toy Programming Language by Eimantas Survila",
         image: photoAbout,
         text: [
             <p>Hello,</p>,
-            <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in manufacturing technologies and learning front-end development in the free time.</p>
-            ],
+            <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>,
+            <p>Tech stack:</p>,
+            <div className = "about__tech_tag">
+                <div>HTML5</div>
+                <div>CSS3</div>
+                <div>JavaScript</div>
+                <div>TypeScript</div>
+                <div>React</div>
+                <div>Jest</div>
+            </div>    
+        ],
         firstArticle: true,
         lastArticle: true
         }]
@@ -47,7 +56,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             image: gifExample,
             text: [
                 <p>Hello,</p>,
-                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in manufacturing technologies and learning front-end development in the free time.</p>
+                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>
                 ],
             firstArticle: false,
             lastArticle: true
@@ -58,9 +67,15 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
         title: "Get in Contact!",
         image: "",
         text: [
-            <p>Please get in contact with any of the following social media:</p>,
-            <p>E-Mail: eimantas.survila.contact@gmail.com</p>,
-            <a href = "https://www.linkedin.com/in/eimantas-survila/">LinkedIn</a>
+            <p>Please get in contact!</p>,
+            <div className = "pop-up__contact_grid">
+                <div className = "contact_grid_a">
+                    <p>E-Mail</p>
+                    <p>eimantas.survila.contact@gmail.com</p>
+                </div>
+                <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_b">LinkedIn</a>
+                <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_c">GitHub</a>
+            </div>,
         ],
         firstArticle: true,
         lastArticle: true
@@ -124,7 +139,6 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
                 {(!currentArticle[currentArticlePage].firstArticle && whichPopUp !== "contact")? <button onClick = {handlePreviousClick} className = "pop-up__control_button">PREVIOUS</button>: <div></div>}
                 {(!currentArticle[currentArticlePage].lastArticle && whichPopUp !== "contact")? <button onClick = {handleNextClick} className = "pop-up__control_button">NEXT</button>: <></>}   
-                {whichPopUp === "contact"? <button onClick = {handleSendClick} className = "pop-up__control_button">SEND</button>: <></>}
             </div>
         </article>
         <div className = "popupcover" onClick = {handleBackgroundClick}></div>

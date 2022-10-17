@@ -136,6 +136,12 @@ var FLNodeConditional = /** @class */ (function (_super) {
                     break;
                 case ConditionalType.not:
                     var outValue = this.children[0].run(scopeEnvironment)[0];
+                    if (outValue === "true") {
+                        return ([1, ""]);
+                    }
+                    else if (outValue === "false") {
+                        return ([0, ""]);
+                    }
                     if (convertToBoolean(outValue)) {
                         return ([0, ""]);
                     }

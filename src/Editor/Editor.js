@@ -229,9 +229,27 @@ const Editor = ({
                 onKeyDown = {handleTabPress}>
             </textarea>
             {displayHelper? <div className = "editor__syntax-helper">
-                Some text helper
-                Some text helper
-                Some text helper
+                <h3>1. Variables</h3>
+                <p className = "editor__helper__text">Assignment:</p>
+                <p className = "editor__helper__syntax">var = 25;</p>
+                <p className = "editor__helper__text">Number arithmetic operations:</p>
+                <p className = "editor__helper__syntax">+, -, /, *</p>
+
+                <p className = "editor__helper__text">String concat:</p>
+                <p className = "editor__helper__syntax">+</p>
+
+                <p className = "editor__helper__text">Boolean operations:</p>
+                <p className = "editor__helper__syntax">not !; and &, or |</p>
+
+                <h3>2. Control structures</h3>
+                <p className = "editor__helper__text">If structure:</p>
+                <p className = "editor__helper__syntax">IF (boolean) {"{code};"}</p>
+                <p className = "editor__helper__syntax">IF (condition) {"{code};"} ELSE {"{code};"}</p>
+                <p className = "editor__helper__text">While loop:</p>
+                <p className = "editor__helper__syntax">WHILE (condition) {"{code};"}</p>
+                <p className = "editor__helper__text">For loop:</p>
+                <p className = "editor__helper__syntax">FOR (intialization | condition | iteration) {"{code};"}</p>
+                
             </div> : <></>}
             
         </div>

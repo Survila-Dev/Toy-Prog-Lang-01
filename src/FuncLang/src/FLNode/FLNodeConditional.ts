@@ -183,6 +183,12 @@ export class FLNodeConditional extends flSuperModule.FLNode {
                 case ConditionalType.not:
 
                     const outValue = this.children[0].run(scopeEnvironment)[0];
+                    
+                    if (outValue === "true") {
+                        return ([1, ""]);
+                    } else if (outValue === "false") {
+                        return ([0, ""]);
+                    }
 
                     if (convertToBoolean(outValue)) {
                         return ([0, ""])

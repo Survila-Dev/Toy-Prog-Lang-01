@@ -42,7 +42,7 @@
     font-family: Arial;
 
     --corner-radius: 10px;
-    --editor-helper-width: 200px;
+    --editor-helper-width: 280px;
     background-color: var(--grey-01);
 
 }
