@@ -24,7 +24,16 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 <div>TypeScript</div>
                 <div>React</div>
                 <div>Jest</div>
-            </div>    
+            </div>,
+            <p>Please get in contact!</p>,
+            <div className = "pop-up__contact_grid">
+                <div className = "contact_grid_a">
+                    <p>E-Mail</p>
+                    <p>eimantas.survila.contact@gmail.com</p>
+                </div>
+                <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_b">LinkedIn</a>
+                <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_c">GitHub</a>
+            </div>,   
         ],
         firstArticle: true,
         lastArticle: true
@@ -56,7 +65,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             image: gifExample,
             text: [
                 <p>Hello,</p>,
-                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>
+                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>,
+                
                 ],
             firstArticle: false,
             lastArticle: true

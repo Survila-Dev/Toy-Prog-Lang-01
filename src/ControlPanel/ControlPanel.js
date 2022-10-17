@@ -8,8 +8,8 @@ function ControlPanel({runOneStep, runAuto, startAtCodeStart, stopRun, handleCle
             <div className = "control-panel__leftside">
                 <button className = "calltoaction" onClick = {runAuto} disabled = {codeInAutoRun}>RUN</button>
                 <button onClick = {stopRun}>STOP</button>
-                <button onClick = {runOneStep} disabled = {codeInAutoRun}>RUN One Line</button>
-                <button onClick = {startAtCodeStart}>Start at the Beginning</button>
+                <button onClick = {runOneStep} disabled = {codeInAutoRun}>Run One Line</button>
+                <button onClick = {startAtCodeStart}>Start at the Beginning / Clear Call Stack</button>
                 
             </div>
             <div>

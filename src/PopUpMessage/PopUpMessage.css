@@ -137,7 +137,7 @@
 .contact_grid_a {
     grid-area: a;
     background-color:var(--grey-01);;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     align-content: center;
     border: var(--element-border);
@@ -146,7 +146,7 @@
 .contact_grid_b {
     grid-area: b;
     background-color:var(--grey-01);;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     text-align: center;
     border: var(--element-border);
@@ -162,7 +162,7 @@
 .contact_grid_c {
     grid-area: c;
     background-color: var(--grey-01);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     text-align: center;
     border: var(--element-border);
@@ -178,6 +178,7 @@
     display: flex;
     gap: 10px;
     flex-wrap:wrap;
+    padding: 0px 0px 20px 0px;
 }
 
 .about__tech_tag div {

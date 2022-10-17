@@ -27,8 +27,8 @@ function NavBar({updateShowPopUp, updateWhichPopUp}) {
             </div>
             <div className = "navbuttons">
                 <button onClick = {handleHelpClick}>Help</button>
-                <button onClick = {handleAboutClick}>About</button>
-                <button onClick = {handleContactClick}>Contact</button>
+                <button onClick = {handleAboutClick}>About / Contact</button>
+                
             </div>
         </div>
     )
