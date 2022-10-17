@@ -67,7 +67,7 @@ export class FLNodeIf extends flSuperModule.FLNode {
             )
 
             if (elseText.trim() !== FLNodeIf.syntaxSymbols.ifElseTag) {
-                throw "Invalid text close to the ELSE token"
+                throw "Invalid text close to the ELSE token."
             }
 
             const [elseCaseText, rest4] = findSubstringBetweenTags(
@@ -222,7 +222,7 @@ export function findSubstringBetweenTags(text: string, startTag: string, endTag:
         if (foundTheFirstTag && foundTheSecondTag) {
             return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
         } else {
-            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
+            throw `Not possible to find the start or end tags (start tag: \"${startTag}\", end tag: \"${endTag}\") in the text - \"${text}\".`
         }
 
     } else {
@@ -256,7 +256,7 @@ export function findSubstringBetweenTags(text: string, startTag: string, endTag:
         if (foundTheFirstTag && foundTheSecondTag) {
             return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)])
         } else {
-            throw `Not possible to find the start or end tags (start tag: ${foundTheFirstTag}, end tag: ${foundTheSecondTag})`
+            throw `Not possible to find the start or end tags (start tag: \"${startTag}\", end tag: \"${endTag}\") in the text - \"${text}\".`
         }
     }
 }

@@ -47,7 +47,7 @@ var FLNodeIf = /** @class */ (function (_super) {
         if (this.elseCaseExists) {
             var _c = findSubstringBetweenTags(rest2, FLNodeIf.syntaxSymbols.enclosureEndTag, FLNodeIf.syntaxSymbols.enclosureStartTag), elseText = _c[0], rest3 = _c[1];
             if (elseText.trim() !== FLNodeIf.syntaxSymbols.ifElseTag) {
-                throw "Invalid text close to the ELSE token";
+                throw "Invalid text close to the ELSE token.";
             }
             var _d = findSubstringBetweenTags(rest3, FLNodeIf.syntaxSymbols.enclosureStartTag, FLNodeIf.syntaxSymbols.enclosureEndTag), elseCaseText = _d[0], rest4 = _d[1];
             var elseCaseLine = this.nodeLine
@@ -167,7 +167,7 @@ function findSubstringBetweenTags(text, startTag, endTag) {
             return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
         }
         else {
-            throw "Not possible to find the start or end tags (start tag: ".concat(foundTheFirstTag, ", end tag: ").concat(foundTheSecondTag, ")");
+            throw "Not possible to find the start or end tags (start tag: \"".concat(startTag, "\", end tag: \"").concat(endTag, "\") in the text - \"").concat(text, "\".");
         }
     }
     else {
@@ -200,7 +200,7 @@ function findSubstringBetweenTags(text, startTag, endTag) {
             return ([text.substring(stringCutStart, stringCutEnd - 1), text.substring(stringCutEnd - 1, text.length)]);
         }
         else {
-            throw "Not possible to find the start or end tags (start tag: ".concat(foundTheFirstTag, ", end tag: ").concat(foundTheSecondTag, ")");
+            throw "Not possible to find the start or end tags (start tag: \"".concat(startTag, "\", end tag: \"").concat(endTag, "\") in the text - \"").concat(text, "\".");
         }
     }
 }

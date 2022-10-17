@@ -93,7 +93,7 @@ var FLNodeExpression = /** @class */ (function (_super) {
                     else {
                         return ([this.text, ""]);
                         console.log(this.text);
-                        throw "no_variable_error";
+                        throw "Variable not found.";
                     }
                 }
                 break;

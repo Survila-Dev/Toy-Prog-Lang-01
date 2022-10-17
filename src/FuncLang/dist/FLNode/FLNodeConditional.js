@@ -115,14 +115,14 @@ var FLNodeConditional = /** @class */ (function (_super) {
         else {
             // Divide to left and right child while ignoring the enclosure symbols
             if (!(this.conditionalSymbol)) {
-                throw "No conditional symbol assigned before spliting the text to children texts";
+                throw "No conditional symbol found.";
             }
             var childrenText = (0, splitString_1.stringSplitIgnoringTags)(this.text, this.conditionalSymbol, [[enclosureStartSymbol, enclosureEndSymbol]]);
             this.children = childrenText.map(function (childText) {
                 return new FLNodeConditional(flSuperModule.FLNodeTypeEnum.Conditional, childText);
             });
             if (this.children.length !== 2) {
-                throw "wrong number of children nodes for conditional statement";
+                throw "Not possible to evaluate conditional statement.";
             }
             return this.children;
         }
@@ -181,7 +181,7 @@ var FLNodeConditional = /** @class */ (function (_super) {
                     outputValue = leftChildValue < rightChildValue;
                     break;
                 default:
-                    throw "No conditional type could be found for evaluating the value";
+                    throw "Conditional value could not be evaluated.";
             }
             if (outputValue) {
                 return ([1, ""]);

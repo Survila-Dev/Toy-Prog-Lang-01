@@ -262,7 +262,7 @@ function App() {
 
         // Log to the console
         updateOutConsList((prevValue) => {
-          return [...prevValue, `Error: ${error} in ${errorLine} line`]})
+          return [...prevValue, `Error: ${error}`]})
 
         changeInterpretorState((prevState) => {
           return {

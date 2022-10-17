@@ -125,7 +125,7 @@ export class FLNodeExpression extends flSuperModule.FLNode {
                     } else {
                         return ([this.text, ""])
                         console.log(this.text)
-                        throw "no_variable_error"
+                        throw "Variable not found."
                     }
                 }
                 break;

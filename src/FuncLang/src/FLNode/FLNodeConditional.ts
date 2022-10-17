@@ -144,7 +144,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
         } else {
             // Divide to left and right child while ignoring the enclosure symbols
             if (!(this.conditionalSymbol)) {
-                throw "No conditional symbol assigned before spliting the text to children texts"
+                throw "No conditional symbol found."
             }
 
             const childrenText = stringSplitIgnoringTags(
@@ -161,7 +161,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
             })
 
             if (this.children.length !== 2) {
-                throw "wrong number of children nodes for conditional statement"
+                throw "Not possible to evaluate conditional statement."
             }
 
             return this.children
@@ -232,7 +232,7 @@ export class FLNodeConditional extends flSuperModule.FLNode {
                     outputValue = leftChildValue < rightChildValue;
                     break;
                 default:
-                    throw "No conditional type could be found for evaluating the value"
+                    throw "Conditional value could not be evaluated."
             }
 
             if (outputValue) {
