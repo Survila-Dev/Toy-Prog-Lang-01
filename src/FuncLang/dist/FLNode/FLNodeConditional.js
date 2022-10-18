@@ -163,10 +163,10 @@ var FLNodeConditional = /** @class */ (function (_super) {
                     outputValue = convertToBoolean(leftChildValue) && convertToBoolean(rightChildValue);
                     break;
                 case ConditionalType.equal:
-                    outputValue = leftChildValue === rightChildValue;
+                    outputValue = leftChildValue == rightChildValue;
                     break;
                 case ConditionalType.unequal:
-                    outputValue = leftChildValue !== rightChildValue;
+                    outputValue = leftChildValue != rightChildValue;
                     break;
                 case ConditionalType.largerEqual:
                     outputValue = leftChildValue >= rightChildValue;

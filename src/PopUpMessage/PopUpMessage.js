@@ -2,6 +2,13 @@ import "./PopUpMessage.css"
 import photoAbout from "./Bewerbungsfoto.JPG";
 import gifExample from "./example_gif.gif";
 import iconX from "./8666595_x_icon.svg";
+import helpGif1 from "./01_Tutorial_Introduction.gif";
+import helpGif2 from "./02_Tutorial_Editor.gif";
+import helpGif3 from "./03_Tutorial_Buttons.gif";
+import helpGif4 from "./04_Tutorial_Output.gif";
+import helpGif5 from "./05_Tutorial_Selection.gif";
+import helpGif6 from "./06_Tutorial_Execution_Context.gif";
+import helpGif7 from "./07_Tutorial_Call_Stack.gif";
 
 import React from "react"
 
@@ -41,32 +48,74 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
     const listOfHelpArticles = [
         {
-            title: "Help 1",
-            image: gifExample,
+            title: "Welcome to Toy Programming Language & Interpreter by Eimantas Survila",
+            image: helpGif1,
             text: [
-                <p>Hello,</p>,
-                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in manufacturing technologies and learning front-end development in the free time.</p>
+                <p>Edit, evaluate and interact with the code in the toy programming language.</p>,
+                <p>Alter the execution context during the execution, add additional code lines to the call stack by draging it from the editor.</p>
                 ],
             firstArticle: true,
             lastArticle: false
         },
         {
-            title: "Help 2",
-            image: gifExample,
+            title: "Tutorial 1 - Edit your code in the editor, check syntax guide for syntax",
+            image: helpGif2,
             text: [
-                <p>Hello,</p>,
-                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in manufacturing technologies and learning front-end development in the free time.</p>
+                <p>Use the editor to code.</p>,
+                <p>Open the syntex guide on the top right side of the editor for help on language syntax.</p>
                 ],
             firstArticle: false,
             lastArticle: false
         },
         {
-            title: "Help 3",
-            image: gifExample,
+            title: "Tutorial 2 - Evaluate the code by running it automatically or manuelly step by step",
+            image: helpGif3,
+            text: [ 
+                <p>Evaluate the code automatically by clicking "RUN". The evaluation can be stopped by clicking the button "STOP"</p>,
+                <p>The code can be evaluated step by step by clicking "Run One Step"</p>,
+                <p>Multiple steps are required for one line: select line, push on call stack, pop from stack.</p>,
+                <p>Click "Start at the Beginning" to intialize the starting position of the evaluation and to clean the call stack.</p>,    
+            ],
+            firstArticle: false,
+            lastArticle: false
+        },
+        {
+            title: "Tutorial 3 - Print to the console during code evaluation and check errors in the console",
+            image: helpGif4,
+            text: [ 
+                <p>Use command "PRINT( )" to output to the console.</p>,
+                <p>Any errors with the code is displayed in the console too.</p>
+                ],
+            firstArticle: false,
+            lastArticle: false
+        },
+        {
+            title: "Tutorial 4 - Select pre-written code snippets which demonstrate the toy programming language",
+            image: helpGif5,
             text: [
-                <p>Hello,</p>,
-                <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>,
-                
+                <p>Multiple pre-written code snippets are available to select from.</p>,
+                <p>The changes made to a snippet including the execution environment will be saved when changing to other snippet</p>
+                ],
+            firstArticle: false,
+            lastArticle: false
+        },
+        {
+            title: "Tutorial 5 - Add, change, delete variables during the code evaluation",
+            image: helpGif6,
+            text: [
+                <p>During the evalution of the code the variables are displayed with their types and values.</p>,
+                <p>These values can be changed any time during the evaluation.</p>,
+                <p>Additionally the variables can be added or deleted.</p>
+                ],
+            firstArticle: false,
+            lastArticle: false
+        },
+        {
+            title: "Tutorial 6 - Analyse and alter the call stack by draging liner number from editor",
+            image: helpGif7,
+            text: [
+                <p>The call stack is displayed during the code evaluation.</p>,
+                <p>Additionaly elements can be added to the call stack by draging them from the editor {"("}grab the editor line number of the corresponding command{")"}.</p>,
                 ],
             firstArticle: false,
             lastArticle: true

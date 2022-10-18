@@ -239,7 +239,10 @@ const Editor = ({
                 <p className = "editor__helper__syntax">+</p>
 
                 <p className = "editor__helper__text">Boolean operations:</p>
-                <p className = "editor__helper__syntax">not !; and &, or |</p>
+                <p className = "editor__helper__syntax">
+                    not !; and &, or |, equal ==,
+                    larger {">"}, larger or equal {">="}, lasser {">"}, lesser or equal {"<="}
+                </p>
 
                 <h3>2. Control structures</h3>
                 <p className = "editor__helper__text">If structure:</p>
