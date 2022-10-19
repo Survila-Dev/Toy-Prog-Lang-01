@@ -26,13 +26,29 @@ const Editor = ({
         const editorElementHeight = editorElement.clientHeight - EDITORPADDING;
 
         targetTextarea.style.height = `${Math.max(noOfLines * lineHeight, editorElementHeight)}px`;
+
+        // Resize the syntax helper button
+        const scrollBarWidth = document.querySelector(".editor").offsetWidth - 
+                                document.querySelector(".editor").clientWidth;
+
+        console.log("Scroll bar width:")
+        console.log(scrollBarWidth);
+
+        document.querySelector(".editor__syntax-helper_button").style.right = (18 + scrollBarWidth) + "px";
+        document.querySelector(".editor__syntax-helper_button").style.top = "154px";
+
+        document.querySelector(".editor__syntax-helper").style.right = (18 + scrollBarWidth) + "px"; 
+        document.querySelector(".editor__syntax-helper").style.top = "154px";
+
+        document.querySelector(".editor__syntax-helper").style.height = editorElementHeight+"px";
+
     }
 
     React.useEffect(() => {
         window.addEventListener("resize", resizeEditor)
     }, [])
 
-    const [displayHelper, updateDisplayHelper] = React.useState(true);
+    const [displayHelper, updateDisplayHelper] = React.useState(false);
 
     const textAreaRef = React.useRef();
 
@@ -120,7 +136,6 @@ const Editor = ({
 
             // insert the required amount of tab escape strings before new line
             const noOfTabsInPrevLine = lineTexts[curLine].split("\t").length - 1;
-            console.log(noOfTabsInPrevLine);
 
             let insertString = "\n"
             for (let i = 0; i < noOfTabsInPrevLine; i++) {
@@ -139,16 +154,20 @@ const Editor = ({
     }
 
     function handleHelperClick(event) {
+        
 
         if (displayHelper) {
             // Set width of button to auto
             document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "auto";
+            document.querySelector(".editor__syntax-helper").style.visibility = "hidden";
         } else {
             // Set width to the width to a given varialbe
             document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "calc(var(--editor-helper-width) + 20px)";
+            document.querySelector(".editor__syntax-helper").style.visibility = "visible";
         }
 
         updateDisplayHelper((prevVal) => !prevVal)
+        resizeEditor();
     }
 
     const lineNumbersJSX = []
@@ -228,7 +247,7 @@ const Editor = ({
                 onChange = {handleTextAreaChange}
                 onKeyDown = {handleTabPress}>
             </textarea>
-            {displayHelper? <div className = "editor__syntax-helper">
+            <div className = "editor__syntax-helper">
                 <h3>1. Variables</h3>
                 <p className = "editor__helper__text">Assignment:</p>
                 <p className = "editor__helper__syntax">var = 25;</p>
@@ -253,7 +272,7 @@ const Editor = ({
                 <p className = "editor__helper__text">For loop:</p>
                 <p className = "editor__helper__syntax">FOR (intialization | condition | iteration) {"{code};"}</p>
                 
-            </div> : <></>}
+            </div>
             
         </div>
     )

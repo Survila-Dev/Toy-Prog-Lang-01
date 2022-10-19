@@ -32,6 +32,8 @@ export function stringSplitIgnoringTags(
 
             return false;
         }
+
+        try {
         // // Iterate through the string
         for (let i = 0; i < inputString.length; i++) {
 
@@ -81,6 +83,10 @@ export function stringSplitIgnoringTags(
             } else {
                 splitStrings[splitStrings.length - 1] += inputString[i]
             }
+        }
+        } catch(error) {
+            throw "Not able to parse the code."
+            
         }
 
         return splitStrings;

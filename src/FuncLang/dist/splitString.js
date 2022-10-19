@@ -24,51 +24,56 @@ function stringSplitIgnoringTags(inputString, splitSymbol, pairsOfTags) {
         }
         return false;
     }
-    // // Iterate through the string
-    for (var i = 0; i < inputString.length; i++) {
-        // Check for all the tags (starting and ending)
-        var foundTag = checkForTagsAtPosition(i);
-        if (foundTag) {
-            // If starting tag found
-            if (foundTag[0] === "start") {
-                // Add it to stack and start ignoring symbols; add to i
-                tagStack.push([foundTag[1], foundTag[2]]);
-                splitStrings[splitStrings.length - 1] += foundTag[1];
-            }
-            else if (foundTag[0] === "end") {
-                // If ending tag found, pop the element from stack or give error
-                if (foundTag[1] === tagStack[tagStack.length - 1][1]) {
-                    tagStack.pop();
+    try {
+        // // Iterate through the string
+        for (var i = 0; i < inputString.length; i++) {
+            // Check for all the tags (starting and ending)
+            var foundTag = checkForTagsAtPosition(i);
+            if (foundTag) {
+                // If starting tag found
+                if (foundTag[0] === "start") {
+                    // Add it to stack and start ignoring symbols; add to i
+                    tagStack.push([foundTag[1], foundTag[2]]);
                     splitStrings[splitStrings.length - 1] += foundTag[1];
                 }
-                else {
-                    throw "Wrong ending tags";
+                else if (foundTag[0] === "end") {
+                    // If ending tag found, pop the element from stack or give error
+                    if (foundTag[1] === tagStack[tagStack.length - 1][1]) {
+                        tagStack.pop();
+                        splitStrings[splitStrings.length - 1] += foundTag[1];
+                    }
+                    else {
+                        throw "Wrong ending tags";
+                    }
                 }
-            }
-            i += foundTag[1].length;
-            if (i >= inputString.length) {
-                break;
-            }
-        }
-        // if tag stack empty, start looking looking for elements to split; add to i
-        if (tagStack.length === 0) {
-            // If tag stack empty, check if split symbol reach
-            var seperatorSize = splitSymbol.length;
-            if (splitSymbol === inputString.substring(i, i + seperatorSize)) {
-                splitStrings.push("");
-                i += seperatorSize - 1;
+                i += foundTag[1].length;
                 if (i >= inputString.length) {
                     break;
                 }
             }
+            // if tag stack empty, start looking looking for elements to split; add to i
+            if (tagStack.length === 0) {
+                // If tag stack empty, check if split symbol reach
+                var seperatorSize = splitSymbol.length;
+                if (splitSymbol === inputString.substring(i, i + seperatorSize)) {
+                    splitStrings.push("");
+                    i += seperatorSize - 1;
+                    if (i >= inputString.length) {
+                        break;
+                    }
+                }
+                else {
+                    splitStrings[splitStrings.length - 1] += inputString[i];
+                }
+                // if split symbol is there, start another string
+            }
             else {
                 splitStrings[splitStrings.length - 1] += inputString[i];
             }
-            // if split symbol is there, start another string
         }
-        else {
-            splitStrings[splitStrings.length - 1] += inputString[i];
-        }
+    }
+    catch (error) {
+        throw "Not able to parse the code.";
     }
     return splitStrings;
 }

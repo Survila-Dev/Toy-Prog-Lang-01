@@ -297,7 +297,7 @@ function App() {
     let varType = "none"
     if (varValue === "") {
         varType = "none"
-    } else if (varValue === "true" || varValue === "false") {
+    } else if (varValue == 1 || varValue == 0) {
         varType = "boolean"
     } else if (!isNaN(varValue)) {
         varType = "number"
@@ -362,7 +362,9 @@ function App() {
       />
       <div className="AppGrid">
           <div className = "leftside">
-            <LexEnv lexEnv = {interpretorState.globalLexEnv} changeInterpretorState = {changeInterpretorState}/>
+            <LexEnv
+              lexEnv = {interpretorState.globalLexEnv}
+              changeInterpretorState = {changeInterpretorState}/>
             <CallStack
               callStack = {interpretorState.globalStack}
               changeInterpretorState = {changeInterpretorState}
