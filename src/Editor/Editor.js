@@ -38,9 +38,9 @@ const Editor = ({
         document.querySelector(".editor__syntax-helper_button").style.top = "154px";
 
         document.querySelector(".editor__syntax-helper").style.right = (18 + scrollBarWidth) + "px"; 
-        document.querySelector(".editor__syntax-helper").style.top = "154px";
+        document.querySelector(".editor__syntax-helper").style.top = (154 + 28) + "px";
 
-        document.querySelector(".editor__syntax-helper").style.height = editorElementHeight+"px";
+        document.querySelector(".editor__syntax-helper").style.height = (editorElementHeight-28)+"px";
 
     }
 
