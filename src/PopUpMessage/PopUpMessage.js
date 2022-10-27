@@ -1,6 +1,5 @@
 import "./PopUpMessage.css"
-import photoAbout from "./Bewerbungsfoto.JPG";
-import gifExample from "./example_gif.gif";
+import photoAbout from "./Bewerbungsfotos.jpg";
 import iconX from "./8666595_x_icon.svg";
 import helpGif1 from "./01_Tutorial_Introduction.gif";
 import helpGif2 from "./02_Tutorial_Editor.gif";
@@ -30,7 +29,6 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 <div>JavaScript</div>
                 <div>TypeScript</div>
                 <div>React</div>
-                <div>Jest</div>
             </div>,
             <p>Please get in contact!</p>,
             <div className = "pop-up__contact_grid">
@@ -39,7 +37,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                     <p>eimantas.survila.contact@gmail.com</p>
                 </div>
                 <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_b">LinkedIn</a>
-                <a href = "https://www.linkedin.com/in/eimantas-survila/" className = "contact_grid_c">GitHub</a>
+                <a href = "https://github.com/Survila-Dev" className = "contact_grid_c">GitHub</a>
             </div>,   
         ],
         firstArticle: true,

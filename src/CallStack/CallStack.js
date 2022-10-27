@@ -7,12 +7,6 @@ function CallStack({
 
     function popStackElement(event) {
         const {id} = event.target;
-
-        // changeCallStack((prevStack) => {
-        //     const newStack = [...prevStack]
-        //     newStack.splice(id, 1);
-        //     return newStack;
-        // })
         changeInterpretorState((prevState) => {
             const newStack = [...prevState.globalStack];
             newStack.splice(id, 1);
@@ -36,12 +30,6 @@ function CallStack({
     function handleDropOfLine(event) {
 
         console.log("Just fired on drop")
-        // Here
-        // changeCallStack((prevStack) => {
-        //     const newStack = [...prevStack];
-        //     newStack.push(lineDragContent);
-        //     return newStack;
-        // })
         changeInterpretorState((prevState) => {
             const newStack = [...prevState.globalStack];
             newStack.push(lineDragContent);

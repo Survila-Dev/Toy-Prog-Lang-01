@@ -34,13 +34,13 @@ const Editor = ({
         console.log("Scroll bar width:")
         console.log(scrollBarWidth);
 
-        document.querySelector(".editor__syntax-helper_button").style.right = (18 + scrollBarWidth) + "px";
-        document.querySelector(".editor__syntax-helper_button").style.top = "154px";
+        document.querySelector(".editor__syntax-helper_button").style.right = (17 + scrollBarWidth) + "px";
+        document.querySelector(".editor__syntax-helper_button").style.top = "153px";
 
-        document.querySelector(".editor__syntax-helper").style.right = (18 + scrollBarWidth) + "px"; 
-        document.querySelector(".editor__syntax-helper").style.top = "154px";
+        document.querySelector(".editor__syntax-helper").style.right = (17 + scrollBarWidth) + "px"; 
+        document.querySelector(".editor__syntax-helper").style.top = (153 + 28) + "px";
 
-        document.querySelector(".editor__syntax-helper").style.height = editorElementHeight+"px";
+        document.querySelector(".editor__syntax-helper").style.height = (editorElementHeight-28)+"px";
 
     }
 
@@ -49,11 +49,8 @@ const Editor = ({
     }, [])
 
     const [displayHelper, updateDisplayHelper] = React.useState(false);
-
     const textAreaRef = React.useRef();
-
     const lineNumber = editorContent.split("\n").length;
-    // const [lineNumber, changeLineNumber] = React.useState(1)
 
     function textAreaChange(value) {
 
@@ -64,7 +61,6 @@ const Editor = ({
         updateInterpretatorState((prevState) => {
             const newCode = prevState.currentCode;
             newCode.internalText = value;
-            // console.log(newCode.internalText);
             return {
                 ...prevState,
                 globalStack: [],
@@ -76,7 +72,6 @@ const Editor = ({
 
     function handleTextAreaChange(event) {
 
-        // textAreaChange(event.target.value);
         changeEditorContent(event.target.value)
         resizeEditor();
 
@@ -120,7 +115,7 @@ const Editor = ({
         } else if (event.key === "Enter") {
             event.preventDefault();
 
-            // count the tabs from previous lines
+            // Count the tab escape strings from previous lines
             const lineTexts = textAreaRef.current.value.split("\n");
             let curPos = 0;
             let curLine = null;
@@ -134,7 +129,7 @@ const Editor = ({
                 }
             }
 
-            // insert the required amount of tab escape strings before new line
+            // Insert the required amount of tab escape strings before new line
             const noOfTabsInPrevLine = lineTexts[curLine].split("\t").length - 1;
 
             let insertString = "\n"
@@ -150,18 +145,14 @@ const Editor = ({
             textAreaChange(textAreaRef.current.value);
             
         }
-        
     }
 
     function handleHelperClick(event) {
         
-
         if (displayHelper) {
-            // Set width of button to auto
             document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "auto";
             document.querySelector(".editor__syntax-helper").style.visibility = "hidden";
         } else {
-            // Set width to the width to a given varialbe
             document.getElementsByClassName("editor__syntax-helper_button")[0].style.width = "calc(var(--editor-helper-width) + 20px)";
             document.querySelector(".editor__syntax-helper").style.visibility = "visible";
         }

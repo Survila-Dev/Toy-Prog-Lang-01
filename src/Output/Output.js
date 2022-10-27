@@ -5,11 +5,7 @@ import React from "react";
 function Output({outputList, errorsInList}) {
 
     console.log(outputList[0])
-
-    // Generate the list of divs for numbers
     const lineNoJSX = [];
-
-    // Generate the list of divs for output text
     const outputTextJSX = [];
 
     for (let i = 0; i < outputList.length; i++) {

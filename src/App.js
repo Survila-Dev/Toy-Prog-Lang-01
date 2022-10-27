@@ -47,7 +47,6 @@ function App() {
 
   // -- USE EFFECT CALLBACKS --
   React.useEffect(() => {
-    // Initialization of the page
     document.title =  "Toy Programming Language";
 
     // Set up the local storage
@@ -90,7 +89,7 @@ function App() {
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         currentCode: new FLCode(
-          "boolVal = true;\nvar1 = 100;\nvar2 = 200;\nWHILE (boolVal) {\n\tvar1 = var1 + 5;\n\tvar2 = var2 - 5;\n\tboolVal = var1 <= var2;\n};", 100
+          "boolVal = 1;\nvar1 = 100;\nvar2 = 200;\nWHILE (boolVal) {\n\tvar1 = var1 + 5;\n\tvar2 = var2 - 5;\n\tboolVal = var1 <= var2;\n};", 100
         ),
         nominalStackSize: 0
       }
@@ -111,13 +110,12 @@ function App() {
       }
     ))
     return (() => {
-      // Clean up function for freeing up the local storage
       localStorage.clear()
     })
   }, [])
 
   React.useEffect(() => {
-    // Run everytime the code is executed
+    // Run everytime one step of the toy programming language code is evaluated
 
     // Prepare the input data which is deep copy of the state
     const prevStateCopy = JSON.parse(JSON.stringify(interpretorState));
@@ -139,148 +137,121 @@ function App() {
     let curEvalLine = null;
     let curCode;
 
-    try {
-    // Input the data to the "code"
-    if (interpretorState.nominalStackSize === interpretorState.globalStack.length ||
-        (!altTempStack[altTempStack.length-1])) {
-      
-      // Check if current pos is null if so creat the new currentCode
-      if (interpretorState.lineMarking.currentEvalLine === null) {
+    // Evaluates one step of the code either from call stack or from editor and the catched errors
+    // are output to the console
+    try { 
 
-        console.log(editorContent);
-
-        curCode = new FLCode(editorContent, 200);
-        curEvalLine = null;
-        changeInterpretorState((prevState) => {
-          return {
-            ...prevState,
-            lineMarking: {currentEvalLine: null, currentErrorLine: null},
-            currentCode: curCode
-          }
-        })
-      } else {
-        curCode = interpretorState.currentCode;
-        curCode.currentLine = 1;
-        curEvalLine = interpretorState.lineMarking.currentEvalLine;
-      }
-      console.log(curCode)
-      curCode.runOneStep(
-        curEvalLine,
-        // interpretorState.lineMarking.currentEvalLine,
-        altTempLexEnv,
-        altTempStack)
-      
-      curConsOut = curCode.currentOutput;
-      outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
-      outStack = JSON.parse(JSON.stringify(curCode.callStack));
-
-      if (curConsOut) {
-        updateOutConsList((prevValue) => {
-          return [...prevValue, curConsOut]
-        })
-        updateConsListErrors((prevList) => {
-          return [...prevList, false];
-        })
-      }
-
-    } else {
-
-      // Create block element and execute
-      // here is something taking place
-
-      // if (altTempStack[altTempStack.length-1]) {
-
-        const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
-        curConsOut = tempNode.run(altTempLexEnv);
-        // curConsOut = curConsOutAll[1]
+      // checks if an additional call stack element does not exist and evaluates one step of editor content
+      if (interpretorState.nominalStackSize === interpretorState.globalStack.length ||
+          (!altTempStack[altTempStack.length-1])) {
         
-        altTempStack.pop()
-        outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
-        outStack = JSON.parse(JSON.stringify(altTempStack));
-
-        curCode = interpretorState.currentCode;
-        curEvalLine = interpretorState.lineMarking.currentEvalLine;
-
-        if (curConsOut[1]) {
-
-          if (curConsOut[1].length !== 0) {
-            updateOutConsList((prevValue) => {
-
-              // const outputArray = [];
-              // outputArray = outputArray.concat(prevValue);
-              // outputArray = outputArray.concat(curConsOut);
-              return [...prevValue, ...curConsOut[1]];
-            })
-
-            updateConsListErrors((prevList) => {
-
-              const newList = [];
-              for (let i = 0; i < curConsOut.length; i++) {
-                newList.push(false)
-              }
-              return [...prevList, ...newList];
-            })
-          }
+        if (interpretorState.lineMarking.currentEvalLine === null) {
+          curCode = new FLCode(editorContent, 200);
+          curEvalLine = null;
+          changeInterpretorState((prevState) => {
+            return {
+              ...prevState,
+              lineMarking: {currentEvalLine: null, currentErrorLine: null},
+              currentCode: curCode
+            }
+          })
+        } else {
+          curCode = interpretorState.currentCode;
+          curCode.currentLine = 1;
+          curEvalLine = interpretorState.lineMarking.currentEvalLine;
         }
-      // }
 
-      
-    }
+        curCode.runOneStep(
+          curEvalLine,
+          altTempLexEnv,
+          altTempStack)
+        
+        curConsOut = curCode.currentOutput;
+        outLexEnv = JSON.parse(JSON.stringify(curCode.executionContext));
+        outStack = JSON.parse(JSON.stringify(curCode.callStack));
 
-    let lexEnvForView = {};
-    Object.keys(outLexEnv).forEach((key) => {
-      lexEnvForView[key] = [outLexEnv[key], determineTheVarType(outLexEnv[key])]
-    })
+        if (curConsOut) {
+          updateOutConsList((prevValue) => {
+            return [...prevValue, curConsOut]
+          })
+          updateConsListErrors((prevList) => {
+            return [...prevList, false];
+          })
+        }
 
-    let callStackForView = [];
-    outStack.forEach((element) => {
-      callStackForView.push(["", element])
-    })
+      // evaluates if an additional call stack element exists
+      } else { 
+          const tempNode = new FLNodeBlock("Block", altTempStack[altTempStack.length-1]);
+          curConsOut = tempNode.run(altTempLexEnv);
+          
+          altTempStack.pop()
+          outLexEnv = JSON.parse(JSON.stringify(altTempLexEnv));
+          outStack = JSON.parse(JSON.stringify(altTempStack));
 
-    changeInterpretorState(
-      {
-        globalLexEnv: lexEnvForView,
-        globalStack: callStackForView,
-        // lineMarking: {currentEvalLine: curEvalLine, currentErrorLine: errorLine},
-        lineMarking: {currentEvalLine: curCode.currentLine, currentErrorLine: errorLine},
-        currentCode: curCode,
-        //currentCode: interpretorState.currentCode,
-        nominalStackSize: interpretorState.nominalStackSize + (outStack.length - altTempStack.length)
+          curCode = interpretorState.currentCode;
+          curEvalLine = interpretorState.lineMarking.currentEvalLine;
+
+          if (curConsOut[1]) {
+
+            if (curConsOut[1].length !== 0) {
+              updateOutConsList((prevValue) => {
+                return [...prevValue, ...curConsOut[1]];
+              })
+
+              updateConsListErrors((prevList) => {
+
+                const newList = [];
+                for (let i = 0; i < curConsOut.length; i++) {
+                  newList.push(false)
+                }
+                return [...prevList, ...newList];
+              })
+            }
+          }
+      }
+
+      // Updating the code evaluation state
+      let lexEnvForView = {};
+      Object.keys(outLexEnv).forEach((key) => {
+        lexEnvForView[key] = [outLexEnv[key], determineTheVarType(outLexEnv[key])]
       })
 
-  } 
-  catch (error) {
+      let callStackForView = [];
+      outStack.forEach((element) => {
+        callStackForView.push(["", element])
+      })
 
-      // Error handling here
-
-      // if (error === "no_variable_error") {
-        // Stop automatic running, if it is on
-        clearInterval(setInterObj);
-
-        // Mark the line as error 
-        errorLine = interpretorState.lineMarking.currentEvalLine;
-
-        // Log to the console
-        updateOutConsList((prevValue) => {
-          return [...prevValue, `Error: ${error}`]})
-
-        changeInterpretorState((prevState) => {
-          return {
-            ...prevState,
-            lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: errorLine},
-          }  
+      changeInterpretorState(
+        {
+          globalLexEnv: lexEnvForView,
+          globalStack: callStackForView,
+          lineMarking: {currentEvalLine: curCode.currentLine, currentErrorLine: errorLine},
+          currentCode: curCode,
+          nominalStackSize: interpretorState.nominalStackSize + (outStack.length - altTempStack.length)
         })
-        updateConsListErrors((prevList) => [...prevList, true])
 
-      // }
+    // Catches and outputs the errors to the interpreter console
+    } catch (error) {
+
+      // Stop automatic running, if it is on
+      clearInterval(setInterObj);
+      errorLine = interpretorState.lineMarking.currentEvalLine;
+      updateOutConsList((prevValue) => {
+        return [...prevValue, `Error: ${error}`]})
+
+      changeInterpretorState((prevState) => {
+        return {
+          ...prevState,
+          lineMarking: {currentEvalLine: interpretorState.currentCode.currentLine, currentErrorLine: errorLine},
+        }  
+      })
+      updateConsListErrors((prevList) => [...prevList, true])
     }
-  }
-    //Prepare the data to be output as state (also deep copy)
-    
+  } 
   , [triggerForEval])
 
+  // useEffect which is run once at start to reset the toy prog. lang. code evaluation to the beginning
   React.useEffect(() => {
-    // Set the execution state of the code to start start
     changeInterpretorState((prevState) => {
       return {
         ...prevState,
@@ -293,7 +264,6 @@ function App() {
 
   // -- SUBROUTINES --
   function determineTheVarType(varValue) {
-
     let varType = "none"
     if (varValue === "") {
         varType = "none"
@@ -309,7 +279,6 @@ function App() {
   
   // -- HANDLE FUNCTIONS --
   function handleRunAuto(event) {
-
     const RUN_INTERVAL = 200;
     if (!codeInAutoRun) {
 
@@ -327,14 +296,11 @@ function App() {
     updateCodeInAutoRun(false);
   }
 
-  
-
   function handleRunOneStep(event) {
     flipTriggerForEval((prev) => !prev);
   }
 
   function handleJumpToCodeStart(event) {
-    // The same if textarea is changed
     clearInterval(setInterObj);
     updateCodeInAutoRun(false);
     
@@ -344,7 +310,6 @@ function App() {
         globalStack: [],
         lineMarking: {currentEvalLine: null, currentErrorLine: null},
         nominalStackSize: 0
-        //!
       }  
     })
   }

@@ -7,9 +7,7 @@ import React from "react"
 function LexEnv({lexEnv, changeInterpretorState}) {
 
     const [addNewEl, changeAddNewEl] = React.useState(["var0", "literal", "string"]);
-
     const IDPREPEND = "lexenvinput"
-
     let lexEnvComponents = []
     const lexEnvKeys = Object.keys(lexEnv);
     const lexEnvValues = [];
@@ -49,13 +47,6 @@ function LexEnv({lexEnv, changeInterpretorState}) {
 
         const varType = determineTheVarType(value);
 
-        // changeLexEnv((prevState) => {
-
-        //     return {
-        //         ...prevState,
-        //         [name]: [value, varType]
-        //     }
-        // })
         changeInterpretorState((prevState) => {
             const newLexEnv = {...prevState.globalLexEnv};
             return {
@@ -70,12 +61,6 @@ function LexEnv({lexEnv, changeInterpretorState}) {
 
         const varName = addNewEl[0];
 
-        // changeLexEnv((prevState) => {
-        //     return ({
-        //         ...prevState,
-        //         [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]
-        //     })
-        // })
         changeInterpretorState((prevState) => {
             const newLexEnv = {...prevState.globalLexEnv};
             return {
@@ -85,7 +70,7 @@ function LexEnv({lexEnv, changeInterpretorState}) {
                     [varName]: [addNewEl[1], determineTheVarType(addNewEl[1])]}}
         })
 
-        // Check what variable name the input for new element should have
+        // Check what variable name the input for new element name should have
         const curNumber = 0;
         const lexEnvKeys = Object.keys(lexEnv);
 
@@ -104,11 +89,6 @@ function LexEnv({lexEnv, changeInterpretorState}) {
     function deleteButton(event) {
         const {name} = event.target;
 
-        // changeLexEnv((prevState) => {
-        //     const newState = prevState;
-        //     delete newState[name];
-        //     return ({...newState});
-        // })
         changeInterpretorState((prevState) => {
             const newLexEnv = {...prevState.globalLexEnv};
             delete newLexEnv[name];

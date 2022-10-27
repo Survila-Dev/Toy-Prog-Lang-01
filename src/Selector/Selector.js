@@ -23,17 +23,13 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
             const optionsReturn = [];
             for (let i = 0; i < 10; i++) {
-
-                // Read from local storage
                 const curSnippet = JSON.parse(localStorage.getItem(`snippet${i}`));
                 if (curSnippet === null) {
                     break;
                 } else {
                     optionsReturn.push(JSON.parse(localStorage.getItem(`snippet${i}`)));
                 }
-                }
-            console.log("optionsReturn")
-            console.log(optionsReturn)
+            }
             return optionsReturn;
 
         })
@@ -65,28 +61,6 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
         )
     })
 
-    // optionsReturn.push(
-    //     <article
-    //         className = "option_article"
-    //         id = {i}
-    //         key = {i}
-    //         onClick = {handleOptionClick}
-    //     >
-            
-    //         <div className = "option-article_content" id = {i} key = {i}>
-    //             <div>
-    //                 <h3>{"Snippet " + (i+1) + " - " + curSnippet.name}</h3>
-    //                 <p>{curSnippet.description}</p>
-    //             </div>
-    //             <div className = "option-article_tags">
-    //                 {curSnippet.tags.map((item) => {
-    //                     return <div>{item}</div>
-    //                 })}
-    //             </div>
-    //         </div>
-    //     </article>
-    // )
-
     function resizeOptions() {
 
         const newOptionWidth =
@@ -95,9 +69,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
             - document.getElementsByClassName("selectorbutton")[0].offsetHeight
             - document.getElementsByClassName("navbar")[0].offsetHeight
             - 20;
-            
 
-        console.log(newOptionWidth)
         changeOptionWidth(newOptionWidth)
         updateOptionSelectorHeight(newOptionSelectorHeight)
     }
@@ -131,15 +103,10 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
 
         updateCurrentSelection(event.currentTarget.id);
     
-        // Get the new interpretor state from the local storage
         const newValue = JSON.parse(
             localStorage.getItem(
                 `snippet${event.currentTarget.id}`)
         )
-
-        console.log("Selected value");
-        console.log(newValue.currentCode.internalText);
-        // newValue.callStack = [];
 
         updateInterpretorState((oldValue) => {
                 return {
