@@ -13,3 +13,4 @@ The online interpreter is hoisted on [GitHub pages](https://survila-dev.github.i
 - The variables are displayed in the execution environment and can be altered at any time during the code evaluation.
 - Call stack is displayed and additional call stack elements can be added by dragging a line number from the editor to the call stack.
 - Multiple pre-written code snippets are available which showcase the functionallity of the simple programming language.
+- The code can be evaluated step by step or automatically. In case of the automatic code evaluation the code is evaluted step by step with a set time offset to display the execution environment and the call stack during evaluation.
