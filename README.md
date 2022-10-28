@@ -4,7 +4,7 @@ This repository entails an interpreter for simple and unique programming languag
 
 The online interpreter and the toy programming language in action:
 
-![Online interpreter in action](https://github.com/Survila-Dev/Toy-Prog-Lang-01/tree/main/src/PopUpMessage/01_Tutorial_Introduction.gif?raw=true)
+![Online interpreter in action](online_interpreter_demo.gif)
 
 ## Toy programming language
 
