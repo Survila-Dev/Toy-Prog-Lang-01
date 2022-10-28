@@ -2,7 +2,7 @@
 
 This repository entails an interpreter for simple and unique programming language ([toy programming language](https://www.techopedia.com/definition/22609/toy-language)) developed in TypeScript and a React single-page application for the user interaction with this toy programming language.
 
-The online interpreter and the toy programming language in action:
+The online interpreter and the toy programming language in action ([hosted demonstration](https://survila-dev.github.io/Toy-Prog-Lang-01/)):
 
 ![Online interpreter in action](online_interpreter_demo.gif)
 
