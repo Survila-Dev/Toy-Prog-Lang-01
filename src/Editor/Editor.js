@@ -234,6 +234,7 @@ const Editor = ({
             </div>
             <textarea
                 ref = {textAreaRef}
+                data-testid = "code-editor"
                 value = {editorContent}
                 onChange = {handleTextAreaChange}
                 onKeyDown = {handleTabPress}>

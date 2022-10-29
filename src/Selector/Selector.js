@@ -39,9 +39,11 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
         return (
             <article
                 className = "option_article"
+                data-testid = "selector-article"
                 id = {i}
                 key = {i}
                 onClick = {handleOptionClick}
+                
             >
                 <div className = "option-article_content">
 
@@ -129,7 +131,7 @@ function Selector({updateEditorContent, interpretorState, updateInterpretorState
     return (
         <>
             <div className = "selector">
-                <div className = "selectorbutton" onClick = {handleSelectorClick}>
+                <div className = "selectorbutton" onClick = {handleSelectorClick} data-testid = "selecton-button">
                     <div className = "clickignore">
                         <h2 className = "clickignore">{selectorCaption}</h2>
                         <p className = "h2_sub clickignore">Select pre-written code snippets</p>

@@ -170,7 +170,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 //
     return (
         <div className = "popupenv">
-        <article className = "popuparticle">
+        <article className = "popuparticle" data-testid = "pop-up-article">
             <div className = "pop-up-article__upper-part">
                 <h2>{currentArticle[currentArticlePage].title}</h2>
                 {whichPopUp !== "contact"? 
@@ -190,7 +190,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 
             </div>
             <div className = "popupcontrol">
-                <button className = "popupclosebutton" onClick = {handleExitClick}>
+                <button className = "popupclosebutton" onClick = {handleExitClick} data-testid = "pop-up-close">
                     <img src={iconX} alt="x"/>
                 </button>
 

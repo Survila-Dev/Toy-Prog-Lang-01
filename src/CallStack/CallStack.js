@@ -49,6 +49,7 @@ function CallStack({
             </div>
             <div
                 className = "callstack"
+                data-testid = "callstack"
                 onDrop = {handleDropOfLine}
                 onDragOver = {preventDefaultFunc}
                 onDragEnter = {preventDefaultFunc}
