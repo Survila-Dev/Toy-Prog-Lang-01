@@ -165,7 +165,7 @@ function LexEnv({lexEnv, changeInterpretorState}) {
     }
 
     return (
-        <div className ="lexenvwithtitle">
+        <div className ="lexenvwithtitle" data-testid = "execution-context">
             <div className = "lexenv__header">
                 <h2>Execution Context</h2>
                 <p className="h2_sub">Add, change and delete variables</p>

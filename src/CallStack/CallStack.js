@@ -19,6 +19,7 @@ function CallStack({
         callStackJSX.push(
             <div
                 className = "callstackelement"
+                data-testid = "callstack-element"
                 key = {i}
                 id = {i}
             >

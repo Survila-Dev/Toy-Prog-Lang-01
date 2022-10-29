@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";    
 import App from "./App"
 
@@ -7,15 +7,20 @@ test("e2e (critical): check if pop up message can be closed by clicking the clos
     // Expect for the pop-up article to exist
     expect(screen.queryByTestId("pop-up-article")).toBeTruthy();
     expect(screen.queryByTestId("pop-up-article")).toBeInTheDocument();
+
+    // Close the pop-up and expect it to not exist
     userEvent.click(screen.getByTestId("pop-up-close"));
     expect(screen.queryByTestId("pop-up-article")).toBeNull();
 })
 
 test("e2e (critical): check if about is rendered when the button is clicked", () => {
     render(<App/>);
+    // Close initial pop-up
     userEvent.click(screen.getByTestId("pop-up-close"));
+    
     userEvent.click(screen.getByRole("button", {name: "About / Contact"}));
 
+    // Check critical links and info.
     const gitHubLink = screen.getByRole("link", {name: "GitHub"});
     const LinkedIn = screen.getByRole("link", {name: "LinkedIn"});
 
@@ -25,12 +30,12 @@ test("e2e (critical): check if about is rendered when the button is clicked", ()
     expect(LinkedIn).toBeInTheDocument();
     expect(LinkedIn).toHaveAttribute('href', 'https://www.linkedin.com/in/eimantas-survila/');
 
-    const { getByText } = within(screen.getByTestId("pop-up-article"))
-    expect(getByText('eimantas.survila.contact@gmail.com')).toBeInTheDocument()
+    expect(screen.getByTestId("pop-up-article")).toHaveTextContent('eimantas.survila.contact@gmail.com')
 })
 
 test("e2e: check if code snippets can be selected", () => {
     render(<App/>);
+    // Close initial pop-up
     userEvent.click(screen.getByTestId("pop-up-close"));
 
     const TextBeforeChange = "PRINT(Start of the code);\nFOR (i = 5 | i < 20 | i = i + 4) {\n\tIF (i >= 15) {\n\t\tPRINT(i larger than 15);\n\t} ELSE {\n\t\tPRINT(i smaller than 15);\n\t};\n};\nPRINT(End of code);";
@@ -55,29 +60,42 @@ test("e2e (critical): check if code can be input and evaluated step by step", ()
     const firstLine = "PRINT(Start of the code)";
     const outputText = "Start of the code";
     const secondLine = "i = 5";
-    const [varName, varValue] = ["i", 5];
+    const executionContextContent = ["i", "number", "5"];
 
     render(<App/>);
+    // Close initial pop-up
     userEvent.click(screen.getByTestId("pop-up-close"));
+
+    // Click two times run one line
     userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
     userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
 
-    const { getByText } = within(screen.getByTestId("callstack"))
-    expect(getByText(firstLine)).toBeInTheDocument()
+    // Expect the right element in call stack
+    expect(screen.getByTestId("callstack")).toHaveTextContent(firstLine)
+
+    // Further evaluation
+    userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
+
+    // Expect output in console
+    expect(screen.getByTestId("output-field")).toHaveTextContent(outputText)
 
     userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
 
-    // ! Check output for "PRINT(Start of the code)"
+    // Expect emtpy call stack
+    expect(screen.queryAllByTestId("callstack-element")).toHaveLength(0);
+
+    // Further evaluation
+    userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
     userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
 
-    // ! Check if callstack empty
+    // Expect correct state in callstack
+    expect(screen.getByTestId("callstack")).toHaveTextContent(secondLine)
 
-    userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
-    userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
-
-    expect(getByText(secondLine)).toBeInTheDocument()
-
+    // Further evaluation
     userEvent.click(screen.getByRole("button", {name: "Run One Line"}));
 
-    // ! Check if execution context has i and 5
+    // Expect corrent execution context content
+    expect(screen.getByTestId("execution-context")).toHaveTextContent(executionContextContent[0])
+    expect(screen.getByTestId("execution-context")).toHaveTextContent(executionContextContent[1])
+    
 })
