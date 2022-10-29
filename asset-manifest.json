@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/Toy-Prog-Lang-01/static/css/main.2d4d2419.css",
+    "main.js": "/Toy-Prog-Lang-01/static/js/main.f037edb0.js",
+    "static/js/787.ff36f43e.chunk.js": "/Toy-Prog-Lang-01/static/js/787.ff36f43e.chunk.js",
+    "static/media/example_gif.gif": "/Toy-Prog-Lang-01/static/media/example_gif.1accb5f37f76c1b92e15.gif",
+    "static/media/01_Tutorial_Introduction.gif": "/Toy-Prog-Lang-01/static/media/01_Tutorial_Introduction.da8660057b42f7724111.gif",
+    "static/media/02_Tutorial_Editor.gif": "/Toy-Prog-Lang-01/static/media/02_Tutorial_Editor.6008e922def7e7d18c92.gif",
+    "static/media/05_Tutorial_Selection.gif": "/Toy-Prog-Lang-01/static/media/05_Tutorial_Selection.dbae49c74c5da07745ae.gif",
+    "static/media/Bewerbungsfotos.jpg": "/Toy-Prog-Lang-01/static/media/Bewerbungsfotos.eb45a9d00fffdb7cf4d1.jpg",
+    "static/media/06_Tutorial_Execution_Context.gif": "/Toy-Prog-Lang-01/static/media/06_Tutorial_Execution_Context.019b3cae627833b36160.gif",
+    "static/media/07_Tutorial_Call_Stack.gif": "/Toy-Prog-Lang-01/static/media/07_Tutorial_Call_Stack.eefb27a1ab294520c7b7.gif",
+    "static/media/03_Tutorial_Buttons.gif": "/Toy-Prog-Lang-01/static/media/03_Tutorial_Buttons.2aa563561e0d58881582.gif",
+    "static/media/04_Tutorial_Output.gif": "/Toy-Prog-Lang-01/static/media/04_Tutorial_Output.fed09fd9ac34be3ecc56.gif",
+    "index.html": "/Toy-Prog-Lang-01/index.html",
+    "static/media/1063883_arrow_arrow down_down_drop_stroke arrow_icon.svg": "/Toy-Prog-Lang-01/static/media/1063883_arrow_arrow down_down_drop_stroke arrow_icon.9c8f63399e4a123d24068823471be3ac.svg",
+    "static/media/134224_add_plus_new_icon.svg": "/Toy-Prog-Lang-01/static/media/134224_add_plus_new_icon.ccb4d64059afe6c75edfaaa7b7e9dad8.svg",
+    "static/media/8666595_x_icon.svg": "/Toy-Prog-Lang-01/static/media/8666595_x_icon.a906c958364b1a5685f5488f1522dd77.svg",
+    "main.2d4d2419.css.map": "/Toy-Prog-Lang-01/static/css/main.2d4d2419.css.map",
+    "main.f037edb0.js.map": "/Toy-Prog-Lang-01/static/js/main.f037edb0.js.map",
+    "787.ff36f43e.chunk.js.map": "/Toy-Prog-Lang-01/static/js/787.ff36f43e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2d4d2419.css",
+    "static/js/main.f037edb0.js"
+  ]
+}
