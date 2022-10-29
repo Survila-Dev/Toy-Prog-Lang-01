@@ -20,18 +20,18 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
         title: "Toy Programming Language by Eimantas Survila",
         image: photoAbout,
         text: [
-            <p>Hello,</p>,
-            <p>I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>,
-            <p>Tech stack:</p>,
+            <p key = "1">Hello,</p>,
+            <p key = "2">I am self-taught front-end developer with master of science in aerospace engineering. Currently I am doing my PhD in engineering and learning front-end development in the free time.</p>,
+            <p key = "3">Tech stack:</p>,
             <div className = "about__tech_tag">
-                <div>HTML5</div>
-                <div>CSS3</div>
-                <div>JavaScript</div>
-                <div>TypeScript</div>
-                <div>React</div>
+                <div key = "1">HTML5</div>
+                <div key = "2">CSS3</div>
+                <div key = "3">JavaScript</div>
+                <div key = "4">TypeScript</div>
+                <div key = "5">React</div>
             </div>,
-            <p>Please get in contact!</p>,
-            <div className = "pop-up__contact_grid">
+            <p key = "4">Please get in contact!</p>,
+            <div className = "pop-up__contact_grid"  key = "5">
                 <div className = "contact_grid_a">
                     <p>E-Mail</p>
                     <p>eimantas.survila.contact@gmail.com</p>
@@ -49,8 +49,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Welcome to Toy Programming Language & Interpreter by Eimantas Survila",
             image: helpGif1,
             text: [
-                <p>Edit, evaluate and interact with the code in the toy programming language.</p>,
-                <p>Alter the execution context during the execution, add additional code lines to the call stack by draging it from the editor.</p>
+                <p key = "1">Edit, evaluate and interact with the code in the toy programming language.</p>,
+                <p key = "2">Alter the execution context during the execution, add additional code lines to the call stack by draging it from the editor.</p>
                 ],
             firstArticle: true,
             lastArticle: false
@@ -59,8 +59,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 1 - Edit your code in the editor, check syntax guide for syntax",
             image: helpGif2,
             text: [
-                <p>Use the editor to code.</p>,
-                <p>Open the syntex guide on the top right side of the editor for help on language syntax.</p>
+                <p key = "1">Use the editor to code.</p>,
+                <p key = "2">Open the syntex guide on the top right side of the editor for help on language syntax.</p>
                 ],
             firstArticle: false,
             lastArticle: false
@@ -69,10 +69,10 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 2 - Evaluate the code by running it automatically or manuelly step by step",
             image: helpGif3,
             text: [ 
-                <p>Evaluate the code automatically by clicking "RUN". The evaluation can be stopped by clicking the button "STOP"</p>,
-                <p>The code can be evaluated step by step by clicking "Run One Step"</p>,
-                <p>Multiple steps are required for one line: select line, push on call stack, pop from stack.</p>,
-                <p>Click "Start at the Beginning" to intialize the starting position of the evaluation and to clean the call stack.</p>,    
+                <p key = "1">Evaluate the code automatically by clicking "RUN". The evaluation can be stopped by clicking the button "STOP"</p>,
+                <p key = "2">The code can be evaluated step by step by clicking "Run One Step"</p>,
+                <p key = "3">Multiple steps are required for one line: select line, push on call stack, pop from stack.</p>,
+                <p key = "4">Click "Start at the Beginning" to intialize the starting position of the evaluation and to clean the call stack.</p>,    
             ],
             firstArticle: false,
             lastArticle: false
@@ -81,8 +81,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 3 - Print to the console during code evaluation and check errors in the console",
             image: helpGif4,
             text: [ 
-                <p>Use command "PRINT( )" to output to the console.</p>,
-                <p>Any errors with the code is displayed in the console too.</p>
+                <p key = "1">Use command "PRINT( )" to output to the console.</p>,
+                <p key = "2">Any errors with the code is displayed in the console too.</p>
                 ],
             firstArticle: false,
             lastArticle: false
@@ -91,8 +91,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 4 - Select pre-written code snippets which demonstrate the toy programming language",
             image: helpGif5,
             text: [
-                <p>Multiple pre-written code snippets are available to select from.</p>,
-                <p>The changes made to a snippet including the execution environment will be saved when changing to other snippet</p>
+                <p key = "1">Multiple pre-written code snippets are available to select from.</p>,
+                <p key = "2">The changes made to a snippet including the execution environment will be saved when changing to other snippet</p>
                 ],
             firstArticle: false,
             lastArticle: false
@@ -101,9 +101,9 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 5 - Add, change, delete variables during the code evaluation",
             image: helpGif6,
             text: [
-                <p>During the evalution of the code the variables are displayed with their types and values.</p>,
-                <p>These values can be changed any time during the evaluation.</p>,
-                <p>Additionally the variables can be added or deleted.</p>
+                <p key = "1">During the evalution of the code the variables are displayed with their types and values.</p>,
+                <p key = "2">These values can be changed any time during the evaluation.</p>,
+                <p key = "3">Additionally the variables can be added or deleted.</p>
                 ],
             firstArticle: false,
             lastArticle: false
@@ -112,8 +112,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
             title: "Tutorial 6 - Analyse and alter the call stack by draging liner number from editor",
             image: helpGif7,
             text: [
-                <p>The call stack is displayed during the code evaluation.</p>,
-                <p>Additionaly elements can be added to the call stack by draging them from the editor {"("}grab the editor line number of the corresponding command{")"}.</p>,
+                <p key = "1">The call stack is displayed during the code evaluation.</p>,
+                <p key = "2">Additionaly elements can be added to the call stack by draging them from the editor {"("}grab the editor line number of the corresponding command{")"}.</p>,
                 ],
             firstArticle: false,
             lastArticle: true
@@ -124,8 +124,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
         title: "Get in Contact!",
         image: "",
         text: [
-            <p>Please get in contact!</p>,
-            <div className = "pop-up__contact_grid">
+            <p key = "1">Please get in contact!</p>,
+            <div className = "pop-up__contact_grid" key = "2">
                 <div className = "contact_grid_a">
                     <p>E-Mail</p>
                     <p>eimantas.survila.contact@gmail.com</p>
@@ -170,8 +170,8 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
 //
     return (
         <div className = "popupenv">
-        <article className = "popuparticle" data-testid = "pop-up-article">
-            <div className = "pop-up-article__upper-part">
+        <article className = "popuparticle" data-testid = "pop-up-article"  key = "1">
+            <div className = "pop-up-article__upper-part"  key = "1">
                 <h2>{currentArticle[currentArticlePage].title}</h2>
                 {whichPopUp !== "contact"? 
                 <div className = "pop-up-article__content">
@@ -189,7 +189,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 }
 
             </div>
-            <div className = "popupcontrol">
+            <div className = "popupcontrol"  key = "2">
                 <button className = "popupclosebutton" onClick = {handleExitClick} data-testid = "pop-up-close">
                     <img src={iconX} alt="x"/>
                 </button>
@@ -198,7 +198,7 @@ function PopUpMessage({whichPopUp, updateShowPopUp}) {
                 {(!currentArticle[currentArticlePage].lastArticle && whichPopUp !== "contact")? <button onClick = {handleNextClick} className = "pop-up__control_button">NEXT</button>: <></>}   
             </div>
         </article>
-        <div className = "popupcover" onClick = {handleBackgroundClick}></div>
+        <div className = "popupcover" onClick = {handleBackgroundClick}  key = "2"></div>
         
         </div>
     )
